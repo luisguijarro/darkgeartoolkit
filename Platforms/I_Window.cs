@@ -1,0 +1,34 @@
+using System;
+
+namespace dgtk.Platforms
+{
+    internal interface I_Window
+    {
+        string Title {get; set;}
+        IntPtr Handle { get; }
+		object LockObject { get; }
+		bool IsRunning {get; set;}
+		//bool IsDrawing {get; set;}
+        event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
+		event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
+		event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
+		event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed;
+		event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased;
+		event EventHandler<dgtk_KeyBoardTextEventArgs> KeyCharReturned;
+		event EventHandler<dgtk_MouseButtonEventArgs> MouseDown;
+		event EventHandler<dgtk_MouseButtonEventArgs> MouseUp;
+		event EventHandler<dgtk_MouseMoveEventArgs> MouseMove;
+		event EventHandler<dgtk_MouseWheelEventArgs> MouseWheel;
+		event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseEnter;
+		event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseLeave;
+		event EventHandler<dgtk_OnRenderEventArgs> RenderFrame;
+		void ProcessEvent(int ups);	
+		bool MakeCurrent();		
+		bool UnMakeCurrent();		
+		void SwapBuffers();
+		void Redraw();
+		dgtk.Math.Size Size {get; set;}
+		void Close();
+		bool Created {get;}
+    }
+}

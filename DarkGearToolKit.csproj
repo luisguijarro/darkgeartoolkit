@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7217DF3-431E-403F-8F6A-C46D211436DE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DarkGearToolKit</RootNamespace>
+    <AssemblyName>DarkGearToolKit</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="dgtkWindow.cs" />
+    <Compile Include="Platforms\I_Window.cs" />
+    <Compile Include="Platforms\Tools.cs" />
+    <Compile Include="Platforms\Structs\InputEventsStruct.cs" />
+    <Compile Include="Enums\WindowEnums.cs" />
+    <Compile Include="Enums\InputEventsEnums.cs" />
+    <Compile Include="OpenGL\Enums.cs" />
+    <Compile Include="OpenGL\ExtMethods.cs" />
+    <Compile Include="OpenGL\GLInternalTool.cs" />
+    <Compile Include="OpenGL\OpenGLInternals.cs" />
+    <Compile Include="OpenGL\OpenGLInitDels.cs" />
+    <Compile Include="OpenGL\OpenGLMethods.cs" />
+    <Compile Include="OpenGL\OpenGLDelegates.cs" />
+    <Compile Include="events\dgtk_MouseWheelEventArgs.cs" />
+    <Compile Include="events\dgtk_OnUpdateEventArgs.cs" />
+    <Compile Include="events\dgtk_OnRenderEventArgs.cs" />
+    <Compile Include="events\dgtk_KeyBoardKeysEventArgs.cs" />
+    <Compile Include="events\dgtk_WinStateChangeEventArgs.cs" />
+    <Compile Include="events\dgtk_KeyBoardTextEventArgs.cs" />
+    <Compile Include="events\dgtk_MouseButtonEventArgs.cs" />
+    <Compile Include="events\dgtk_WinResizeEventArgs.cs" />
+    <Compile Include="events\dgtk_WinCloseEventArgs.cs" />
+    <Compile Include="events\dgtk_WinMoveEventArgs.cs" />
+    <Compile Include="events\dgtk_MouseEnterLeaveEventArgs.cs" />
+    <Compile Include="events\dgtk_MouseMoveEventArgs.cs" />
+    <Compile Include="events\dgtk_events_tools.cs" />
+    <Compile Include="Math\Mat3.cs" />
+    <Compile Include="Math\Size.cs" />
+    <Compile Include="Math\Mat4.cs" />
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Math\Vector4.cs" />
+    <Compile Include="Math\Point.cs" />
+    <Compile Include="Math\Rect.cs" />
+    <Compile Include="Math\Retf.cs" />
+    <Compile Include="Math\MatrixTools.cs" />
+    <Compile Include="Math\Tools.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dgtk.dll.config" />
+    <None Include="DarkGearToolKit.csproj" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

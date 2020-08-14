@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": 
+	{
+		"files.exclude": 
+		{
+			"bin": true
+		},
+		"search.exclude": 
+		{
+			"bin": true
+		}
+	}
+}
