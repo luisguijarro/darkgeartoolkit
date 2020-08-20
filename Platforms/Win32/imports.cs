@@ -100,5 +100,7 @@ namespace dgtk.Platforms.Win32
 		[DllImport("gdi32.dll", EntryPoint = "SetPixelFormat", SetLastError = true)]
 		internal static extern bool SetPixelFormat(IntPtr hdc, int iPixelFormat, ref PIXELFORMATDESCRIPTOR ppfd);
 		
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern bool SetWindowText(IntPtr hwnd, String lpString);
     }
 }
