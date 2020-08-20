@@ -8,46 +8,68 @@ namespace dgtk
     {
         private Platforms.I_Window NativeWindow;
 
-        private Thread th_redraw; //Thread for Render Proccess.
-        private Thread th_update; //Thre for updates Proccess.
-        private Thread th_window; //Thread for the Window Events and proccess.
+        private Thread th_redraw; //Hilo dedicado al renderizado.
+        private Thread th_update; //Hilo dedicado a las actualizaciones.
+        private Thread th_window; //Hilo dedicado al procesamiento de la ventana nativa del sistema.
 
-        private uint f_fps; // Reference for Frames per Second.
-        private uint f_ups; // Reference for Updates per Second.
+        private uint ui_fps; // Fotogramas por Segundo (ESTABLECIDOS).
+        private uint ui_ups; // Actualizaciones por segundo (ESTABLECIDAS).
+        private uint ui_ueps; // Actualizaciones de eventos por segundo (ESTABLECIDAS).
+
+        private DateTime dt_lastTime; //último momento de registro de segundo para cálculos.
+
+        private uint ui_c_fps; // Fotogramas por Segundo (CALCULADOS).
+        private uint ui_c_fps_show; // Fotogramas por Segundo (CALCULADOS).
 
         #region Attribute Events
-		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
-        public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
-		public event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
-		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed;
-		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased;
-		public event EventHandler<dgtk_KeyBoardTextEventArgs> KeyCharReturned;
-		public event EventHandler<dgtk_MouseButtonEventArgs> MouseDown;
-		public event EventHandler<dgtk_MouseButtonEventArgs> MouseUp;
-		public event EventHandler<dgtk_MouseMoveEventArgs> MouseMove;
-		public event EventHandler<dgtk_MouseWheelEventArgs> MouseWheel;
-		public event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseEnter;
-		public event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseLeave;
-        public event EventHandler<dgtk_OnUpdateEventArgs> UpdateFrame;
-        public event EventHandler<dgtk_OnRenderEventArgs> RenderFrame;
+		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose; // Evento de cierre de Ventana
+        public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
+		public event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange; // Evento de cambio de estado de una ventana
+		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed; // Evento que se da cuando se pulsa una tecla del teclado.
+		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased; // Evento que se da cuando se suelta una tecla del teclado.
+		public event EventHandler<dgtk_KeyBoardTextEventArgs> KeyCharReturned; // Evento devuelto cuando se pulsa o se suelta una tecla y que devuelve el caracter asociado.
+		public event EventHandler<dgtk_MouseButtonEventArgs> MouseDown; // Evento que se da cuando se pulsa un botón del ratón.
+		public event EventHandler<dgtk_MouseButtonEventArgs> MouseUp; // Evento que se da cuando se suelta un botón del ratón.
+		public event EventHandler<dgtk_MouseMoveEventArgs> MouseMove; // Evento que se da cuando el ratón se mueve.
+		public event EventHandler<dgtk_MouseWheelEventArgs> MouseWheel; // Evento que se da cuando se acciona la rueda del ratón.
+		public event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseEnter; // Evento que se da cuando el ratón entra en la ventana.
+		public event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseLeave; // Evento que se da cuando el ratón sale de la ventana.
+        public event EventHandler<dgtk_OnUpdateEventArgs> UpdateFrame; // Evento que gestiona la actualización de datos.
+        public event EventHandler<dgtk_OnRenderEventArgs> RenderFrame; // Evento que gestiona la actualización de Renderizado de Fotogramas.
+
         #endregion
 
-        public DGTK_Window() : base()
+        public DGTK_Window() : this(1024, 600, "Dark Gear Tool Kit Window") // Consuctor Básico.
         {
             
         }
 
 
-        public DGTK_Window(uint Width, uint Height, string Title)
+        public DGTK_Window(uint Width, uint Height, string Title) //Constructor completo.
         {
-
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establkecer afiidad del proceso inicial
+            
+            this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
+            
+            this.th_window.Start(new th_params(Width, Height, Title)); // Iniciar Hilo con los parametros de la ventana.
+            while(this.NativeWindow == null) //Esperamos hasta que la ventana esté creada y no sea null.
+            {
+                Thread.Sleep(100);
+            }
+            Console.WriteLine("Ventana Existe");
+            while(!this.NativeWindow.Created) //Esperamos a que la ventana nativa indique que ha terminado su inicio.
+            {
+                Thread.Sleep(100);
+            }
+            Console.WriteLine("Ventana Creada");
         }
 
+        #region Metodos Privados:
 
-        private void initWindow(object @params)
+        private void initWindow(object @params) //Metodo de iniciación de hilos y procesamiento de ventana.
         {
-            th_params winparam = (th_params)@params;
-            switch(Platforms.Tools.GetPlatform())
+            th_params winparam = (th_params)@params; //creamos estructura para obtener los parametros pasados ene l inicio del hilo.
+            switch(Platforms.Tools.GetPlatform()) // Get the Plataform.
             {
                 case Platforms.Platform.Windows:
                     this.NativeWindow = new Platforms.Win32.W32Window(50, 50, winparam.Width, winparam.Height, winparam.Title);
@@ -62,47 +84,263 @@ namespace dgtk
                 throw new Exception("Operating System Not Supported");
             }
 
-            this.WindowClose += delegate {};
-            this.WindowSizeChange += delegate {};
-            this.WindowStateChange += delegate {};
-            this.KeyPulsed += delegate {};
-            this.KeyReleased += delegate {};
-            this.KeyCharReturned += delegate {};
-            this.MouseDown += delegate {};
-            this.MouseUp += delegate {};
-            this.MouseMove += delegate {};
-            this.MouseWheel += delegate {};
-            this.MouseEnter += delegate {};
-            this.MouseLeave += delegate {};
-			this.UpdateFrame += delegate { };
-			this.RenderFrame += delegate { };
-/*
-            this.NativeWindow.WindowClose += NativeWindowClose;
-            this.NativeWindow.WindowSizeChange += NativeWindowSizeChange;
-            this.NativeWindow.WindowStateChange += NativeWindowStateChange;
-            this.NativeWindow.KeyPulsed += NativeWindowKeyPulsed;
-            this.NativeWindow.KeyReleased += NativeWindowKeyReleased;
-            this.NativeWindow.KeyCharReturned += NativeWindowKeyCharReturned;
-            this.NativeWindow.MouseDown += NativeWindowMouseDown;
-            this.NativeWindow.MouseUp += NativeWindowMouseUp;
-            this.NativeWindow.MouseMove += NativeWindowMouseMove;
-            this.NativeWindow.MouseWheel += NativeWindowMouseWheel;
-            this.NativeWindow.MouseEnter += NativeWindowMouseEnter;
-            this.NativeWindow.MouseLeave += NativeWindowMouseLeave;
-            this.NativeWindow.RenderFrame += NativeRenderFrame;
-*/
+            this.WindowClose += delegate {}; //Inicialización del evento por defecto.
+            this.WindowSizeChange += delegate {}; //Inicialización del evento por defecto.
+            this.WindowStateChange += delegate {}; //Inicialización del evento por defecto.
+            this.KeyPulsed += delegate {}; //Inicialización del evento por defecto.
+            this.KeyReleased += delegate {}; //Inicialización del evento por defecto.
+            this.KeyCharReturned += delegate {}; //Inicialización del evento por defecto.
+            this.MouseDown += delegate {}; //Inicialización del evento por defecto.
+            this.MouseUp += delegate {}; //Inicialización del evento por defecto.
+            this.MouseMove += delegate {}; //Inicialización del evento por defecto.
+            this.MouseWheel += delegate {}; //Inicialización del evento por defecto.
+            this.MouseEnter += delegate {}; //Inicialización del evento por defecto.
+            this.MouseLeave += delegate {}; //Inicialización del evento por defecto.
+			this.UpdateFrame += delegate { }; //Inicialización del evento por defecto.
+			this.RenderFrame += delegate { }; //Inicialización del evento por defecto.
+
+            #region Lanzamiento de eventos desde Clase Nativa.
+            // Recogemos los eventos de la ventana nativa.
+            this.NativeWindow.RenderFrame += delegate (object sender, dgtk_OnRenderEventArgs e)
+            {
+                this.RenderFrame(this, e); //El renderizado en ventana nativa lanza el evento.
+            };
+
+            this.NativeWindow.WindowClose += delegate (object sender, dgtk_WinCloseEventArgs e)
+            {
+                this.WindowClose(this, e); //El cierre de la ventana nativa lanza evento.
+            };
+
+            this.NativeWindow.WindowSizeChange += delegate (object sender, dgtk_WinResizeEventArgs e)
+            {
+                this.WindowSizeChange(this, e); //El cambio de tamaño de la ventana nativa lanza evento.
+            };
+
+            this.NativeWindow.WindowStateChange += delegate (object sender, dgtk_WinStateChangeEventArgs e)
+            {
+                this.WindowStateChange(this, e); //El cambio de estado de la ventana nativa lanza evento.
+            };
+
+            this.NativeWindow.KeyPulsed += delegate (object sender, dgtk_KeyBoardKeysEventArgs e)
+            {
+                this.KeyPulsed(this, e);
+            };
+
+            this.NativeWindow.KeyReleased += delegate (object sender, dgtk_KeyBoardKeysEventArgs e)
+            {
+                this.KeyReleased(this, e);
+            };
+
+            this.NativeWindow.KeyCharReturned += delegate (object sender, dgtk_KeyBoardTextEventArgs e)
+            {
+                this.KeyCharReturned(this, e);
+            };
+
+            this.NativeWindow.MouseDown += delegate (object sender, dgtk_MouseButtonEventArgs e)
+            {
+                this.MouseDown(this, e);
+            };
+
+            this.NativeWindow.MouseUp += delegate (object sender, dgtk_MouseButtonEventArgs e)
+            {
+                this.MouseUp(this, e);
+            };
+
+            this.NativeWindow.MouseMove += delegate (object sender, dgtk_MouseMoveEventArgs e)
+            {
+                this.MouseMove(this, e);
+            };
+
+            this.NativeWindow.MouseWheel += delegate (object sender, dgtk_MouseWheelEventArgs e)
+            {
+                this.MouseWheel(this, e);
+            };
+
+            this.NativeWindow.MouseEnter += delegate (object sender, dgtk_MouseEnterLeaveEventArgs e)
+            {
+                this.MouseEnter(this, e);
+            };
+
+            this.NativeWindow.MouseLeave += delegate (object sender, dgtk_MouseEnterLeaveEventArgs e)
+            {
+                this.MouseLeave(this, e);
+            };
+
+            this.NativeWindow.RenderFrame += delegate (object sender, dgtk_OnRenderEventArgs e)
+            {
+                this.RenderFrame(this, e);
+            };
+
+            // Update Frame no se maneja en Ventana nativa.
+
+            #endregion
+
             while(!this.NativeWindow.IsRunning)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(1000); //Dar ytimepo al inicio de la ventana nativa.
             }
-            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15;
-            this.ProcessEvents();
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
+            this.ProcessEvents(); //Iniciar el procesamiento de Venetos de Ventana.
         }
 
         private void ProcessEvents()
         {
-            this.NativeWindow.ProcessEvent(500); // No use Full CPU core
+            this.ui_ueps = 100; //Actualizaciones de comprobación de eventos por segundo, por defecto.
+            this.NativeWindow.ProcessEvent(ref this.ui_ueps); // No usar toda la CPU.
         }
 
+        private void Render_frame()
+        {
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
+            while(!this.NativeWindow.IsRunning) // Esperar a que la ventana nativa exista.
+            {
+                //Esperar al inicio de ProcessEvent();
+                Thread.Sleep(1000);
+            }
+            while(this.NativeWindow.IsRunning) // Procesar mientras la ventana nativa exista y este funcionando.
+            {
+                DateTime dt_ini = DateTime.Now;
+                this.NativeWindow.Redraw(); // Lanza renderizado, el cual lanza evento de Renderizado.
+                if ((this.ui_fps > 0) && !this.NativeWindow.VSyncEnabled)
+                {
+                    TimeSpan retraso = DateTime.Now - dt_ini;
+                    if (retraso.TotalMilliseconds < (1f/(float)this.ui_fps)*1000f)
+                    {
+                        Thread.Sleep((int)(((1f/(float)this.ui_fps)*1000f)-retraso.TotalMilliseconds));
+                    }
+                }
+                if (1000>(DateTime.Now -this.dt_lastTime).TotalMilliseconds)
+                {
+                    this.ui_c_fps++; //Aumentar FPS
+                }
+                else
+                {
+                    this.ui_c_fps_show = this.ui_c_fps; //Aisnar suma de fps a la variable a mostrar
+                    this.ui_c_fps = 0; // Reiniciar conteo de FPS
+                    this.dt_lastTime = DateTime.Now; //Reiniciar fecha de base de cálculo.
+                }
+            }
+            Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
+        }
+
+        private void Update_frame()
+        {
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
+            while(!this.NativeWindow.IsRunning) // Esperar a que la ventana nativa exista.
+            {
+                //Esperar al inicio de ProcessEvent();
+                Thread.Sleep(1000);
+            }
+            while(this.NativeWindow.IsRunning) // Procesar mientras la ventana nativa exista y este funcionando.
+            {
+                DateTime dt_ini = DateTime.Now;
+                lock(this.NativeWindow.LockObject)
+                {
+                    this.UpdateFrame(this, new dgtk_OnUpdateEventArgs()); //Lanza evento de Actualización de datos.
+                }
+                if (this.ui_ups > 0) 
+                {
+                    TimeSpan retraso = DateTime.Now - dt_ini;
+                    if (retraso.TotalMilliseconds < (1f/(float)this.ui_ups)*1000f)
+                    {
+                        Thread.Sleep((int)(((1f/(float)this.ui_ups)*1000f)-retraso.TotalMilliseconds));
+                    }
+                }
+            }
+            Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
+        }
+
+        #endregion
+
+        #region Metodos Publicos:
+
+        public void Run()
+        {
+            this.Run(0);
+        }
+
+        public void Run(uint RefresPerSecon)
+        {
+            this.Run(RefresPerSecon, RefresPerSecon);
+        }
+
+        public void Run(uint fps, uint ups)
+        {
+            this.ui_fps = fps; 
+            this.ui_ups = ups;
+            this.DisableVSync();
+            this.th_update = new Thread(this.Update_frame);
+            this.th_update.Start();
+            this.th_redraw = new Thread(this.Render_frame);
+            this.th_redraw.Start();
+            this.NativeWindow.IsRunning = true;
+        }
+
+        public void Run(uint fps, uint ups, uint ueps)
+        {
+            this.ui_fps = fps; 
+            this.ui_ups = ups;
+            this.ui_ueps = ueps;
+            this.DisableVSync();
+            this.th_update = new Thread(this.Update_frame);
+            this.th_update.Start();
+            this.th_redraw = new Thread(this.Render_frame);
+            this.th_redraw.Start();
+            this.NativeWindow.IsRunning = true;
+        }
+
+        public bool MakeCurrent()
+        {
+            return this.NativeWindow.MakeCurrent();
+        }
+        public bool UnMakeCurrent()
+        {
+            return this.NativeWindow.UnMakeCurrent();
+        }
+        public void SwapBuffers()
+        {
+            this.NativeWindow.SwapBuffers();
+        }
+
+        public void EnableVSync()
+        {
+            this.MakeCurrent();
+            this.NativeWindow.EnableVSync();
+            this.UnMakeCurrent();
+        }
+
+        public void DisableVSync()
+        {
+            this.MakeCurrent();
+            this.NativeWindow.DisableVSync();
+            this.UnMakeCurrent();
+        }
+
+        #endregion
+
+
+        #region PROPIEDADES:
+
+        public string WindowTitle
+        {
+            set { this.NativeWindow.Title = value;}
+            get { return this.NativeWindow.Title; }
+        }
+        public virtual int Width
+        {
+            get {return this.NativeWindow.Size.Width;}
+            set {this.NativeWindow.Size = new Math.Size(value, this.NativeWindow.Size.Height);}
+        }
+        public virtual int Height
+        {
+            get {return this.NativeWindow.Size.Height;}
+            set {this.NativeWindow.Size = new Math.Size(this.NativeWindow.Size.Width, value);}
+        }
+        public uint CalculatedFPS
+        {
+            get { return this.ui_c_fps_show;}
+        }
+
+        #endregion
     }
 }
