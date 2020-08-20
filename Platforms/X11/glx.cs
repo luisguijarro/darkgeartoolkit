@@ -66,6 +66,18 @@ namespace dgtk.Platforms.X11
 
 		[DllImport("libGL.so.1", EntryPoint = "glXGetProcAddress")]
 		internal extern static IntPtr glXGetProcAddress(String MethodName);
+
+		[DllImport("libGL.so.1", EntryPoint = "glXQueryExtensionsString")]
+		internal extern unsafe static  char* glXQueryExtensionsString(	IntPtr dpy,int screen);
+ 
+		[DllImport("libGL.so.1", EntryPoint = "glXSwapIntervalEXT")]
+		internal extern static void glXSwapIntervalEXT(IntPtr dpy, IntPtr drawable, int interval);
+		
+		[DllImport("libGL.so.1", EntryPoint = "glXSwapIntervalMESA")]
+		internal extern static int glXSwapIntervalMESA(uint interval);
+
+		[DllImport("libGL.so.1", EntryPoint = "glXSwapIntervalSGI")]
+		internal extern static int glXSwapIntervalSGI(int interval);
     }
 
 	internal enum glxVisualAttributes : int //<=1.2
