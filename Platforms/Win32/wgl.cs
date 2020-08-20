@@ -26,5 +26,8 @@ namespace dgtk.Platforms.Win32
 
 		[DllImport("opengl32.dll", EntryPoint = "wglGetProcAddress", SetLastError = true)]
 		internal extern static IntPtr wglGetProcAddress(String lpszProc);
+
+		internal delegate bool d_wglSwapIntervalEXT(int interval);
+		internal static d_wglSwapIntervalEXT wglSwapIntervalEXT;
     }
 }
