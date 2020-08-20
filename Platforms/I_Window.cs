@@ -22,7 +22,7 @@ namespace dgtk.Platforms
 		event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseEnter;
 		event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseLeave;
 		event EventHandler<dgtk_OnRenderEventArgs> RenderFrame;
-		void ProcessEvent(int ups);	
+		void ProcessEvent(ref uint ups);	
 		bool MakeCurrent();		
 		bool UnMakeCurrent();		
 		void SwapBuffers();
@@ -30,5 +30,8 @@ namespace dgtk.Platforms
 		dgtk.Math.Size Size {get; set;}
 		void Close();
 		bool Created {get;}
+		void EnableVSync();
+		void DisableVSync();
+		bool VSyncEnabled {get;}
     }
 }
