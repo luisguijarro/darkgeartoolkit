@@ -20,6 +20,10 @@ namespace dgtk.Platforms.X11
         private XSetWindowAttributes XWA;
 		private OpenGL.OGL_Context GL_Context;
 
+		private LinuxSwapControlExt SwapControlSupported;
+
+		private bool vSyncEnabled;
+
 		#region Atoms
 		IntPtr WM_DELETE_WINDOW;
 		IntPtr WM_STATE;
@@ -92,6 +96,8 @@ namespace dgtk.Platforms.X11
 			
             this.ScreenId = Imports.XDefaultScreen(this.ptr_display);
             
+			this.SwapControlSupported = VSync.SupportedVSync(this.ptr_display, this.ScreenId);
+
 			IntPtr FBConfig = IntPtr.Zero;
 			OGLPreparation.PreparationOGLContext(this.ptr_display, this.ScreenId, ref FBConfig, out this.Visual, out this.ptr_Visual);
 
@@ -130,6 +136,7 @@ namespace dgtk.Platforms.X11
 			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, IntPtr.Zero, true);
 			this.GL_Context.X11UnMakeCurrent();
 			this.b_created = true;
+			//this.isRunning = true; Will be use in Run() Method.
         }
 
 		#region Public Methods
@@ -163,6 +170,44 @@ namespace dgtk.Platforms.X11
 			this.GL_Context.X11SwapBuffers();
 		}
 
+		public void EnableVSync()
+		{
+			switch(this.SwapControlSupported)
+			{
+				case LinuxSwapControlExt.GLX_EXT_swap_control:
+					glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 1);
+					this.vSyncEnabled = true;
+					break;
+				case LinuxSwapControlExt.GLX_MESA_swap_control:
+					glx.glXSwapIntervalMESA(1);
+					this.vSyncEnabled = true;
+					break;
+				case LinuxSwapControlExt.GLX_SGI_swap_control:
+					glx.glXSwapIntervalSGI(1);
+					this.vSyncEnabled = true;
+					break;
+			}
+			this.vSyncEnabled = false;
+		}
+
+		public void DisableVSync()
+		{
+			switch(this.SwapControlSupported)
+			{
+				case LinuxSwapControlExt.GLX_EXT_swap_control:
+					glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 0);
+					this.vSyncEnabled = false;
+					break;
+				case LinuxSwapControlExt.GLX_MESA_swap_control:
+					glx.glXSwapIntervalMESA(0);
+					this.vSyncEnabled = false;
+					break;
+				case LinuxSwapControlExt.GLX_SGI_swap_control:
+					//glx.glXSwapIntervalSGI(0); //No soportado GLX_BAD_VALUE
+					break;
+			}
+		}
+
 		public void Close()
 		{
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
@@ -190,9 +235,8 @@ namespace dgtk.Platforms.X11
 			Imports.XUnlockDisplay(this.ptr_display);
         }
 
-		public void ProcessEvent(int ups)
+		public void ProcessEvent(ref uint ups)
 		{
-			//this.isRunning = true; It not necesary becouse tis managed in Warp Window
 			while(this.isRunning)
 			{
 				DateTime dt_ini = DateTime.Now;
@@ -300,7 +344,7 @@ namespace dgtk.Platforms.X11
                     Thread.Sleep((int)(((1f/(float)ups)*1000f)-retraso.TotalMilliseconds));
                 }
 			}
-			while(this.isDrawing){ /* WAIT FOR RENDER: Avoid crash in close */}
+			while(this.isDrawing){ /* ESPERAR POR RENDER: Evita crash en Cierre */}
 			Imports.XUnmapWindow(this.ptr_display, this.ptr_handle);
 			this.GL_Context.Dispose();
 			Imports.XDestroyWindow(this.ptr_display, this.ptr_handle);
@@ -433,16 +477,21 @@ namespace dgtk.Platforms.X11
 			}
 		}
 		public bool Created {get{return b_created;}}
+	
 		public bool IsRunning 
 		{
 			get { return this.isRunning; }
 			set { this.isRunning = value;}
 		}	
+
 		public dgtk.Math.Size Size
 		{
 			set { Imports.XResizeWindow (this.ptr_display, this.ptr_handle, (uint)value.Width, (uint)value.Height); /*this.ancho = (int)value.X; this.alto = (int)value.Y;*/}
 			get { return new dgtk.Math.Size(this.ancho, this.alto); }
 		}
+
+		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
+
 		#endregion
     }
 }

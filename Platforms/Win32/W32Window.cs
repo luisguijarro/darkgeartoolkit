@@ -15,6 +15,10 @@ namespace dgtk.Platforms.Win32
         private bool registered;
 		private OpenGL.OGL_Context GL_Context;
 
+		private bool SwapControlSupported;
+
+		private bool vSyncEnabled;
+
         private string s_title;
         private WindowState WinState;
 		private Win32Rect rect;
@@ -127,6 +131,8 @@ namespace dgtk.Platforms.Win32
 			IntPtr DeviceC;
 			OGLPreparation.PreparationOGLContext(this.ptr_handle, 32, 24, out DeviceC);
 			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
+			this.GL_Context.Win32MakeCurrent();
+			this.SwapControlSupported = VSync.SupportedVSync();
 			this.GL_Context.Win32UnMakeCurrent();
 			this.b_created = true;
         }
@@ -162,6 +168,16 @@ namespace dgtk.Platforms.Win32
 			this.GL_Context.Win32SwapBuffers();
 		}
 
+		public void EnableVSync()
+		{
+			if (this.SwapControlSupported) { wgl.wglSwapIntervalEXT(1); this.vSyncEnabled = true; }
+		}
+
+		public void DisableVSync()
+		{
+			if (this.SwapControlSupported) { wgl.wglSwapIntervalEXT(0); this.vSyncEnabled = false; }
+		}
+
 		public void Close()
 		{
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
@@ -169,7 +185,7 @@ namespace dgtk.Platforms.Win32
 		}
 		#endregion
 
-		public void ProcessEvent(int ups)
+		public void ProcessEvent(ref uint ups)
 		{
 			this.isRunning = true;
 			MSG w32msg = new MSG();
@@ -335,7 +351,7 @@ namespace dgtk.Platforms.Win32
         public string Title
         {
             get { return this.s_title;}
-            set { this.s_title = value;}
+            set { this.s_title = value; Imports.SetWindowText(this.Handle, this.s_title);}
         }
         public IntPtr Handle
         {
@@ -372,5 +388,6 @@ namespace dgtk.Platforms.Win32
 			get { bool ret; lock(this.lockobject){ret = this.isRunning; }return ret; }
 			set { this.isRunning = value;}
 		}	
+		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
     }
 }
