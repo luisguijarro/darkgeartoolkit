@@ -43,7 +43,7 @@ namespace dgtk.OpenGL
 				internalGL.glDebugMessageCallbackAMD(callback, userParam);
 			}
 
-			public static unsafe void glDebugMessageEnableAMD(uint category, DebugSeverity severity, int count, uint* ids, bool enabled)
+			public static unsafe void glDebugMessageEnableAMD(uint category, DebugSeverity severity, int count, uint* ids, Boolean enabled)
 			{
 				internalGL.glDebugMessageEnableAMD(category, severity, count, ids, enabled);
 			}
@@ -68,7 +68,7 @@ namespace dgtk.OpenGL
 				internalGL.glGenNamesAMD(identifier, num, names);
 			}
 
-			public static unsafe uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, uint* severities, uint* ids, int* lengths, sbyte* message)
+			public static unsafe uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, DebugSeverity* severities, uint* ids, int* lengths, sbyte* message)
 			{
 				return internalGL.glGetDebugMessageLogAMD(count, bufSize, categories, severities, ids, lengths, message);
 			}
@@ -193,7 +193,7 @@ namespace dgtk.OpenGL
 				internalGL.glProgramUniform4ui64vNV(program, location, count, value);
 			}
 
-			public static void glQueryObjectParameteruiAMD(QueryTarget target, uint id, uint pname, uint param)
+			public static void glQueryObjectParameteruiAMD(QueryTarget target, uint id, uint pname, OcclusionQueryEventMaskAMD param)
 			{
 				internalGL.glQueryObjectParameteruiAMD(target, id, pname, param);
 			}
@@ -218,12 +218,12 @@ namespace dgtk.OpenGL
 				internalGL.glTessellationModeAMD(mode);
 			}
 
-			public static void glTexStorageSparseAMD(TextureTarget target, InternalFormat internalFormat, int width, int height, int depth, int layers, uint flags)
+			public static void glTexStorageSparseAMD(TextureTarget target, InternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
 			{
 				internalGL.glTexStorageSparseAMD(target, internalFormat, width, height, depth, layers, flags);
 			}
 
-			public static void glTextureStorageSparseAMD(uint texture, uint target, InternalFormat internalFormat, int width, int height, int depth, int layers, uint flags)
+			public static void glTextureStorageSparseAMD(uint texture, uint target, InternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
 			{
 				internalGL.glTextureStorageSparseAMD(texture, target, internalFormat, width, height, depth, layers, flags);
 			}
@@ -824,7 +824,7 @@ namespace dgtk.OpenGL
 				internalGL.glLoadTransposeMatrixfARB(m);
 			}
 
-			public static IntPtr glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
+			public static unsafe IntPtr* glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
 			{
 				return internalGL.glMapBufferARB(target, access);
 			}
@@ -1074,7 +1074,7 @@ namespace dgtk.OpenGL
 				internalGL.glProgramStringARB(target, format, len, @string);
 			}
 
-			public static void glSampleCoverageARB(float value, bool invert)
+			public static void glSampleCoverageARB(float value, Boolean invert)
 			{
 				internalGL.glSampleCoverageARB(value, invert);
 			}
@@ -1164,17 +1164,17 @@ namespace dgtk.OpenGL
 				internalGL.glUniform4ivARB(location, count, value);
 			}
 
-			public static unsafe void glUniformMatrix2fvARB(int location, int count, bool transpose, float* value)
+			public static unsafe void glUniformMatrix2fvARB(int location, int count, Boolean transpose, float* value)
 			{
 				internalGL.glUniformMatrix2fvARB(location, count, transpose, value);
 			}
 
-			public static unsafe void glUniformMatrix3fvARB(int location, int count, bool transpose, float* value)
+			public static unsafe void glUniformMatrix3fvARB(int location, int count, Boolean transpose, float* value)
 			{
 				internalGL.glUniformMatrix3fvARB(location, count, transpose, value);
 			}
 
-			public static unsafe void glUniformMatrix4fvARB(int location, int count, bool transpose, float* value)
+			public static unsafe void glUniformMatrix4fvARB(int location, int count, Boolean transpose, float* value)
 			{
 				internalGL.glUniformMatrix4fvARB(location, count, transpose, value);
 			}
@@ -1374,7 +1374,7 @@ namespace dgtk.OpenGL
 				internalGL.glVertexAttrib4usvARB(index, v);
 			}
 
-			public static void glVertexAttribPointerARB(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, IntPtr pointer)
+			public static void glVertexAttribPointerARB(uint index, int size, VertexAttribPointerType type, Boolean normalized, int stride, IntPtr pointer)
 			{
 				internalGL.glVertexAttribPointerARB(index, size, type, normalized, stride, pointer);
 			}
@@ -1657,7 +1657,7 @@ namespace dgtk.OpenGL
 				return internalGL.glIsObjectBufferATI(buffer);
 			}
 
-			public static IntPtr glMapObjectBufferATI(uint buffer)
+			public static unsafe IntPtr* glMapObjectBufferATI(uint buffer)
 			{
 				return internalGL.glMapObjectBufferATI(buffer);
 			}
@@ -1777,7 +1777,7 @@ namespace dgtk.OpenGL
 				internalGL.glVariantArrayObjectATI(id, type, stride, buffer, offset);
 			}
 
-			public static void glVertexAttribArrayObjectATI(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, uint buffer, uint offset)
+			public static void glVertexAttribArrayObjectATI(uint index, int size, VertexAttribPointerType type, Boolean normalized, int stride, uint buffer, uint offset)
 			{
 				internalGL.glVertexAttribArrayObjectATI(index, size, type, normalized, stride, buffer, offset);
 			}
@@ -1965,7 +1965,7 @@ namespace dgtk.OpenGL
 				internalGL.glApplyTextureEXT(mode);
 			}
 
-			public static unsafe bool glAreTexturesResidentEXT(int n, uint* textures, bool* residences)
+			public static unsafe bool glAreTexturesResidentEXT(int n, uint* textures, Boolean* residences)
 			{
 				return internalGL.glAreTexturesResidentEXT(n, textures, residences);
 			}
@@ -2010,7 +2010,7 @@ namespace dgtk.OpenGL
 				internalGL.glBindFramebufferEXT(target, framebuffer);
 			}
 
-			public static void glBindImageTextureEXT(uint index, uint texture, int level, bool layered, int layer, BufferAccessARB access, int format)
+			public static void glBindImageTextureEXT(uint index, uint texture, int level, Boolean layered, int layer, BufferAccessARB access, int format)
 			{
 				internalGL.glBindImageTextureEXT(index, texture, level, layered, layer, access, format);
 			}
@@ -2125,7 +2125,7 @@ namespace dgtk.OpenGL
 				internalGL.glBlendFuncSeparateEXT(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
 			}
 
-			public static void glBlitFramebufferEXT(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, BlitFramebufferFilter filter)
+			public static void glBlitFramebufferEXT(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, ClearBufferMask mask, BlitFramebufferFilter filter)
 			{
 				internalGL.glBlitFramebufferEXT(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 			}
@@ -2145,7 +2145,7 @@ namespace dgtk.OpenGL
 				internalGL.glClearColorIuiEXT(red, green, blue, alpha);
 			}
 
-			public static void glColorMaskIndexedEXT(uint index, bool r, bool g, bool b, bool a)
+			public static void glColorMaskIndexedEXT(uint index, Boolean r, Boolean g, Boolean b, Boolean a)
 			{
 				internalGL.glColorMaskIndexedEXT(index, r, g, b, a);
 			}
@@ -2290,7 +2290,7 @@ namespace dgtk.OpenGL
 				internalGL.glDrawRangeElementsEXT(mode, start, end, count, type, indices);
 			}
 
-			public static unsafe void glEdgeFlagPointerEXT(int stride, int count, bool* pointer)
+			public static unsafe void glEdgeFlagPointerEXT(int stride, int count, Boolean* pointer)
 			{
 				internalGL.glEdgeFlagPointerEXT(stride, count, pointer);
 			}
@@ -2400,7 +2400,7 @@ namespace dgtk.OpenGL
 				return internalGL.glGenVertexShadersEXT(range);
 			}
 
-			public static unsafe void glGetBooleanIndexedvEXT(BufferTargetARB target, uint index, bool* data)
+			public static unsafe void glGetBooleanIndexedvEXT(BufferTargetARB target, uint index, Boolean* data)
 			{
 				internalGL.glGetBooleanIndexedvEXT(target, index, data);
 			}
@@ -2445,7 +2445,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetFramebufferAttachmentParameterivEXT(target, attachment, pname, @params);
 			}
 
-			public static void glGetHistogramEXT(HistogramTargetEXT target, bool reset, PixelFormat format, PixelType type, IntPtr values)
+			public static void glGetHistogramEXT(HistogramTargetEXT target, Boolean reset, PixelFormat format, PixelType type, IntPtr values)
 			{
 				internalGL.glGetHistogramEXT(target, reset, format, type, values);
 			}
@@ -2465,7 +2465,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetIntegerIndexedvEXT(target, index, data);
 			}
 
-			public static unsafe void glGetInvariantBooleanvEXT(uint id, GetVariantValueEXT value, bool* data)
+			public static unsafe void glGetInvariantBooleanvEXT(uint id, GetVariantValueEXT value, Boolean* data)
 			{
 				internalGL.glGetInvariantBooleanvEXT(id, value, data);
 			}
@@ -2480,7 +2480,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetInvariantIntegervEXT(id, value, data);
 			}
 
-			public static unsafe void glGetLocalConstantBooleanvEXT(uint id, GetVariantValueEXT value, bool* data)
+			public static unsafe void glGetLocalConstantBooleanvEXT(uint id, GetVariantValueEXT value, Boolean* data)
 			{
 				internalGL.glGetLocalConstantBooleanvEXT(id, value, data);
 			}
@@ -2495,7 +2495,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetLocalConstantIntegervEXT(id, value, data);
 			}
 
-			public static void glGetMinmaxEXT(MinmaxTargetEXT target, bool reset, PixelFormat format, PixelType type, IntPtr values)
+			public static void glGetMinmaxEXT(MinmaxTargetEXT target, Boolean reset, PixelFormat format, PixelType type, IntPtr values)
 			{
 				internalGL.glGetMinmaxEXT(target, reset, format, type, values);
 			}
@@ -2575,7 +2575,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetUniformuivEXT(program, location, @params);
 			}
 
-			public static unsafe void glGetVariantBooleanvEXT(uint id, GetVariantValueEXT value, bool* data)
+			public static unsafe void glGetVariantBooleanvEXT(uint id, GetVariantValueEXT value, Boolean* data)
 			{
 				internalGL.glGetVariantBooleanvEXT(id, value, data);
 			}
@@ -2600,7 +2600,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetVertexAttribLdvEXT(index, pname, @params);
 			}
 
-			public static void glHistogramEXT(HistogramTargetEXT target, int width, InternalFormat internalformat, bool sink)
+			public static void glHistogramEXT(HistogramTargetEXT target, int width, InternalFormat internalformat, Boolean sink)
 			{
 				internalGL.glHistogramEXT(target, width, internalformat, sink);
 			}
@@ -2660,12 +2660,12 @@ namespace dgtk.OpenGL
 				internalGL.glLockArraysEXT(first, count);
 			}
 
-			public static void glMemoryBarrierEXT(uint barriers)
+			public static void glMemoryBarrierEXT(MemoryBarrierMask barriers)
 			{
 				internalGL.glMemoryBarrierEXT(barriers);
 			}
 
-			public static void glMinmaxEXT(MinmaxTargetEXT target, InternalFormat internalformat, bool sink)
+			public static void glMinmaxEXT(MinmaxTargetEXT target, InternalFormat internalformat, Boolean sink)
 			{
 				internalGL.glMinmaxEXT(target, internalformat, sink);
 			}
@@ -2755,7 +2755,7 @@ namespace dgtk.OpenGL
 				internalGL.glResetMinmaxEXT(target);
 			}
 
-			public static void glSampleMaskEXT(float value, bool invert)
+			public static void glSampleMaskEXT(float value, Boolean invert)
 			{
 				internalGL.glSampleMaskEXT(value, invert);
 			}
@@ -3290,7 +3290,7 @@ namespace dgtk.OpenGL
 				internalGL.glColorPointervINTEL(size, type, pointer);
 			}
 
-			public static unsafe IntPtr glMapTexture2DINTEL(uint texture, int level, uint access, int* stride, uint* layout)
+			public static unsafe IntPtr* glMapTexture2DINTEL(uint texture, int level, uint access, int* stride, uint* layout)
 			{
 				return internalGL.glMapTexture2DINTEL(texture, level, access, stride, layout);
 			}
@@ -3461,7 +3461,7 @@ namespace dgtk.OpenGL
 				internalGL.glAlphaToCoverageDitherControlNV(mode);
 			}
 
-			public static unsafe bool glAreProgramsResidentNV(int n, uint* programs, bool* residences)
+			public static unsafe bool glAreProgramsResidentNV(int n, uint* programs, Boolean* residences)
 			{
 				return internalGL.glAreProgramsResidentNV(n, programs, residences);
 			}
@@ -3541,7 +3541,7 @@ namespace dgtk.OpenGL
 				internalGL.glCombinerInputNV(stage, portion, variable, input, mapping, componentUsage);
 			}
 
-			public static void glCombinerOutputNV(CombinerStageNV stage, CombinerPortionNV portion, CombinerRegisterNV abOutput, CombinerRegisterNV cdOutput, CombinerRegisterNV sumOutput, CombinerScaleNV scale, CombinerBiasNV bias, bool abDotProduct, bool cdDotProduct, bool muxSum)
+			public static void glCombinerOutputNV(CombinerStageNV stage, CombinerPortionNV portion, CombinerRegisterNV abOutput, CombinerRegisterNV cdOutput, CombinerRegisterNV sumOutput, CombinerScaleNV scale, CombinerBiasNV bias, Boolean abDotProduct, Boolean cdDotProduct, Boolean muxSum)
 			{
 				internalGL.glCombinerOutputNV(stage, portion, abOutput, cdOutput, sumOutput, scale, bias, abDotProduct, cdDotProduct, muxSum);
 			}
@@ -3741,7 +3741,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetMapAttribParameterivNV(target, index, pname, @params);
 			}
 
-			public static void glGetMapControlPointsNV(EvalTargetNV target, uint index, MapTypeNV type, int ustride, int vstride, bool packed, IntPtr points)
+			public static void glGetMapControlPointsNV(EvalTargetNV target, uint index, MapTypeNV type, int ustride, int vstride, Boolean packed, IntPtr points)
 			{
 				internalGL.glGetMapControlPointsNV(target, index, type, ustride, vstride, packed, points);
 			}
@@ -3931,7 +3931,7 @@ namespace dgtk.OpenGL
 				internalGL.glLoadProgramNV(target, id, len, program);
 			}
 
-			public static void glMapControlPointsNV(EvalTargetNV target, uint index, MapTypeNV type, int ustride, int vstride, int uorder, int vorder, bool packed, IntPtr points)
+			public static void glMapControlPointsNV(EvalTargetNV target, uint index, MapTypeNV type, int ustride, int vstride, int uorder, int vorder, Boolean packed, IntPtr points)
 			{
 				internalGL.glMapControlPointsNV(target, index, type, ustride, vstride, uorder, vorder, packed, points);
 			}
@@ -3951,7 +3951,7 @@ namespace dgtk.OpenGL
 				internalGL.glMulticastBarrierNV();
 			}
 
-			public static void glMulticastBlitFramebufferNV(uint srcGpu, uint dstGpu, int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter)
+			public static void glMulticastBlitFramebufferNV(uint srcGpu, uint dstGpu, int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, ClearBufferMask mask, uint filter)
 			{
 				internalGL.glMulticastBlitFramebufferNV(srcGpu, dstGpu, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 			}
@@ -4306,12 +4306,12 @@ namespace dgtk.OpenGL
 				internalGL.glTexCoord4hvNV(v);
 			}
 
-			public static void glTexImage2DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, bool fixedSampleLocations)
+			public static void glTexImage2DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTexImage2DMultisampleCoverageNV(target, coverageSamples, colorSamples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTexImage3DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, bool fixedSampleLocations)
+			public static void glTexImage3DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTexImage3DMultisampleCoverageNV(target, coverageSamples, colorSamples, internalFormat, width, height, depth, fixedSampleLocations);
 			}
@@ -4321,22 +4321,22 @@ namespace dgtk.OpenGL
 				internalGL.glTexRenderbufferNV(target, renderbuffer);
 			}
 
-			public static void glTextureImage2DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, bool fixedSampleLocations)
+			public static void glTextureImage2DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage2DMultisampleCoverageNV(texture, target, coverageSamples, colorSamples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTextureImage2DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, bool fixedSampleLocations)
+			public static void glTextureImage2DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage2DMultisampleNV(texture, target, samples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTextureImage3DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, bool fixedSampleLocations)
+			public static void glTextureImage3DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage3DMultisampleCoverageNV(texture, target, coverageSamples, colorSamples, internalFormat, width, height, depth, fixedSampleLocations);
 			}
 
-			public static void glTextureImage3DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, int depth, bool fixedSampleLocations)
+			public static void glTextureImage3DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage3DMultisampleNV(texture, target, samples, internalFormat, width, height, depth, fixedSampleLocations);
 			}
@@ -4396,7 +4396,7 @@ namespace dgtk.OpenGL
 				return internalGL.glVDPAURegisterVideoSurfaceNV(vdpSurface, target, numTextureNames, textureNames);
 			}
 
-			public static unsafe IntPtr glVDPAURegisterVideoSurfaceWithPictureStructureNV(IntPtr vdpSurface, uint target, int numTextureNames, uint* textureNames, bool isFrameStructure)
+			public static unsafe IntPtr glVDPAURegisterVideoSurfaceWithPictureStructureNV(IntPtr vdpSurface, uint target, int numTextureNames, uint* textureNames, Boolean isFrameStructure)
 			{
 				return internalGL.glVDPAURegisterVideoSurfaceWithPictureStructureNV(vdpSurface, target, numTextureNames, textureNames, isFrameStructure);
 			}
@@ -5043,7 +5043,7 @@ namespace dgtk.OpenGL
 				internalGL.glPointParameterfvSGIS(pname, @params);
 			}
 
-			public static void glSampleMaskSGIS(float value, bool invert)
+			public static void glSampleMaskSGIS(float value, Boolean invert)
 			{
 				internalGL.glSampleMaskSGIS(value, invert);
 			}
@@ -5073,7 +5073,7 @@ namespace dgtk.OpenGL
 				internalGL.glTexSubImage4DSGIS(target, level, xoffset, yoffset, zoffset, woffset, width, height, depth, size4d, format, type, pixels);
 			}
 
-			public static void glTextureColorMaskSGIS(bool red, bool green, bool blue, bool alpha)
+			public static void glTextureColorMaskSGIS(Boolean red, Boolean green, Boolean blue, Boolean alpha)
 			{
 				internalGL.glTextureColorMaskSGIS(red, green, blue, alpha);
 			}
@@ -5096,7 +5096,7 @@ namespace dgtk.OpenGL
 				internalGL.glDeformationMap3fSGIX(target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, w1, w2, wstride, worder, points);
 			}
 
-			public static void glDeformSGIX(uint mask)
+			public static void glDeformSGIX(FfdMaskSGIX mask)
 			{
 				internalGL.glDeformSGIX(mask);
 			}
@@ -5266,7 +5266,7 @@ namespace dgtk.OpenGL
 				internalGL.glListParameterivSGIX(list, pname, @params);
 			}
 
-			public static void glLoadIdentityDeformationMapSGIX(uint mask)
+			public static void glLoadIdentityDeformationMapSGIX(FfdMaskSGIX mask)
 			{
 				internalGL.glLoadIdentityDeformationMapSGIX(mask);
 			}
