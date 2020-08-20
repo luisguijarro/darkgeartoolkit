@@ -45,7 +45,7 @@ namespace dgtk.Platforms
         }
     }
 
-    enum Platform
+    internal enum Platform
     {
         Windows, MacOS, Linux_X11, Linux_Wayland
     }
