@@ -9,7 +9,7 @@ namespace dgtk.OpenGL
     internal class OGL_Context : IDisposable
     {
         private IntPtr ptr_GLContext;
-        private IntPtr ptr_xglwin;
+        internal IntPtr ptr_xglwin;
         private IntPtr ptr_Display_Device; //Linux X11 Display or Win32 Device
         private dgtk.Platforms.Platform os;
 
