@@ -123,7 +123,7 @@ namespace dgtk.GameControlSystem.Windows
                             Console.WriteLine("    Obtenidos " + (b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1) + " Botones en el dispositivo " +dev.ToString());
                         #endif
 
-                        GameControlDevice GCD_Temp = new GameControlDevice(dev, dev.ToString());
+                        GameControlDevice GCD_Temp = new GameControlDevice(dev, dev.ToInt32());
 
                         #if DEBUG
                         uint hats = 0;

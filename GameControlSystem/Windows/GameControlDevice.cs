@@ -23,9 +23,10 @@ namespace dgtk.GameControlSystem.Windows
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
         public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
 
-        internal GameControlDevice(IntPtr ptr_dev, string id)
+        internal GameControlDevice(IntPtr ptr_dev, int in_id)
         {
             this.dev = ptr_dev;
+            this.id = in_id;
 
             this.Axis = new Dictionary<uint, HIDP_VALUE_CAPS>();
             this.Hats = new Dictionary<uint, HIDP_VALUE_CAPS>();
