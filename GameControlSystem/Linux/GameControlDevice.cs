@@ -136,15 +136,15 @@ namespace dgtk.GameControlSystem.Linux
             int suma=hori+4*vert;
             switch(suma)
             {
-                case -4:return (HatPosition)0;
-                case -3:return (HatPosition)1;
-                case 1:return (HatPosition)2;
-                case 5:return (HatPosition)3;
-                case 4:return (HatPosition)4;
-                case  3:return (HatPosition)5;
-                case -1:return (HatPosition)6;
-                case -5:return (HatPosition)7;
-                default:return (HatPosition)8;
+                case -4:return (HatPosition.Up); // 0
+                case -3:return (HatPosition.UpRight); // 1
+                case 1:return (HatPosition.Right); // 2
+                case 5:return (HatPosition.DownRight); // 3
+                case 4:return (HatPosition.Down); // 4
+                case  3:return (HatPosition.DownLeft); // 5
+                case -1:return (HatPosition.Left); // 6
+                case -5:return (HatPosition.UpLeft); // 7
+                default:return (HatPosition.Center); // 8
             }
         }
 
