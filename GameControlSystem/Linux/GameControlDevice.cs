@@ -138,9 +138,9 @@ namespace dgtk.GameControlSystem.Linux
             {
                 case -4:return (HatPosition.Up); // 0
                 case -3:return (HatPosition.UpRight); // 1
-                case 1:return (HatPosition.Right); // 2
-                case 5:return (HatPosition.DownRight); // 3
-                case 4:return (HatPosition.Down); // 4
+                case  1:return (HatPosition.Right); // 2
+                case  5:return (HatPosition.DownRight); // 3
+                case  4:return (HatPosition.Down); // 4
                 case  3:return (HatPosition.DownLeft); // 5
                 case -1:return (HatPosition.Left); // 6
                 case -5:return (HatPosition.UpLeft); // 7
