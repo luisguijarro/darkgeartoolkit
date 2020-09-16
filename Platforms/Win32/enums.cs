@@ -488,4 +488,55 @@ namespace dgtk.Platforms.Win32
         WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x00000002,
 	}
 	
+	internal enum GetRawInputData_Command : uint
+	{
+		RID_HEADER = 0x10000005,
+		RID_INPUT = 0x10000003
+	}
+
+	[Flags()]
+    public enum RawInputDeviceFlags
+    {        
+        None = 0,
+        Remove = 0x00000001,
+        Exclude = 0x00000010,
+        PageOnly = 0x00000020,
+        NoLegacy = 0x00000030,
+        InputSink = 0x00000100,
+        CaptureMouse = 0x00000200,
+        NoHotKeys = 0x00000200,
+        AppKeys = 0x00000400,
+        DevNotify = 0x00002000,
+    }
+
+
+    [Flags]
+    internal enum RawKeyboardFlags : short
+    {
+        KeyMake = 0,
+        KeyBreak = 1,
+        KeyE0 = 2,
+        KeyE1 = 4,
+        TerminalServerSetLED = 8,
+        TerminalServerShadow = 0x10, 
+        TerminalServerVKPACKET = 0x20
+    }
+    
+    [Flags()]
+    internal enum RawMouseButtons : ushort
+    {
+        None = 0,
+        LeftDown = 0x0001,
+        LeftUp = 0x0002,
+        RightDown = 0x0004,
+        RightUp = 0x0008,
+        MiddleDown = 0x0010,
+        MiddleUp = 0x0020,
+        Button4Down = 0x0040,
+        Button4Up = 0x0080,
+        Button5Down = 0x0100,
+        Button5Up = 0x0200,
+        MouseWheel = 0x0400
+    }
+    
 }

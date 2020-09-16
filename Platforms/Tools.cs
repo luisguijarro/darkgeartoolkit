@@ -28,6 +28,7 @@ namespace dgtk.Platforms
                     p.StartInfo.Arguments = "/bin/bash echo $WAYLAND_DISPLAY";
                     p.StartInfo.CreateNoWindow = true;
                     p.Start();*/
+                    System.Environment.GetEnvironmentVariable("$XDG_SESSION_TYPE");
                     string output = "";
                     //output = p.StandardOutput.ReadToEnd();
                     /*p.WaitForExit();

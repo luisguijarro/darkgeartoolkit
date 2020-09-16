@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace dgtk
 {
-    public class DGTK_Window
+    public class dgtk_Window
     {
         private Platforms.I_Window NativeWindow;
 
@@ -36,16 +36,20 @@ namespace dgtk
 		public event EventHandler<dgtk_MouseEnterLeaveEventArgs> MouseLeave; // Evento que se da cuando el ratón sale de la ventana.
         public event EventHandler<dgtk_OnUpdateEventArgs> UpdateFrame; // Evento que gestiona la actualización de datos.
         public event EventHandler<dgtk_OnRenderEventArgs> RenderFrame; // Evento que gestiona la actualización de Renderizado de Fotogramas.
+        public event EventHandler<dgtk_InputAxisEventArgs> GameControlEventAxis; // Evento de accionamiento de Eje.
+        public event EventHandler<dgtk_InputHatsEventArgs> GameControlEventHats; // Evento de accionamiento de Hat.
+        public event EventHandler<dgtk_InputButtonsEventArgs> GameControlEventButtons; // Evento de accionamiento de Botones.
+        public event EventHandler<dgtk_GameControllerStatusEventArgs> GameControllerStatusChanged; // Evento que se lanza cuando salta algún evento.
+
 
         #endregion
 
-        public DGTK_Window() : this(1024, 600, "Dark Gear Tool Kit Window") // Consuctor Básico.
+        public dgtk_Window() : this(1024, 600, "Dark Gear Tool Kit Window") // Consuctor Básico.
         {
             
         }
 
-
-        public DGTK_Window(uint Width, uint Height, string Title) //Constructor completo.
+        public dgtk_Window(uint Width, uint Height, string Title) //Constructor completo.
         {
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establkecer afiidad del proceso inicial
             
@@ -98,6 +102,11 @@ namespace dgtk
             this.MouseLeave += delegate {}; //Inicialización del evento por defecto.
 			this.UpdateFrame += delegate { }; //Inicialización del evento por defecto.
 			this.RenderFrame += delegate { }; //Inicialización del evento por defecto.
+
+            this.GameControlEventAxis += delegate {};
+            this.GameControlEventHats += delegate {};
+            this.GameControlEventButtons += delegate {};
+            this.GameControllerStatusChanged += delegate {};
 
             #region Lanzamiento de eventos desde Clase Nativa.
             // Recogemos los eventos de la ventana nativa.
@@ -180,11 +189,15 @@ namespace dgtk
                 Thread.Sleep(1000); //Dar ytimepo al inicio de la ventana nativa.
             }
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
+            Core.AddWin(this);
+
+            this.WindowClose += delegate { Core.RemoveWin(this); }; //Inicialización del evento por defecto.
             this.ProcessEvents(); //Iniciar el procesamiento de Venetos de Ventana.
         }
 
         private void ProcessEvents()
         {
+            //dgtk.GameControlSystem.Linux.System.RefreshDeviceList();
             this.ui_ueps = 100; //Actualizaciones de comprobación de eventos por segundo, por defecto.
             this.NativeWindow.ProcessEvent(ref this.ui_ueps); // No usar toda la CPU.
         }
@@ -318,6 +331,29 @@ namespace dgtk
 
         #endregion
 
+        #region Metodos Internal:
+
+        internal void LaunchEventAxis(object sender, dgtk_InputAxisEventArgs e)
+        {
+            this.GameControlEventAxis(sender, e);
+        }
+
+        internal void LaunchEventHats(object sender, dgtk_InputHatsEventArgs e)
+        {
+            this.GameControlEventHats(sender, e);
+        }
+
+        internal void LaunchEventBTNs(object sender, dgtk_InputButtonsEventArgs e)
+        {
+            this.GameControlEventButtons(sender, e);
+        }
+
+        internal void LaunchGameControllerStatusChanged(object sender, dgtk_GameControllerStatusEventArgs e)
+        {
+            this.GameControllerStatusChanged(sender, e);
+        }
+
+        #endregion
 
         #region PROPIEDADES:
 

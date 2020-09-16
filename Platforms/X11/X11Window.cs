@@ -240,6 +240,7 @@ namespace dgtk.Platforms.X11
 			while(this.isRunning)
 			{
 				DateTime dt_ini = DateTime.Now;
+				dgtk.GameControlsManager.DetectNewDevices();
                 
 				XEvent xevento = new XEvent();
 				while(Imports.XPending(this.ptr_display)>0)

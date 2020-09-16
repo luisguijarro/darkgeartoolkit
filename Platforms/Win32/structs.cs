@@ -114,4 +114,112 @@ namespace dgtk.Platforms.Win32
 	    public static uint SizeInBytes = (uint)Marshal.SizeOf(default(PIXELFORMATDESCRIPTOR));
 	}
     
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DevBroadcastDeviceinterface
+    {
+        internal int Size;
+        internal int DeviceType;
+        internal int Reserved;
+        internal Guid ClassGuid;
+        internal short Name;
+    }
+    
+	[StructLayout(LayoutKind.Sequential)]
+    internal struct RAWINPUTDEVICE 
+    {
+        internal ushort usUsagePage;
+        internal ushort usUsage;
+        internal uint dwFlags;
+        internal IntPtr hwndTarget;
+    } 
+    
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct RawInput
+    {
+        internal RawInputHeader Header;
+        internal Union Data;       
+    }
+	
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct RawInputHeader 
+	{
+		internal dgtk.GameControlSystem.Windows.RawInputDeviceType  dwType;
+		internal int  dwSize;
+		internal IntPtr hDevice;
+		internal IntPtr wParam;
+	}
+	
+	[StructLayout(LayoutKind.Explicit)]
+    internal struct Union
+    {
+        [FieldOffset(0)]
+        internal RawMouse Mouse;
+        [FieldOffset(0)]
+        internal RawKeyboard Keyboard;
+        [FieldOffset(0)]
+        internal RawHID HID;
+    }	
+
+	[Flags()]
+    internal enum RawMouseFlags : ushort
+    {
+        MoveRelative = 0,
+        MoveAbsolute = 1,
+        VirtualDesktop = 2,
+        AttributesChanged = 4
+    }
+    
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct RawMouse
+    {
+    	[FieldOffset(0)]
+        internal RawMouseFlags Flags;
+        [FieldOffset(4)]
+        internal RawMouseButtons ButtonFlags;
+        [FieldOffset(6)]
+        internal ushort ButtonData;
+        [FieldOffset(8)]
+        internal ulong RawButtons;
+        [FieldOffset(12)]
+        internal long LastX;
+        [FieldOffset(16)]
+        internal long LastY;
+        [FieldOffset(20)]
+        internal ulong ExtraInformation;
+    }
+	
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct RawKeyboard
+    {
+        internal short MakeCode;
+        internal RawKeyboardFlags Flags;
+        internal ushort Reserved;
+        internal short VirtualKey;
+        internal int Message;
+        internal long ExtraInformation;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct RawHID
+    {
+        internal int Size;
+        internal int Count;
+        internal byte Data;
+        internal byte this[int index]
+        {
+            get
+            {
+                if (index < 0 || index > Size * Count)
+                    throw new ArgumentOutOfRangeException("index");
+                unsafe
+                {
+                    fixed (byte* data = &Data)
+                    {
+                        return *(data + index);
+                    }
+                }
+            }
+        }
+    }
+    
 }

@@ -101,6 +101,25 @@ namespace dgtk.Platforms.Win32
 		internal static extern bool SetPixelFormat(IntPtr hdc, int iPixelFormat, ref PIXELFORMATDESCRIPTOR ppfd);
 		
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool SetWindowText(IntPtr hwnd, String lpString);
+        internal static extern bool SetWindowText(IntPtr hwnd, String lpString);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern IntPtr RegisterDeviceNotification(IntPtr recipient, IntPtr notificationFilter, int flags);
+
+        [DllImport("user32.dll")]
+        internal static extern bool UnregisterDeviceNotification(IntPtr handle);
+		
+        [System.Security.SuppressUnmanagedCodeSecurity]
+		[DllImport("user32.dll", SetLastError=true)]
+		internal static extern int GetRawInputData( IntPtr hrawInput, GetRawInputData_Command uiCommand, IntPtr pData, [In,Out] ref uint pcbSize, int cbSizeHeader);
+
+        [System.Security.SuppressUnmanagedCodeSecurity]
+		
+        [System.Security.SuppressUnmanagedCodeSecurity]
+    	[DllImport("user32.dll", SetLastError=true)]
+    	internal static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_Command uiCommand, out RawInput pData, ref uint pcbSize, int cbSizeHeader);
+    	
+        [DllImport("user32.dll")]
+        public static extern bool RegisterRawInputDevices([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] RAWINPUTDEVICE[] pRawInputDevices, int uiNumDevices, int cbSize);
     }
 }

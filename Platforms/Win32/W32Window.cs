@@ -8,6 +8,7 @@ namespace dgtk.Platforms.Win32
     internal class W32Window : I_Window
     {
         private IntPtr ptr_handle;
+		private IntPtr notificationHandle; // InPtr para notificaciones de cambio de dispositivos (Plug y UnPlug).
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
@@ -70,6 +71,7 @@ namespace dgtk.Platforms.Win32
 			this.MouseLeave += delegate { };
 			this.RenderFrame += delegate { };
 
+
             IntPtr mTitle = Marshal.StringToHGlobalAuto(title);
             string s_guid = Guid.NewGuid().ToString();
             IntPtr mClassName = Marshal.StringToHGlobalAuto(s_guid);
@@ -128,6 +130,50 @@ namespace dgtk.Platforms.Win32
 			{
 				throw new Exception(String.Format("Error: {0} - Fallo en la Creación de la Ventana.", Marshal.GetLastWin32Error()));
 			}
+
+			#region Registrar EVentos de Plug y Unplug para esta ventana.
+
+			DevBroadcastDeviceinterface dbi = new DevBroadcastDeviceinterface
+			{
+				DeviceType = 5,
+				Reserved = 0,
+				ClassGuid = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED"),
+				Name = 0
+			};
+
+			IntPtr dbibuffer = Marshal.AllocHGlobal(Marshal.SizeOf(dbi));
+			Marshal.StructureToPtr(dbi, dbibuffer, true);
+
+			notificationHandle = Imports.RegisterDeviceNotification(this.ptr_handle, dbibuffer, 0);
+
+			#endregion
+
+			#region Registrar Eventos Input
+
+			RAWINPUTDEVICE[] RID = new RAWINPUTDEVICE[2];
+			RID[0] = new RAWINPUTDEVICE
+			{
+				usUsagePage = (ushort)dgtk.GameControlSystem.Windows.HIDUsagePage.Generic,
+				usUsage = (ushort)dgtk.GameControlSystem.Windows.HIDUsage.Joystick,
+				dwFlags = (uint)(RawInputDeviceFlags.InputSink | RawInputDeviceFlags.DevNotify),
+				hwndTarget = this.ptr_handle
+			};
+			RID[1] = new RAWINPUTDEVICE
+			{
+				usUsagePage = (ushort)dgtk.GameControlSystem.Windows.HIDUsagePage.Generic,
+				usUsage = (ushort)dgtk.GameControlSystem.Windows.HIDUsage.Gamepad,
+				dwFlags = (uint)(RawInputDeviceFlags.InputSink | RawInputDeviceFlags.DevNotify),
+				hwndTarget = this.ptr_handle
+			};
+
+			if (!Imports.RegisterRawInputDevices(RID, 2, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
+			{
+				throw new Exception("What the fuck!!!");
+			}
+
+			#endregion
+
+
 			IntPtr DeviceC;
 			OGLPreparation.PreparationOGLContext(this.ptr_handle, 32, 24, out DeviceC);
 			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
@@ -180,6 +226,7 @@ namespace dgtk.Platforms.Win32
 
 		public void Close()
 		{
+			Imports.UnregisterDeviceNotification(this.notificationHandle);
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
 			this.isRunning = false;
 		}
@@ -189,6 +236,8 @@ namespace dgtk.Platforms.Win32
 		{
 			this.isRunning = true;
 			MSG w32msg = new MSG();
+			dgtk.GameControlsManager.DetectNewDevices(); // Puesto aquí para las pruebas.
+			
 			while(this.isRunning)
 			{				
 				DateTime dt_ini = DateTime.Now;
@@ -221,6 +270,63 @@ namespace dgtk.Platforms.Win32
 			{
 				case WindowMessage.ERASEBKGND:
 					return new IntPtr(1);
+				/*
+				case WindowMessage.DEVICECHANGE:
+					switch(wParam.ToInt64())
+					{
+						case 0x8000: // DBT_DEVICEARRIVAL
+							#if DEBUG
+								Console.WriteLine("Plug HID");
+							#endif
+							Thread.Sleep(100); // Da tiempo a Windows a Listar los dispositivos.
+							dgtk.GameControlsManager.DetectNewDevices();
+							break;
+						case 0x8004: // DBT_DEVICEREMOVECOMPLETE
+							#if DEBUG
+								Console.WriteLine("UnPlug HID");
+							#endif
+							Thread.Sleep(100); // Da tiempo a Windows a Listar los dispositivos.
+							dgtk.GameControlSystem.Windows.GMSystem.RemovedInputDeviceList();
+							break;
+					}
+					//return IntPtr.Zero;
+					break;
+				*/
+				case WindowMessage.INPUT_DEVICE_CHANGE:
+				    if (wParam.ToInt64() == 1)
+                    {
+						#if DEBUG
+                    		Console.WriteLine("Plug HID Handle: "+lParam.ToInt64());
+						#endif
+                    	dgtk.GameControlSystem.Windows.GMSystem.AddInputDevice(lParam);
+                    }
+                    if (wParam.ToInt64() == 2)
+                    {
+						#if DEBUG
+                    		Console.WriteLine("UnPlug HID Handle: "+lParam.ToInt64());
+						#endif
+                    	dgtk.GameControlSystem.Windows.GMSystem.RemoveInputDevice(lParam);
+                    }
+                    break;
+
+				case WindowMessage.INPUT:
+					uint pcbsize=0;
+					#if DEBUG
+						Console.WriteLine("WM_INPUT: ");
+					#endif
+					int result;
+                    if ((result = Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, IntPtr.Zero, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader)))) < 0)
+                    { 
+						break;                  	
+                    }
+					RawInput ri;
+					if (Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, out ri, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader))) < 0)
+					{
+						break;
+					}
+					dgtk.GameControlSystem.Windows.GMSystem.SetGameControlDevice_Status(ri);
+					break;
+
 				case WindowMessage.LBUTTONDOWN:				
 					this.MouseDown(this, new dgtk_MouseButtonEventArgs((int)unchecked((short)(long)lParam), (int)unchecked((short)((long)lParam >> 16)), MouseButtons.Left, PushRelease.Push));
 					break;
@@ -297,14 +403,14 @@ namespace dgtk.Platforms.Win32
 					this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
 					break;
 
-                case WindowMessage.SYSCOMMAND:
+                /*case WindowMessage.SYSCOMMAND:
 					if (wParam.ToInt32() == (int)WM_SYSCOMMANDS.SC_CLOSE)
 					{
 						//this.Close();
 						//this.WindowClose(this, new dgtk_WinCloseEventArgs());
 						//this.IsRunning = false;
 					}
-					break;
+					break;*/
                 case WindowMessage.SIZE:
 					if (wParam.ToInt64() == 0)
 					{
