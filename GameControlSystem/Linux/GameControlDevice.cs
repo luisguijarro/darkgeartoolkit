@@ -111,9 +111,12 @@ namespace dgtk.GameControlSystem.Linux
                                 else // Es Eje.
                                 {
                                     float ax_value = (100f/(float)((this.Axis[ev.code].MAX-this.Axis[ev.code].MIN)))*ev.value;
-                                    this.Axis[ev.code].VALUE = ax_value;
-                                    //ax.VALUE = ax_value;
-                                    this.EventAxis(this, new dgtk_InputAxisEventArgs(this.id, ev.code, ax_value));
+                                    if (this.Axis[ev.code].VALUE != ax_value) // Solo lanzar evento si valor cambia.
+                                    {
+                                        this.Axis[ev.code].VALUE = ax_value;
+                                        //ax.VALUE = ax_value;
+                                        this.EventAxis(this, new dgtk_InputAxisEventArgs(this.id, ev.code, ax_value));
+                                    }
                                 }
                                 break;
                             case GameControlEventType.EV_KEY:

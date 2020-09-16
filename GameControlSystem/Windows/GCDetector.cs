@@ -150,7 +150,7 @@ namespace dgtk.GameControlSystem.Windows
                                 #endif
 
                                 GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
-                                GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, 0);                                  
+                                GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].PhysicalMax-v_caps[caps].LogicalMin))*50));                                  
                             }
                         }
 
@@ -309,8 +309,12 @@ namespace dgtk.GameControlSystem.Windows
                 if (Imports.HidP_GetUsageValue(HIDP_REPORT_TYPE.HidP_Input, GCD_Event.Axis[key].UsagePage, 0, (HIDUsage)(GCD_Event.Axis[key].notrange.Usage), ref value, pre_data, new IntPtr((void*)&ri.Data.HID.Data), ri.Data.HID.Size) == HIDResults.HIDP_STATUS_SUCCESS)
                 {
                     // Ejes
-                    GCD_Event.AxisValues[key] = value;
-                    GCD_Event.LanzarEventAxis(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputAxisEventArgs(ri.Header.hDevice.ToInt32(), (int)key, value));
+                    long percent = (long)((100f/(GCD_Event.Axis[key].PhysicalMax-GCD_Event.Axis[key].LogicalMin))*value);
+                    if (GCD_Event.AxisValues[key] != percent) // Solo lanzar evento si valor cambia.
+                    {
+                        GCD_Event.AxisValues[key] = percent;
+                        GCD_Event.LanzarEventAxis(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputAxisEventArgs(ri.Header.hDevice.ToInt32(), (int)key, value));
+                    }
                 }
             }
 
