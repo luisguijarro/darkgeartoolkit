@@ -312,7 +312,7 @@ namespace dgtk.Platforms.Win32
 				case WindowMessage.INPUT:
 					uint pcbsize=0;
 					#if DEBUG
-						Console.WriteLine("WM_INPUT: ");
+						//Console.WriteLine("WM_INPUT: ");
 					#endif
 					int result;
                     if ((result = Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, IntPtr.Zero, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader)))) < 0)
