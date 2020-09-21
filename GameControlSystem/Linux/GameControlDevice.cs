@@ -110,7 +110,7 @@ namespace dgtk.GameControlSystem.Linux
                                 }
                                 else // Es Eje.
                                 {
-                                    float ax_value = (100f/(float)((this.Axis[ev.code].MAX-this.Axis[ev.code].MIN)))*ev.value;
+                                    int ax_value = (int)((100f/(float)((this.Axis[ev.code].MAX-this.Axis[ev.code].MIN)))*ev.value);
                                     if (this.Axis[ev.code].VALUE != ax_value) // Solo lanzar evento si valor cambia.
                                     {
                                         this.Axis[ev.code].VALUE = ax_value;
