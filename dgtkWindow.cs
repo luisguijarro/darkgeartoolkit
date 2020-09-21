@@ -51,7 +51,7 @@ namespace dgtk
 
         public dgtk_Window(uint Width, uint Height, string Title) //Constructor completo.
         {
-            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establkecer afiidad del proceso inicial
+            //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establecer afinidad del proceso inicial
             
             this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
             
