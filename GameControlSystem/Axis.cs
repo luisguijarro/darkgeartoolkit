@@ -7,13 +7,13 @@ namespace dgtk.GameControlSystem
         internal uint id;
         internal int MAX;
         internal int MIN;
-        internal float VALUE;
+        internal int VALUE;
         internal Axis(uint idAxis, int i_max, int i_min)
         {
             this.id = idAxis;
             this.MAX = i_max;
             this.MIN = i_min;
-            this.VALUE = 100f/(float)(i_max - i_min)*50f;
+            this.VALUE = (int)(100f/(float)(i_max - i_min)*50f);
         }
     }
 }
