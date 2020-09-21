@@ -110,8 +110,7 @@ namespace dgtk.Platforms.Win32
 	    internal short dwLayerMask; 
 	    internal short dwVisibleMask; 
 	    internal short dwDamageMask; 
-	    
-	    public static uint SizeInBytes = (uint)Marshal.SizeOf(default(PIXELFORMATDESCRIPTOR));
+        public static uint SizeInBytes = (uint)Marshal.SizeOf(default(PIXELFORMATDESCRIPTOR));
 	}
     
     [StructLayout(LayoutKind.Sequential)]
