@@ -11,7 +11,7 @@ namespace dgtk.Platforms.Win32
             int error;
 
             PIXELFORMATDESCRIPTOR pfd = new PIXELFORMATDESCRIPTOR();
-			pfd.nSize = Win32.PIXELFORMATDESCRIPTOR.SizeInBytes;
+			pfd.nSize = PIXELFORMATDESCRIPTOR.SizeInBytes;
 			pfd.nVersion = 1;
 			pfd.dwFlags = (Win32.dwFlags.DRAW_TO_WINDOW | Win32.dwFlags.SUPPORT_OPENGL| Win32.dwFlags.DOUBLEBUFFER | Win32.dwFlags.SUPPORT_GDI | Win32.dwFlags.GENERIC_ACCELERATED | Win32.dwFlags.SUPPORT_COMPOSITION);
 			pfd.iPixelType = Win32.PixelType.PFD_TYPE_RGBA;
