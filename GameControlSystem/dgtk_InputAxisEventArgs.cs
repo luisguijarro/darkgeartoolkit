@@ -6,12 +6,12 @@ namespace dgtk
     {
         int i_id;
         int i_axis;
-        float f_value;
-        public dgtk_InputAxisEventArgs(int id, int axis, float value)
+        int i_value;
+        public dgtk_InputAxisEventArgs(int id, int axis, int value)
         {
             this.i_id = id;
             this.i_axis = axis;
-            this.f_value = value;
+            this.i_value = value;
         }
         public int ID
         {
@@ -21,9 +21,9 @@ namespace dgtk
         {
             get { return this.i_axis; }
         }
-        public float Value
+        public int Value
         {
-            get { return this.f_value; }
+            get { return this.i_value; }
         }
     }
 }
