@@ -105,8 +105,11 @@
     <Compile Include="GameControlSystem\Enums.cs" />    
     <Compile Include="GameControlSystem\Axis.cs" />    
     <Compile Include="GameControlSystem\I_GameControlDevice.cs" />    
-    <Compile Include="GameControlSystem\dgtk_GameControler.cs" />  
-    <Compile Include="GameControlSystem\GameControlsManager.cs" />  
+    <Compile Include="GameControlSystem\dgtk_GameControler.cs" />
+    <Compile Include="GameControlSystem\GameControlsManager.cs" />     
+    <Compile Include="OpenAL\Enums.cs" />  
+    <Compile Include="OpenAL\Imports.cs" />  
+    <Compile Include="OpenAL\Helper.cs" />  
   </ItemGroup>
   <ItemGroup>
     <None Include="dgtk.dll.config" />
