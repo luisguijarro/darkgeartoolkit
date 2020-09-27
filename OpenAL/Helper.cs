@@ -1,12 +1,12 @@
 using System;
-using System.Security;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace dgtk.OpenAL
 {
     public static partial class ALC
     {
-        public static String alcGetStringh(IntPtr device, ALC_GetStringParam param)
+        public static string alcGetStringh(IntPtr device, ALC_GetStringParam param)
 		{
 			IntPtr ptr = alcGetString(device, param);			
 			if (ptr != IntPtr.Zero)
@@ -15,6 +15,35 @@ namespace dgtk.OpenAL
 			}
 			return null;
         }
+
+		public static unsafe List<string> alcGetStringList(IntPtr device, ALC_GetStringParam param)
+		{
+			List<string> retList = new List<string>();
+			bool b_end = false;
+			int position = 0;
+			IntPtr string_ptr = alcGetString(device, param);
+			if (string_ptr != IntPtr.Zero)
+			{
+				sbyte* charti = (sbyte*)((void*)string_ptr);
+				while (!b_end)
+				{
+					sbyte* t_charti = (charti+position);
+					String s_charti = new string(t_charti);
+				
+					position+=System.Text.Encoding.Default.GetByteCount(s_charti.ToCharArray());
+					retList.Add(s_charti);
+					if ((char)charti[position] == '\0')
+					{
+						position++;
+						if ((char)charti[position] == '\0')
+						{
+							b_end = true;
+						}						
+					}
+				}
+			}
+			return retList;
+		}
     }
 
     public static partial class AL
