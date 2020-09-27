@@ -48,7 +48,7 @@ namespace dgtk.OpenAL
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetError", ExactSpelling = true)]
-        public static extern ALCEnum alcGetError( IntPtr device );
+        public static extern ALC_ERROR alcGetError( IntPtr device );
 
 
 
