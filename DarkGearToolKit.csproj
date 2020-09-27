@@ -109,7 +109,8 @@
     <Compile Include="GameControlSystem\GameControlsManager.cs" />     
     <Compile Include="OpenAL\Enums.cs" />  
     <Compile Include="OpenAL\Imports.cs" />  
-    <Compile Include="OpenAL\Helper.cs" />  
+    <Compile Include="OpenAL\Helper.cs" />   
+    <Compile Include="OpenAL\OAL_Context.cs" />  
   </ItemGroup>
   <ItemGroup>
     <None Include="dgtk.dll.config" />
