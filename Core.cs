@@ -12,8 +12,6 @@ namespace dgtk
             if (windows == null)
             {
                 windows = new List<dgtk_Window>();
-                // Iniciar systema de joysticks y gamepads.
-                //GameControlsManager.DetectNewDevices();
             }
             windows.Add(window);
         }

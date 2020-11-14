@@ -175,11 +175,13 @@ namespace dgtk.Platforms.Win32
 
 
 			IntPtr DeviceC;
+			
 			OGLPreparation.PreparationOGLContext(this.ptr_handle, 32, 24, out DeviceC);
 			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
 			this.GL_Context.Win32MakeCurrent();
 			this.SwapControlSupported = VSync.SupportedVSync();
 			this.GL_Context.Win32UnMakeCurrent();
+			
 			this.b_created = true;
         }
 

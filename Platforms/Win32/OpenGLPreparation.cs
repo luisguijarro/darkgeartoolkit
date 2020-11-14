@@ -8,7 +8,7 @@ namespace dgtk.Platforms.Win32
     {
         public static void PreparationOGLContext(IntPtr SurfaceHandle, int ColorBits, int DepthBits, out IntPtr DeviceC)
         {
-            int error;
+			int error;
 
             PIXELFORMATDESCRIPTOR pfd = new PIXELFORMATDESCRIPTOR();
 			pfd.nSize = PIXELFORMATDESCRIPTOR.SizeInBytes;

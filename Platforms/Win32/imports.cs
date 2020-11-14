@@ -93,6 +93,9 @@ namespace dgtk.Platforms.Win32
 
 		[DllImport("user32.dll", SetLastError=true)]
 		internal static extern IntPtr GetDC(IntPtr hWnd);	
+
+		[DllImport("user32.dll", SetLastError=true)]
+        internal static extern int ReleaseDC(IntPtr hWnd, IntPtr hdc);
 		
 		[DllImport("gdi32.dll", EntryPoint = "ChoosePixelFormat", SetLastError = true)]
 		internal static extern int ChoosePixelFormat(IntPtr hdc, [In] ref PIXELFORMATDESCRIPTOR ppfd);

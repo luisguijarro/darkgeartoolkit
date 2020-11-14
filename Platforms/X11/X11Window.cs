@@ -133,7 +133,7 @@ namespace dgtk.Platforms.X11
 			this.GetSize();
 
 			IntPtr xglwin = OGLPreparation.Getglxwin(this.ptr_display, FBConfig, this.ptr_handle);
-			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, IntPtr.Zero, true);
+			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 			this.GL_Context.X11UnMakeCurrent();
 			this.b_created = true;
 			//this.isRunning = true; Will be use in Run() Method.

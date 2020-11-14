@@ -58,6 +58,7 @@
     <Compile Include="Enums\InputEventsEnums.cs" />
     <Compile Include="OpenGL\Enums.cs" />
     <Compile Include="OpenGL\OGL_Context.cs" />
+    <Compile Include="OpenGL\OGL_SharedContext.cs" />
     <Compile Include="OpenGL\ExtMethods.cs" />
     <Compile Include="OpenGL\GLInternalTool.cs" />
     <Compile Include="OpenGL\OpenGLInternals.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Math\Retf.cs" />
     <Compile Include="Math\MatrixTools.cs" />
     <Compile Include="Math\Tools.cs" />
+    <Compile Include="Graphics\Color4.cs" />
     <Compile Include="GameControlSystem\dgtk_InputAxisEventArgs.cs" />
     <Compile Include="GameControlSystem\dgtk_InputHatsEventArgs.cs" />
     <Compile Include="GameControlSystem\dgtk_InputButtonsEventArgs.cs" />
