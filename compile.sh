@@ -1,5 +1,6 @@
 #!/bin/sh
 
+clear
 widthterminal=$(($(stty size | cut '-d ' -f2)))
 barrachar='='
 barra=''
@@ -50,6 +51,14 @@ showhead()
     echo "\e[1m\e[38;2;128;128;255m"$barra"\e[0m"
 }
 
+showfoot()
+{
+    echo ""
+    echo "\e[1m\e[38;2;128;128;255m"$barra
+    echo "\e[0m Compilation Finished    \e[1m\e[38;2;255;255;128mWarnings\e[0m: \e[1m\e[38;2;255;255;255m" $1 "\e[0m    \e[1m\e[38;2;255;128;128mErrors\e[0m: \e[1m\e[38;2;255;255;255m$2\e[0m"
+    echo "\e[1m\e[38;2;128;128;255m"$barra"\e[0m"
+}
+
 showhead $1
 
 case "$1" in
@@ -66,7 +75,22 @@ case "$1" in
     makedir "./bin"
     makedir "./bin/Debug"
     cp dgtk.dll.config ./bin/Debug/
-    csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll
+    war=0
+    err=0
+    #salida=$(csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll)
+    csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll | while read -r line; do    
+        case $line in
+        *warning*) echo ${line%%:*}":" "\e[1m\e[38;2;255;255;128mWarning\e[0m:" ${line##*:}
+        war=$(($war+1))
+        echo $war
+        ;;
+        *error*) echo ${line%%:*}":" "\e[1m\e[38;2;255;128;128mError\e[0m:" ${line##*:}
+        err=$(($err+1))
+        ;;
+        esac
+    done #<"$salida"
+    echo $war
+    showfoot $war $err
     break
     ;;
     *)
@@ -77,3 +101,4 @@ case "$1" in
     break;
     ;;
 esac
+
