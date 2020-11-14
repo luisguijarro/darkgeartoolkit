@@ -44,13 +44,9 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcCloseDevice", ExactSpelling = true)]
         public static extern bool alcCloseDevice( IntPtr device );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetError", ExactSpelling = true)]
         public static extern ALC_ERROR alcGetError( IntPtr device );
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcIsExtensionPresent", ExactSpelling = true)]
