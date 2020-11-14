@@ -342,6 +342,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glBufferPageCommitmentARB glBufferPageCommitmentARB;
 
+		internal static delegatesGL.glBufferPageCommitmentMemNV glBufferPageCommitmentMemNV;
+
 		internal static delegatesGL.glBufferParameteriAPPLE glBufferParameteriAPPLE;
 
 		internal static delegatesGL.glBufferStorage glBufferStorage;
@@ -871,6 +873,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glCreateRenderbuffers glCreateRenderbuffers;
 
 		internal static delegatesGL.glCreateSamplers glCreateSamplers;
+
+		internal static delegatesGL.glCreateSemaphoresNV glCreateSemaphoresNV;
 
 		internal static delegatesGL.glCreateShader glCreateShader;
 
@@ -2446,6 +2450,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glGetSamplerParameteriv glGetSamplerParameteriv;
 
+		internal static delegatesGL.glGetSemaphoreParameterivNV glGetSemaphoreParameterivNV;
+
 		internal static delegatesGL.glGetSemaphoreParameterui64vEXT glGetSemaphoreParameterui64vEXT;
 
 		internal static delegatesGL.glGetSeparableFilter glGetSeparableFilter;
@@ -3607,6 +3613,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glNamedBufferPageCommitmentARB glNamedBufferPageCommitmentARB;
 
 		internal static delegatesGL.glNamedBufferPageCommitmentEXT glNamedBufferPageCommitmentEXT;
+
+		internal static delegatesGL.glNamedBufferPageCommitmentMemNV glNamedBufferPageCommitmentMemNV;
 
 		internal static delegatesGL.glNamedBufferStorage glNamedBufferStorage;
 
@@ -4786,6 +4794,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glSelectPerfMonitorCountersAMD glSelectPerfMonitorCountersAMD;
 
+		internal static delegatesGL.glSemaphoreParameterivNV glSemaphoreParameterivNV;
+
 		internal static delegatesGL.glSemaphoreParameterui64vEXT glSemaphoreParameterui64vEXT;
 
 		internal static delegatesGL.glSeparableFilter2D glSeparableFilter2D;
@@ -5200,6 +5210,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glTexPageCommitmentEXT glTexPageCommitmentEXT;
 
+		internal static delegatesGL.glTexPageCommitmentMemNV glTexPageCommitmentMemNV;
+
 		internal static delegatesGL.glTexParameterf glTexParameterf;
 
 		internal static delegatesGL.glTexParameterfv glTexParameterfv;
@@ -5315,6 +5327,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glTextureNormalEXT glTextureNormalEXT;
 
 		internal static delegatesGL.glTexturePageCommitmentEXT glTexturePageCommitmentEXT;
+
+		internal static delegatesGL.glTexturePageCommitmentMemNV glTexturePageCommitmentMemNV;
 
 		internal static delegatesGL.glTextureParameterf glTextureParameterf;
 

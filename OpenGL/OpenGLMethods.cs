@@ -1417,7 +1417,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.2</sumary>
-		public static IntPtr glFenceSync(SyncCondition condition, uint flags)
+		public static IntPtr glFenceSync(SyncCondition condition, SyncBehaviorFlags flags)
 		{
 			return internalGL.glFenceSync(condition, flags);
 		}
@@ -1769,7 +1769,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.1</sumary>
-		public static unsafe void glGetDoublei_v(uint target, uint index, double* data)
+		public static unsafe void glGetDoublei_v(GetPName target, uint index, double* data)
 		{
 			internalGL.glGetDoublei_v(target, index, data);
 		}
@@ -1787,7 +1787,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.1</sumary>
-		public static unsafe void glGetFloati_v(uint target, uint index, float* data)
+		public static unsafe void glGetFloati_v(GetPName target, uint index, float* data)
 		{
 			internalGL.glGetFloati_v(target, index, data);
 		}
@@ -1829,7 +1829,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.2</sumary>
-		public static unsafe void glGetInteger64i_v(uint target, uint index, long* data)
+		public static unsafe void glGetInteger64i_v(GetPName target, uint index, long* data)
 		{
 			internalGL.glGetInteger64i_v(target, index, data);
 		}
@@ -1841,7 +1841,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe void glGetIntegeri_v(uint target, uint index, int* data)
+		public static unsafe void glGetIntegeri_v(GetPName target, uint index, int* data)
 		{
 			internalGL.glGetIntegeri_v(target, index, data);
 		}
@@ -1973,7 +1973,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glGetnHistogram(HistogramTargetEXT target, Boolean reset, PixelFormat format, PixelType type, int bufSize, IntPtr values)
+		public static void glGetnHistogram(HistogramTarget target, Boolean reset, PixelFormat format, PixelType type, int bufSize, IntPtr values)
 		{
 			internalGL.glGetnHistogram(target, reset, format, type, bufSize, values);
 		}
@@ -1997,7 +1997,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glGetnMinmax(MinmaxTargetEXT target, Boolean reset, PixelFormat format, PixelType type, int bufSize, IntPtr values)
+		public static void glGetnMinmax(MinmaxTarget target, Boolean reset, PixelFormat format, PixelType type, int bufSize, IntPtr values)
 		{
 			internalGL.glGetnMinmax(target, reset, format, type, bufSize, values);
 		}
@@ -2027,7 +2027,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glGetnSeparableFilter(SeparableTargetEXT target, PixelFormat format, PixelType type, int rowBufSize, IntPtr row, int columnBufSize, IntPtr column, IntPtr span)
+		public static void glGetnSeparableFilter(SeparableTarget target, PixelFormat format, PixelType type, int rowBufSize, IntPtr row, int columnBufSize, IntPtr column, IntPtr span)
 		{
 			internalGL.glGetnSeparableFilter(target, format, type, rowBufSize, row, columnBufSize, column, span);
 		}
@@ -4539,9 +4539,9 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.1</sumary>
-		public static unsafe void glShaderBinary(int count, uint* shaders, uint binaryformat, IntPtr binary, int length)
+		public static unsafe void glShaderBinary(int count, uint* shaders, ShaderBinaryFormat binaryFormat, IntPtr binary, int length)
 		{
-			internalGL.glShaderBinary(count, shaders, binaryformat, binary, length);
+			internalGL.glShaderBinary(count, shaders, binaryFormat, binary, length);
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
@@ -6277,7 +6277,7 @@ namespace dgtk.OpenGL
 		#region W:
 
 		///<sumary> Available from OpenGL version 3.2</sumary>
-		public static void glWaitSync(IntPtr sync, uint flags, ulong timeout)
+		public static void glWaitSync(IntPtr sync, SyncBehaviorFlags flags, ulong timeout)
 		{
 			internalGL.glWaitSync(sync, flags, timeout);
 		}

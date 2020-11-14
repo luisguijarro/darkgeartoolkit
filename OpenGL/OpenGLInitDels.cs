@@ -181,6 +181,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glBufferData = (dgtk.OpenGL.delegatesGL.glBufferData) InternalTool.GetGLMethodAdress("glBufferData", typeof(dgtk.OpenGL.delegatesGL.glBufferData));
 			dgtk.OpenGL.internalGL.glBufferDataARB = (dgtk.OpenGL.delegatesGL.glBufferDataARB) InternalTool.GetGLMethodAdress("glBufferDataARB", typeof(dgtk.OpenGL.delegatesGL.glBufferDataARB));
 			dgtk.OpenGL.internalGL.glBufferPageCommitmentARB = (dgtk.OpenGL.delegatesGL.glBufferPageCommitmentARB) InternalTool.GetGLMethodAdress("glBufferPageCommitmentARB", typeof(dgtk.OpenGL.delegatesGL.glBufferPageCommitmentARB));
+			dgtk.OpenGL.internalGL.glBufferPageCommitmentMemNV = (dgtk.OpenGL.delegatesGL.glBufferPageCommitmentMemNV) InternalTool.GetGLMethodAdress("glBufferPageCommitmentMemNV", typeof(dgtk.OpenGL.delegatesGL.glBufferPageCommitmentMemNV));
 			dgtk.OpenGL.internalGL.glBufferParameteriAPPLE = (dgtk.OpenGL.delegatesGL.glBufferParameteriAPPLE) InternalTool.GetGLMethodAdress("glBufferParameteriAPPLE", typeof(dgtk.OpenGL.delegatesGL.glBufferParameteriAPPLE));
 			dgtk.OpenGL.internalGL.glBufferStorage = (dgtk.OpenGL.delegatesGL.glBufferStorage) InternalTool.GetGLMethodAdress("glBufferStorage", typeof(dgtk.OpenGL.delegatesGL.glBufferStorage));
 			dgtk.OpenGL.internalGL.glBufferStorageEXT = (dgtk.OpenGL.delegatesGL.glBufferStorageEXT) InternalTool.GetGLMethodAdress("glBufferStorageEXT", typeof(dgtk.OpenGL.delegatesGL.glBufferStorageEXT));
@@ -448,6 +449,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glCreateQueries = (dgtk.OpenGL.delegatesGL.glCreateQueries) InternalTool.GetGLMethodAdress("glCreateQueries", typeof(dgtk.OpenGL.delegatesGL.glCreateQueries));
 			dgtk.OpenGL.internalGL.glCreateRenderbuffers = (dgtk.OpenGL.delegatesGL.glCreateRenderbuffers) InternalTool.GetGLMethodAdress("glCreateRenderbuffers", typeof(dgtk.OpenGL.delegatesGL.glCreateRenderbuffers));
 			dgtk.OpenGL.internalGL.glCreateSamplers = (dgtk.OpenGL.delegatesGL.glCreateSamplers) InternalTool.GetGLMethodAdress("glCreateSamplers", typeof(dgtk.OpenGL.delegatesGL.glCreateSamplers));
+			dgtk.OpenGL.internalGL.glCreateSemaphoresNV = (dgtk.OpenGL.delegatesGL.glCreateSemaphoresNV) InternalTool.GetGLMethodAdress("glCreateSemaphoresNV", typeof(dgtk.OpenGL.delegatesGL.glCreateSemaphoresNV));
 			dgtk.OpenGL.internalGL.glCreateShader = (dgtk.OpenGL.delegatesGL.glCreateShader) InternalTool.GetGLMethodAdress("glCreateShader", typeof(dgtk.OpenGL.delegatesGL.glCreateShader));
 			dgtk.OpenGL.internalGL.glCreateShaderObjectARB = (dgtk.OpenGL.delegatesGL.glCreateShaderObjectARB) InternalTool.GetGLMethodAdress("glCreateShaderObjectARB", typeof(dgtk.OpenGL.delegatesGL.glCreateShaderObjectARB));
 			dgtk.OpenGL.internalGL.glCreateShaderProgramEXT = (dgtk.OpenGL.delegatesGL.glCreateShaderProgramEXT) InternalTool.GetGLMethodAdress("glCreateShaderProgramEXT", typeof(dgtk.OpenGL.delegatesGL.glCreateShaderProgramEXT));
@@ -1243,6 +1245,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glGetSamplerParameterIuivEXT = (dgtk.OpenGL.delegatesGL.glGetSamplerParameterIuivEXT) InternalTool.GetGLMethodAdress("glGetSamplerParameterIuivEXT", typeof(dgtk.OpenGL.delegatesGL.glGetSamplerParameterIuivEXT));
 			dgtk.OpenGL.internalGL.glGetSamplerParameterIuivOES = (dgtk.OpenGL.delegatesGL.glGetSamplerParameterIuivOES) InternalTool.GetGLMethodAdress("glGetSamplerParameterIuivOES", typeof(dgtk.OpenGL.delegatesGL.glGetSamplerParameterIuivOES));
 			dgtk.OpenGL.internalGL.glGetSamplerParameteriv = (dgtk.OpenGL.delegatesGL.glGetSamplerParameteriv) InternalTool.GetGLMethodAdress("glGetSamplerParameteriv", typeof(dgtk.OpenGL.delegatesGL.glGetSamplerParameteriv));
+			dgtk.OpenGL.internalGL.glGetSemaphoreParameterivNV = (dgtk.OpenGL.delegatesGL.glGetSemaphoreParameterivNV) InternalTool.GetGLMethodAdress("glGetSemaphoreParameterivNV", typeof(dgtk.OpenGL.delegatesGL.glGetSemaphoreParameterivNV));
 			dgtk.OpenGL.internalGL.glGetSemaphoreParameterui64vEXT = (dgtk.OpenGL.delegatesGL.glGetSemaphoreParameterui64vEXT) InternalTool.GetGLMethodAdress("glGetSemaphoreParameterui64vEXT", typeof(dgtk.OpenGL.delegatesGL.glGetSemaphoreParameterui64vEXT));
 			dgtk.OpenGL.internalGL.glGetSeparableFilter = (dgtk.OpenGL.delegatesGL.glGetSeparableFilter) InternalTool.GetGLMethodAdress("glGetSeparableFilter", typeof(dgtk.OpenGL.delegatesGL.glGetSeparableFilter));
 			dgtk.OpenGL.internalGL.glGetSeparableFilterEXT = (dgtk.OpenGL.delegatesGL.glGetSeparableFilterEXT) InternalTool.GetGLMethodAdress("glGetSeparableFilterEXT", typeof(dgtk.OpenGL.delegatesGL.glGetSeparableFilterEXT));
@@ -1834,6 +1837,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glNamedBufferDataEXT = (dgtk.OpenGL.delegatesGL.glNamedBufferDataEXT) InternalTool.GetGLMethodAdress("glNamedBufferDataEXT", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferDataEXT));
 			dgtk.OpenGL.internalGL.glNamedBufferPageCommitmentARB = (dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentARB) InternalTool.GetGLMethodAdress("glNamedBufferPageCommitmentARB", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentARB));
 			dgtk.OpenGL.internalGL.glNamedBufferPageCommitmentEXT = (dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentEXT) InternalTool.GetGLMethodAdress("glNamedBufferPageCommitmentEXT", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentEXT));
+			dgtk.OpenGL.internalGL.glNamedBufferPageCommitmentMemNV = (dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentMemNV) InternalTool.GetGLMethodAdress("glNamedBufferPageCommitmentMemNV", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferPageCommitmentMemNV));
 			dgtk.OpenGL.internalGL.glNamedBufferStorage = (dgtk.OpenGL.delegatesGL.glNamedBufferStorage) InternalTool.GetGLMethodAdress("glNamedBufferStorage", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferStorage));
 			dgtk.OpenGL.internalGL.glNamedBufferStorageEXT = (dgtk.OpenGL.delegatesGL.glNamedBufferStorageEXT) InternalTool.GetGLMethodAdress("glNamedBufferStorageEXT", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferStorageEXT));
 			dgtk.OpenGL.internalGL.glNamedBufferStorageExternalEXT = (dgtk.OpenGL.delegatesGL.glNamedBufferStorageExternalEXT) InternalTool.GetGLMethodAdress("glNamedBufferStorageExternalEXT", typeof(dgtk.OpenGL.delegatesGL.glNamedBufferStorageExternalEXT));
@@ -2433,6 +2437,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glSecondaryColorPointerListIBM = (dgtk.OpenGL.delegatesGL.glSecondaryColorPointerListIBM) InternalTool.GetGLMethodAdress("glSecondaryColorPointerListIBM", typeof(dgtk.OpenGL.delegatesGL.glSecondaryColorPointerListIBM));
 			dgtk.OpenGL.internalGL.glSelectBuffer = (dgtk.OpenGL.delegatesGL.glSelectBuffer) InternalTool.GetGLMethodAdress("glSelectBuffer", typeof(dgtk.OpenGL.delegatesGL.glSelectBuffer));
 			dgtk.OpenGL.internalGL.glSelectPerfMonitorCountersAMD = (dgtk.OpenGL.delegatesGL.glSelectPerfMonitorCountersAMD) InternalTool.GetGLMethodAdress("glSelectPerfMonitorCountersAMD", typeof(dgtk.OpenGL.delegatesGL.glSelectPerfMonitorCountersAMD));
+			dgtk.OpenGL.internalGL.glSemaphoreParameterivNV = (dgtk.OpenGL.delegatesGL.glSemaphoreParameterivNV) InternalTool.GetGLMethodAdress("glSemaphoreParameterivNV", typeof(dgtk.OpenGL.delegatesGL.glSemaphoreParameterivNV));
 			dgtk.OpenGL.internalGL.glSemaphoreParameterui64vEXT = (dgtk.OpenGL.delegatesGL.glSemaphoreParameterui64vEXT) InternalTool.GetGLMethodAdress("glSemaphoreParameterui64vEXT", typeof(dgtk.OpenGL.delegatesGL.glSemaphoreParameterui64vEXT));
 			dgtk.OpenGL.internalGL.glSeparableFilter2D = (dgtk.OpenGL.delegatesGL.glSeparableFilter2D) InternalTool.GetGLMethodAdress("glSeparableFilter2D", typeof(dgtk.OpenGL.delegatesGL.glSeparableFilter2D));
 			dgtk.OpenGL.internalGL.glSeparableFilter2DEXT = (dgtk.OpenGL.delegatesGL.glSeparableFilter2DEXT) InternalTool.GetGLMethodAdress("glSeparableFilter2DEXT", typeof(dgtk.OpenGL.delegatesGL.glSeparableFilter2DEXT));
@@ -2642,6 +2647,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glTexImage4DSGIS = (dgtk.OpenGL.delegatesGL.glTexImage4DSGIS) InternalTool.GetGLMethodAdress("glTexImage4DSGIS", typeof(dgtk.OpenGL.delegatesGL.glTexImage4DSGIS));
 			dgtk.OpenGL.internalGL.glTexPageCommitmentARB = (dgtk.OpenGL.delegatesGL.glTexPageCommitmentARB) InternalTool.GetGLMethodAdress("glTexPageCommitmentARB", typeof(dgtk.OpenGL.delegatesGL.glTexPageCommitmentARB));
 			dgtk.OpenGL.internalGL.glTexPageCommitmentEXT = (dgtk.OpenGL.delegatesGL.glTexPageCommitmentEXT) InternalTool.GetGLMethodAdress("glTexPageCommitmentEXT", typeof(dgtk.OpenGL.delegatesGL.glTexPageCommitmentEXT));
+			dgtk.OpenGL.internalGL.glTexPageCommitmentMemNV = (dgtk.OpenGL.delegatesGL.glTexPageCommitmentMemNV) InternalTool.GetGLMethodAdress("glTexPageCommitmentMemNV", typeof(dgtk.OpenGL.delegatesGL.glTexPageCommitmentMemNV));
 			dgtk.OpenGL.internalGL.glTexParameterf = (dgtk.OpenGL.delegatesGL.glTexParameterf) InternalTool.GetGLMethodAdress("glTexParameterf", typeof(dgtk.OpenGL.delegatesGL.glTexParameterf));
 			dgtk.OpenGL.internalGL.glTexParameterfv = (dgtk.OpenGL.delegatesGL.glTexParameterfv) InternalTool.GetGLMethodAdress("glTexParameterfv", typeof(dgtk.OpenGL.delegatesGL.glTexParameterfv));
 			dgtk.OpenGL.internalGL.glTexParameteri = (dgtk.OpenGL.delegatesGL.glTexParameteri) InternalTool.GetGLMethodAdress("glTexParameteri", typeof(dgtk.OpenGL.delegatesGL.glTexParameteri));
@@ -2700,6 +2706,7 @@ namespace dgtk.OpenGL
 			dgtk.OpenGL.internalGL.glTextureMaterialEXT = (dgtk.OpenGL.delegatesGL.glTextureMaterialEXT) InternalTool.GetGLMethodAdress("glTextureMaterialEXT", typeof(dgtk.OpenGL.delegatesGL.glTextureMaterialEXT));
 			dgtk.OpenGL.internalGL.glTextureNormalEXT = (dgtk.OpenGL.delegatesGL.glTextureNormalEXT) InternalTool.GetGLMethodAdress("glTextureNormalEXT", typeof(dgtk.OpenGL.delegatesGL.glTextureNormalEXT));
 			dgtk.OpenGL.internalGL.glTexturePageCommitmentEXT = (dgtk.OpenGL.delegatesGL.glTexturePageCommitmentEXT) InternalTool.GetGLMethodAdress("glTexturePageCommitmentEXT", typeof(dgtk.OpenGL.delegatesGL.glTexturePageCommitmentEXT));
+			dgtk.OpenGL.internalGL.glTexturePageCommitmentMemNV = (dgtk.OpenGL.delegatesGL.glTexturePageCommitmentMemNV) InternalTool.GetGLMethodAdress("glTexturePageCommitmentMemNV", typeof(dgtk.OpenGL.delegatesGL.glTexturePageCommitmentMemNV));
 			dgtk.OpenGL.internalGL.glTextureParameterf = (dgtk.OpenGL.delegatesGL.glTextureParameterf) InternalTool.GetGLMethodAdress("glTextureParameterf", typeof(dgtk.OpenGL.delegatesGL.glTextureParameterf));
 			dgtk.OpenGL.internalGL.glTextureParameterfEXT = (dgtk.OpenGL.delegatesGL.glTextureParameterfEXT) InternalTool.GetGLMethodAdress("glTextureParameterfEXT", typeof(dgtk.OpenGL.delegatesGL.glTextureParameterfEXT));
 			dgtk.OpenGL.internalGL.glTextureParameterfv = (dgtk.OpenGL.delegatesGL.glTextureParameterfv) InternalTool.GetGLMethodAdress("glTextureParameterfv", typeof(dgtk.OpenGL.delegatesGL.glTextureParameterfv));

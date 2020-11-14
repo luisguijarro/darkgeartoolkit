@@ -499,7 +499,7 @@ namespace dgtk.OpenGL
 				internalGL.glAttachObjectARB(containerObj, obj);
 			}
 
-			public static void glBeginQueryARB(uint target, uint id)
+			public static void glBeginQueryARB(QueryTarget target, uint id)
 			{
 				internalGL.glBeginQueryARB(target, id);
 			}
@@ -2460,7 +2460,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetHistogramParameterivEXT(target, pname, @params);
 			}
 
-			public static unsafe void glGetIntegerIndexedvEXT(uint target, uint index, int* data)
+			public static unsafe void glGetIntegerIndexedvEXT(GetPName target, uint index, int* data)
 			{
 				internalGL.glGetIntegerIndexedvEXT(target, index, data);
 			}
