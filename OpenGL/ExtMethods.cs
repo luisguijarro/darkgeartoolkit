@@ -3,6 +3,8 @@
 // Developed by Luis Guijarro Pérez.
 
 using System;
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace dgtk.OpenGL
 {
@@ -48,7 +50,7 @@ namespace dgtk.OpenGL
 				internalGL.glDebugMessageEnableAMD(category, severity, count, ids, enabled);
 			}
 
-			public static unsafe void glDebugMessageInsertAMD(uint category, DebugSeverity severity, uint id, int length, sbyte* buf)
+			public static unsafe void glDebugMessageInsertAMD(uint category, DebugSeverity severity, uint id, int length, [MarshalAs(UnmanagedType.LPStr)] string buf)
 			{
 				internalGL.glDebugMessageInsertAMD(category, severity, id, length, buf);
 			}
@@ -68,7 +70,7 @@ namespace dgtk.OpenGL
 				internalGL.glGenNamesAMD(identifier, num, names);
 			}
 
-			public static unsafe uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, DebugSeverity* severities, uint* ids, int* lengths, sbyte* message)
+			public static unsafe uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, DebugSeverity* severities, uint* ids, int* lengths, StringBuilder message)
 			{
 				return internalGL.glGetDebugMessageLogAMD(count, bufSize, categories, severities, ids, lengths, message);
 			}
@@ -504,7 +506,7 @@ namespace dgtk.OpenGL
 				internalGL.glBeginQueryARB(target, id);
 			}
 
-			public static unsafe void glBindAttribLocationARB(uint programObj, uint index, sbyte* name)
+			public static unsafe void glBindAttribLocationARB(uint programObj, uint index, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				internalGL.glBindAttribLocationARB(programObj, index, name);
 			}
@@ -649,12 +651,12 @@ namespace dgtk.OpenGL
 				internalGL.glGenQueriesARB(n, ids);
 			}
 
-			public static unsafe void glGetActiveAttribARB(uint programObj, uint index, int maxLength, int* length, int* size, AttributeType* type, sbyte* name)
+			public static unsafe void glGetActiveAttribARB(uint programObj, uint index, int maxLength, int* length, int* size, AttributeType* type, StringBuilder name)
 			{
 				internalGL.glGetActiveAttribARB(programObj, index, maxLength, length, size, type, name);
 			}
 
-			public static unsafe void glGetActiveUniformARB(uint programObj, uint index, int maxLength, int* length, int* size, UniformType* type, sbyte* name)
+			public static unsafe void glGetActiveUniformARB(uint programObj, uint index, int maxLength, int* length, int* size, UniformType* type, StringBuilder name)
 			{
 				internalGL.glGetActiveUniformARB(programObj, index, maxLength, length, size, type, name);
 			}
@@ -664,7 +666,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetAttachedObjectsARB(containerObj, maxCount, count, obj);
 			}
 
-			public static unsafe int glGetAttribLocationARB(uint programObj, sbyte* name)
+			public static unsafe int glGetAttribLocationARB(uint programObj, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				return internalGL.glGetAttribLocationARB(programObj, name);
 			}
@@ -694,7 +696,7 @@ namespace dgtk.OpenGL
 				return internalGL.glGetHandleARB(pname);
 			}
 
-			public static unsafe void glGetInfoLogARB(uint obj, int maxLength, int* length, sbyte* infoLog)
+			public static unsafe void glGetInfoLogARB(uint obj, int maxLength, int* length, StringBuilder infoLog)
 			{
 				internalGL.glGetInfoLogARB(obj, maxLength, length, infoLog);
 			}
@@ -754,7 +756,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetQueryObjectuivARB(id, pname, @params);
 			}
 
-			public static unsafe void glGetShaderSourceARB(uint obj, int maxLength, int* length, sbyte* source)
+			public static unsafe void glGetShaderSourceARB(uint obj, int maxLength, int* length, StringBuilder source)
 			{
 				internalGL.glGetShaderSourceARB(obj, maxLength, length, source);
 			}
@@ -769,7 +771,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetUniformivARB(programObj, location, @params);
 			}
 
-			public static unsafe int glGetUniformLocationARB(uint programObj, sbyte* name)
+			public static unsafe int glGetUniformLocationARB(uint programObj, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				return internalGL.glGetUniformLocationARB(programObj, name);
 			}
@@ -1079,7 +1081,7 @@ namespace dgtk.OpenGL
 				internalGL.glSampleCoverageARB(value, invert);
 			}
 
-			public static unsafe void glShaderSourceARB(uint shaderObj, int count, sbyte* @string, int* length)
+			public static unsafe void glShaderSourceARB(uint shaderObj, int count, [MarshalAs(UnmanagedType.LPStr)] string[] @string, int* length)
 			{
 				internalGL.glShaderSourceARB(shaderObj, count, @string, length);
 			}
@@ -2000,7 +2002,7 @@ namespace dgtk.OpenGL
 				internalGL.glBindBufferRangeEXT(target, index, buffer, offset, size);
 			}
 
-			public static unsafe void glBindFragDataLocationEXT(uint program, uint color, sbyte* name)
+			public static unsafe void glBindFragDataLocationEXT(uint program, uint color, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				internalGL.glBindFragDataLocationEXT(program, color, name);
 			}
@@ -2435,7 +2437,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetConvolutionParameterivEXT(target, pname, @params);
 			}
 
-			public static unsafe int glGetFragDataLocationEXT(uint program, sbyte* name)
+			public static unsafe int glGetFragDataLocationEXT(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				return internalGL.glGetFragDataLocationEXT(program, name);
 			}
@@ -2555,7 +2557,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetTexParameterIuivEXT(target, pname, @params);
 			}
 
-			public static unsafe void glGetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name)
+			public static unsafe void glGetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name)
 			{
 				internalGL.glGetTransformFeedbackVaryingEXT(program, index, bufSize, length, size, type, name);
 			}
@@ -3000,7 +3002,7 @@ namespace dgtk.OpenGL
 				internalGL.glTextureNormalEXT(mode);
 			}
 
-			public static unsafe void glTransformFeedbackVaryingsEXT(uint program, int count, sbyte* varyings, uint bufferMode)
+			public static unsafe void glTransformFeedbackVaryingsEXT(uint program, int count, [MarshalAs(UnmanagedType.LPStr)] string[] varyings, uint bufferMode)
 			{
 				internalGL.glTransformFeedbackVaryingsEXT(program, count, varyings, bufferMode);
 			}
@@ -3224,7 +3226,7 @@ namespace dgtk.OpenGL
 				internalGL.glColorPointerListIBM(size, type, stride, pointer, ptrstride);
 			}
 
-			public static unsafe void glEdgeFlagPointerListIBM(int stride, bool* pointer, int ptrstride)
+			public static unsafe void glEdgeFlagPointerListIBM(int stride, bool** pointer, int ptrstride)
 			{
 				internalGL.glEdgeFlagPointerListIBM(stride, pointer, ptrstride);
 			}
@@ -3451,7 +3453,7 @@ namespace dgtk.OpenGL
 
 		public static class NV
 		{
-			public static unsafe void glActiveVaryingNV(uint program, sbyte* name)
+			public static unsafe void glActiveVaryingNV(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				internalGL.glActiveVaryingNV(program, name);
 			}
@@ -3691,7 +3693,7 @@ namespace dgtk.OpenGL
 				internalGL.glGenTransformFeedbacksNV(n, ids);
 			}
 
-			public static unsafe void glGetActiveVaryingNV(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name)
+			public static unsafe void glGetActiveVaryingNV(uint program, uint index, int bufSize, int* length, int* size, uint* type, StringBuilder name)
 			{
 				internalGL.glGetActiveVaryingNV(program, index, bufSize, length, size, type, name);
 			}
@@ -3836,7 +3838,7 @@ namespace dgtk.OpenGL
 				internalGL.glGetTransformFeedbackVaryingNV(program, index, location);
 			}
 
-			public static unsafe int glGetVaryingLocationNV(uint program, sbyte* name)
+			public static unsafe int glGetVaryingLocationNV(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 			{
 				return internalGL.glGetVaryingLocationNV(program, name);
 			}
@@ -4231,7 +4233,7 @@ namespace dgtk.OpenGL
 				return internalGL.glQueryResourceNV(queryType, tagId, count, buffer);
 			}
 
-			public static unsafe void glQueryResourceTagNV(int tagId, sbyte* tagString)
+			public static unsafe void glQueryResourceTagNV(int tagId, [MarshalAs(UnmanagedType.LPStr)] string tagString)
 			{
 				internalGL.glQueryResourceTagNV(tagId, tagString);
 			}

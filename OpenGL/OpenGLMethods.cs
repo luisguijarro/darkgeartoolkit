@@ -3,6 +3,8 @@
 // Developed by Luis Guijarro Pérez.
 
 using System;
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace dgtk.OpenGL
 {
@@ -87,7 +89,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glBindAttribLocation(uint program, uint index, sbyte* name)
+		public static unsafe void glBindAttribLocation(uint program, uint index, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			internalGL.glBindAttribLocation(program, index, name);
 		}
@@ -123,13 +125,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe void glBindFragDataLocation(uint program, uint color, sbyte* name)
+		public static unsafe void glBindFragDataLocation(uint program, uint color, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			internalGL.glBindFragDataLocation(program, color, name);
 		}
 
 		///<sumary> Available from OpenGL version 3.3</sumary>
-		public static unsafe void glBindFragDataLocationIndexed(uint program, uint colorNumber, uint index, sbyte* name)
+		public static unsafe void glBindFragDataLocationIndexed(uint program, uint colorNumber, uint index, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			internalGL.glBindFragDataLocationIndexed(program, colorNumber, index, name);
 		}
@@ -913,7 +915,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.1</sumary>
-		public static unsafe uint glCreateShaderProgramv(ShaderType type, int count, sbyte* strings)
+		public static unsafe uint glCreateShaderProgramv(ShaderType type, int count, [MarshalAs(UnmanagedType.LPStr)] string[] strings)
 		{
 			return internalGL.glCreateShaderProgramv(type, count, strings);
 		}
@@ -959,7 +961,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glDebugMessageInsert(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, sbyte* buf)
+		public static unsafe void glDebugMessageInsert(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, [MarshalAs(UnmanagedType.LPStr)] string buf)
 		{
 			internalGL.glDebugMessageInsert(source, type, id, severity, length, buf);
 		}
@@ -1637,13 +1639,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glGetActiveAttrib(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name)
+		public static unsafe void glGetActiveAttrib(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name)
 		{
 			internalGL.glGetActiveAttrib(program, index, bufSize, length, size, type, name);
 		}
 
 		///<sumary> Available from OpenGL version 4.0</sumary>
-		public static unsafe void glGetActiveSubroutineName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, sbyte* name)
+		public static unsafe void glGetActiveSubroutineName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, StringBuilder name)
 		{
 			internalGL.glGetActiveSubroutineName(program, shadertype, index, bufSize, length, name);
 		}
@@ -1655,13 +1657,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.0</sumary>
-		public static unsafe void glGetActiveSubroutineUniformName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, sbyte* name)
+		public static unsafe void glGetActiveSubroutineUniformName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, StringBuilder name)
 		{
 			internalGL.glGetActiveSubroutineUniformName(program, shadertype, index, bufSize, length, name);
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glGetActiveUniform(uint program, uint index, int bufSize, int* length, int* size, UniformType* type, sbyte* name)
+		public static unsafe void glGetActiveUniform(uint program, uint index, int bufSize, int* length, int* size, UniformType* type, StringBuilder name)
 		{
 			internalGL.glGetActiveUniform(program, index, bufSize, length, size, type, name);
 		}
@@ -1673,13 +1675,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.1</sumary>
-		public static unsafe void glGetActiveUniformBlockName(uint program, uint uniformBlockIndex, int bufSize, int* length, sbyte* uniformBlockName)
+		public static unsafe void glGetActiveUniformBlockName(uint program, uint uniformBlockIndex, int bufSize, int* length, StringBuilder uniformBlockName)
 		{
 			internalGL.glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName);
 		}
 
 		///<sumary> Available from OpenGL version 3.1</sumary>
-		public static unsafe void glGetActiveUniformName(uint program, uint uniformIndex, int bufSize, int* length, sbyte* uniformName)
+		public static unsafe void glGetActiveUniformName(uint program, uint uniformIndex, int bufSize, int* length, StringBuilder uniformName)
 		{
 			internalGL.glGetActiveUniformName(program, uniformIndex, bufSize, length, uniformName);
 		}
@@ -1697,7 +1699,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe int glGetAttribLocation(uint program, sbyte* name)
+		public static unsafe int glGetAttribLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetAttribLocation(program, name);
 		}
@@ -1763,7 +1765,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe uint glGetDebugMessageLog(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, sbyte* messageLog)
+		public static unsafe uint glGetDebugMessageLog(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, StringBuilder messageLog)
 		{
 			return internalGL.glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog);
 		}
@@ -1799,13 +1801,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.3</sumary>
-		public static unsafe int glGetFragDataIndex(uint program, sbyte* name)
+		public static unsafe int glGetFragDataIndex(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetFragDataIndex(program, name);
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe int glGetFragDataLocation(uint program, sbyte* name)
+		public static unsafe int glGetFragDataLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetFragDataLocation(program, name);
 		}
@@ -2063,13 +2065,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glGetObjectLabel(ObjectIdentifier identifier, uint name, int bufSize, int* length, sbyte* label)
+		public static unsafe void glGetObjectLabel(ObjectIdentifier identifier, uint name, int bufSize, int* length, StringBuilder label)
 		{
 			internalGL.glGetObjectLabel(identifier, name, bufSize, length, label);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glGetObjectPtrLabel(IntPtr ptr, int bufSize, int* length, sbyte* label)
+		public static unsafe void glGetObjectPtrLabel(IntPtr ptr, int bufSize, int* length, StringBuilder label)
 		{
 			internalGL.glGetObjectPtrLabel(ptr, bufSize, length, label);
 		}
@@ -2111,7 +2113,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glGetProgramInfoLog(uint program, int bufSize, int* length, sbyte* infoLog)
+		public static unsafe void glGetProgramInfoLog(uint program, int bufSize, int* length, StringBuilder infoLog)
 		{
 			internalGL.glGetProgramInfoLog(program, bufSize, length, infoLog);
 		}
@@ -2129,7 +2131,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.1</sumary>
-		public static unsafe void glGetProgramPipelineInfoLog(uint pipeline, int bufSize, int* length, sbyte* infoLog)
+		public static unsafe void glGetProgramPipelineInfoLog(uint pipeline, int bufSize, int* length, StringBuilder infoLog)
 		{
 			internalGL.glGetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
 		}
@@ -2141,7 +2143,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe uint glGetProgramResourceIndex(uint program, ProgramInterface programInterface, sbyte* name)
+		public static unsafe uint glGetProgramResourceIndex(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetProgramResourceIndex(program, programInterface, name);
 		}
@@ -2153,19 +2155,19 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe int glGetProgramResourceLocation(uint program, ProgramInterface programInterface, sbyte* name)
+		public static unsafe int glGetProgramResourceLocation(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetProgramResourceLocation(program, programInterface, name);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe int glGetProgramResourceLocationIndex(uint program, ProgramInterface programInterface, sbyte* name)
+		public static unsafe int glGetProgramResourceLocationIndex(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetProgramResourceLocationIndex(program, programInterface, name);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glGetProgramResourceName(uint program, ProgramInterface programInterface, uint index, int bufSize, int* length, sbyte* name)
+		public static unsafe void glGetProgramResourceName(uint program, ProgramInterface programInterface, uint index, int bufSize, int* length, StringBuilder name)
 		{
 			internalGL.glGetProgramResourceName(program, programInterface, index, bufSize, length, name);
 		}
@@ -2267,7 +2269,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glGetShaderInfoLog(uint shader, int bufSize, int* length, sbyte* infoLog)
+		public static unsafe void glGetShaderInfoLog(uint shader, int bufSize, int* length, StringBuilder infoLog)
 		{
 			internalGL.glGetShaderInfoLog(shader, bufSize, length, infoLog);
 		}
@@ -2285,7 +2287,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glGetShaderSource(uint shader, int bufSize, int* length, sbyte* source)
+		public static unsafe void glGetShaderSource(uint shader, int bufSize, int* length, StringBuilder source)
 		{
 			internalGL.glGetShaderSource(shader, bufSize, length, source);
 		}
@@ -2303,13 +2305,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.0</sumary>
-		public static unsafe uint glGetSubroutineIndex(uint program, ShaderType shadertype, sbyte* name)
+		public static unsafe uint glGetSubroutineIndex(uint program, ShaderType shadertype, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetSubroutineIndex(program, shadertype, name);
 		}
 
 		///<sumary> Available from OpenGL version 4.0</sumary>
-		public static unsafe int glGetSubroutineUniformLocation(uint program, ShaderType shadertype, sbyte* name)
+		public static unsafe int glGetSubroutineUniformLocation(uint program, ShaderType shadertype, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetSubroutineUniformLocation(program, shadertype, name);
 		}
@@ -2459,13 +2461,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe void glGetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name)
+		public static unsafe void glGetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name)
 		{
 			internalGL.glGetTransformFeedbackVarying(program, index, bufSize, length, size, type, name);
 		}
 
 		///<sumary> Available from OpenGL version 3.1</sumary>
-		public static unsafe uint glGetUniformBlockIndex(uint program, sbyte* uniformBlockName)
+		public static unsafe uint glGetUniformBlockIndex(uint program, [MarshalAs(UnmanagedType.LPStr)] string uniformBlockName)
 		{
 			return internalGL.glGetUniformBlockIndex(program, uniformBlockName);
 		}
@@ -2483,7 +2485,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.1</sumary>
-		public static unsafe void glGetUniformIndices(uint program, int uniformCount, sbyte* uniformNames, uint* uniformIndices)
+		public static unsafe void glGetUniformIndices(uint program, int uniformCount, [MarshalAs(UnmanagedType.LPStr)] string[] uniformNames, uint* uniformIndices)
 		{
 			internalGL.glGetUniformIndices(program, uniformCount, uniformNames, uniformIndices);
 		}
@@ -2495,7 +2497,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe int glGetUniformLocation(uint program, sbyte* name)
+		public static unsafe int glGetUniformLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name)
 		{
 			return internalGL.glGetUniformLocation(program, name);
 		}
@@ -3521,13 +3523,13 @@ namespace dgtk.OpenGL
 		#region O:
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glObjectLabel(ObjectIdentifier identifier, uint name, int length, sbyte* label)
+		public static unsafe void glObjectLabel(ObjectIdentifier identifier, uint name, int length, [MarshalAs(UnmanagedType.LPStr)] string label)
 		{
 			internalGL.glObjectLabel(identifier, name, length, label);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glObjectPtrLabel(IntPtr ptr, int length, sbyte* label)
+		public static unsafe void glObjectPtrLabel(IntPtr ptr, int length, [MarshalAs(UnmanagedType.LPStr)] string label)
 		{
 			internalGL.glObjectPtrLabel(ptr, length, label);
 		}
@@ -4041,7 +4043,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static unsafe void glPushDebugGroup(DebugSource source, uint id, int length, sbyte* message)
+		public static unsafe void glPushDebugGroup(DebugSource source, uint id, int length, [MarshalAs(UnmanagedType.LPStr)] string message)
 		{
 			internalGL.glPushDebugGroup(source, id, length, message);
 		}
@@ -4545,7 +4547,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glShaderSource(uint shader, int count, sbyte* @string, int* length)
+		public static unsafe void glShaderSource(uint shader, int count, [MarshalAs(UnmanagedType.LPStr)] string[] @string, int* length)
 		{
 			internalGL.glShaderSource(shader, count, @string, length);
 		}
@@ -4557,7 +4559,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.6</sumary>
-		public static unsafe void glSpecializeShader(uint shader, sbyte* pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue)
+		public static unsafe void glSpecializeShader(uint shader, [MarshalAs(UnmanagedType.LPStr)] string pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue)
 		{
 			internalGL.glSpecializeShader(shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue);
 		}
@@ -5155,7 +5157,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe void glTransformFeedbackVaryings(uint program, int count, sbyte* varyings, TransformFeedbackBufferMode bufferMode)
+		public static unsafe void glTransformFeedbackVaryings(uint program, int count, [MarshalAs(UnmanagedType.LPStr)] string[] varyings, TransformFeedbackBufferMode bufferMode)
 		{
 			internalGL.glTransformFeedbackVaryings(program, count, varyings, bufferMode);
 		}

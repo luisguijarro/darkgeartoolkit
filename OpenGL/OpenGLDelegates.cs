@@ -3,6 +3,8 @@
 // Developed by Luis Guijarro Pérez.
 
 using System;
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace dgtk.OpenGL
 {
@@ -19,7 +21,7 @@ namespace dgtk.OpenGL
 		internal delegate void glActiveStencilFaceEXT(StencilFaceDirection face);
 		internal delegate void glActiveTexture(TextureUnit texture);
 		internal delegate void glActiveTextureARB(TextureUnit texture);
-		internal unsafe delegate void glActiveVaryingNV(uint program, sbyte* name);
+		internal unsafe delegate void glActiveVaryingNV(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate void glAlphaFragmentOp1ATI(FragmentOpATI op, uint dst, uint dstMod, uint arg1, uint arg1Rep, uint arg1Mod);
 		internal delegate void glAlphaFragmentOp2ATI(FragmentOpATI op, uint dst, uint dstMod, uint arg1, uint arg1Rep, uint arg1Mod, uint arg2, uint arg2Rep, uint arg2Mod);
 		internal delegate void glAlphaFragmentOp3ATI(FragmentOpATI op, uint dst, uint dstMod, uint arg1, uint arg1Rep, uint arg1Mod, uint arg2, uint arg2Rep, uint arg2Mod, uint arg3, uint arg3Rep, uint arg3Mod);
@@ -62,8 +64,8 @@ namespace dgtk.OpenGL
 		internal delegate void glBeginTransformFeedbackNV(PrimitiveType primitiveMode);
 		internal delegate void glBeginVertexShaderEXT();
 		internal delegate void glBeginVideoCaptureNV(uint video_capture_slot);
-		internal unsafe delegate void glBindAttribLocation(uint program, uint index, sbyte* name);
-		internal unsafe delegate void glBindAttribLocationARB(uint programObj, uint index, sbyte* name);
+		internal unsafe delegate void glBindAttribLocation(uint program, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate void glBindAttribLocationARB(uint programObj, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate void glBindBuffer(BufferTargetARB target, uint buffer);
 		internal delegate void glBindBufferARB(BufferTargetARB target, uint buffer);
 		internal delegate void glBindBufferBase(BufferTargetARB target, uint index, uint buffer);
@@ -76,10 +78,10 @@ namespace dgtk.OpenGL
 		internal delegate void glBindBufferRangeNV(BufferTargetARB target, uint index, uint buffer, IntPtr offset, int size);
 		internal unsafe delegate void glBindBuffersBase(BufferTargetARB target, uint first, int count, uint* buffers);
 		internal unsafe delegate void glBindBuffersRange(BufferTargetARB target, uint first, int count, uint* buffers, IntPtr* offsets, int* sizes);
-		internal unsafe delegate void glBindFragDataLocation(uint program, uint color, sbyte* name);
-		internal unsafe delegate void glBindFragDataLocationEXT(uint program, uint color, sbyte* name);
-		internal unsafe delegate void glBindFragDataLocationIndexed(uint program, uint colorNumber, uint index, sbyte* name);
-		internal unsafe delegate void glBindFragDataLocationIndexedEXT(uint program, uint colorNumber, uint index, sbyte* name);
+		internal unsafe delegate void glBindFragDataLocation(uint program, uint color, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate void glBindFragDataLocationEXT(uint program, uint color, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate void glBindFragDataLocationIndexed(uint program, uint colorNumber, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate void glBindFragDataLocationIndexedEXT(uint program, uint colorNumber, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate void glBindFragmentShaderATI(uint id);
 		internal delegate void glBindFramebuffer(FramebufferTarget target, uint framebuffer);
 		internal delegate void glBindFramebufferEXT(FramebufferTarget target, uint framebuffer);
@@ -338,7 +340,7 @@ namespace dgtk.OpenGL
 		internal delegate void glCompileCommandListNV(uint list);
 		internal delegate void glCompileShader(uint shader);
 		internal delegate void glCompileShaderARB(uint shaderObj);
-		internal unsafe delegate void glCompileShaderIncludeARB(uint shader, int count, sbyte* path, int* length);
+		internal unsafe delegate void glCompileShaderIncludeARB(uint shader, int count, [MarshalAs(UnmanagedType.LPStr)] string[] path, int* length);
 		internal delegate void glCompressedMultiTexImage1DEXT(TextureUnit texunit, TextureTarget target, int level, InternalFormat internalformat, int width, int border, int imageSize, IntPtr bits);
 		internal delegate void glCompressedMultiTexImage2DEXT(TextureUnit texunit, TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, int imageSize, IntPtr bits);
 		internal delegate void glCompressedMultiTexImage3DEXT(TextureUnit texunit, TextureTarget target, int level, InternalFormat internalformat, int width, int height, int depth, int border, int imageSize, IntPtr bits);
@@ -449,9 +451,9 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glCreateSemaphoresNV(int n, uint* semaphores);
 		internal delegate uint glCreateShader(ShaderType type);
 		internal delegate uint glCreateShaderObjectARB(ShaderType shaderType);
-		internal unsafe delegate uint glCreateShaderProgramEXT(ShaderType type, sbyte* @string);
-		internal unsafe delegate uint glCreateShaderProgramv(ShaderType type, int count, sbyte* strings);
-		internal unsafe delegate uint glCreateShaderProgramvEXT(ShaderType type, int count, sbyte* strings);
+		internal unsafe delegate uint glCreateShaderProgramEXT(ShaderType type, [MarshalAs(UnmanagedType.LPStr)] string @string);
+		internal unsafe delegate uint glCreateShaderProgramv(ShaderType type, int count, [MarshalAs(UnmanagedType.LPStr)] string[] strings);
+		internal unsafe delegate uint glCreateShaderProgramvEXT(ShaderType type, int count, [MarshalAs(UnmanagedType.LPStr)] string[] strings);
 		internal unsafe delegate void glCreateStatesNV(int n, uint* states);
 		internal unsafe delegate IntPtr glCreateSyncFromCLeventARB(IntPtr* context, IntPtr* @event, uint flags);
 		internal unsafe delegate void glCreateTextures(TextureTarget target, int n, uint* textures);
@@ -474,10 +476,10 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glDebugMessageControlARB(DebugSource source, DebugType type, DebugSeverity severity, int count, uint* ids, Boolean enabled);
 		internal unsafe delegate void glDebugMessageControlKHR(DebugSource source, DebugType type, DebugSeverity severity, int count, uint* ids, Boolean enabled);
 		internal unsafe delegate void glDebugMessageEnableAMD(uint category, DebugSeverity severity, int count, uint* ids, Boolean enabled);
-		internal unsafe delegate void glDebugMessageInsert(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, sbyte* buf);
-		internal unsafe delegate void glDebugMessageInsertAMD(uint category, DebugSeverity severity, uint id, int length, sbyte* buf);
-		internal unsafe delegate void glDebugMessageInsertARB(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, sbyte* buf);
-		internal unsafe delegate void glDebugMessageInsertKHR(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, sbyte* buf);
+		internal unsafe delegate void glDebugMessageInsert(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, [MarshalAs(UnmanagedType.LPStr)] string buf);
+		internal unsafe delegate void glDebugMessageInsertAMD(uint category, DebugSeverity severity, uint id, int length, [MarshalAs(UnmanagedType.LPStr)] string buf);
+		internal unsafe delegate void glDebugMessageInsertARB(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, [MarshalAs(UnmanagedType.LPStr)] string buf);
+		internal unsafe delegate void glDebugMessageInsertKHR(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, [MarshalAs(UnmanagedType.LPStr)] string buf);
 		internal unsafe delegate void glDeformationMap3dSGIX(FfdTargetSGIX target, double u1, double u2, int ustride, int uorder, double v1, double v2, int vstride, int vorder, double w1, double w2, int wstride, int worder, double* points);
 		internal unsafe delegate void glDeformationMap3fSGIX(FfdTargetSGIX target, float u1, float u2, int ustride, int uorder, float v1, float v2, int vstride, int vorder, float w1, float w2, int wstride, int worder, float* points);
 		internal delegate void glDeformSGIX(FfdMaskSGIX mask);
@@ -493,7 +495,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glDeleteFramebuffersOES(int n, uint* framebuffers);
 		internal delegate void glDeleteLists(uint list, int range);
 		internal unsafe delegate void glDeleteMemoryObjectsEXT(int n, uint* memoryObjects);
-		internal unsafe delegate void glDeleteNamedStringARB(int namelen, sbyte* name);
+		internal unsafe delegate void glDeleteNamedStringARB(int namelen, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glDeleteNamesAMD(uint identifier, uint num, uint* names);
 		internal delegate void glDeleteObjectARB(uint obj);
 		internal unsafe delegate void glDeleteOcclusionQueriesNV(int n, uint* ids);
@@ -644,7 +646,7 @@ namespace dgtk.OpenGL
 		internal delegate void glEdgeFlagFormatNV(int stride);
 		internal delegate void glEdgeFlagPointer(int stride, IntPtr pointer);
 		internal unsafe delegate void glEdgeFlagPointerEXT(int stride, int count, Boolean* pointer);
-		internal unsafe delegate void glEdgeFlagPointerListIBM(int stride, bool* pointer, int ptrstride);
+		internal unsafe delegate void glEdgeFlagPointerListIBM(int stride, bool** pointer, int ptrstride);
 		internal unsafe delegate void glEdgeFlagv(Boolean* flag);
 		internal delegate void glEGLImageTargetRenderbufferStorageOES(uint target, IntPtr image);
 		internal unsafe delegate void glEGLImageTargetTexStorageEXT(uint target, IntPtr image, int* attrib_list);
@@ -710,7 +712,7 @@ namespace dgtk.OpenGL
 		internal delegate void glExtGetBufferPointervQCOM(uint target, IntPtr @params);
 		internal unsafe delegate void glExtGetBuffersQCOM(uint* buffers, int maxBuffers, int* numBuffers);
 		internal unsafe delegate void glExtGetFramebuffersQCOM(uint* framebuffers, int maxFramebuffers, int* numFramebuffers);
-		internal unsafe delegate void glExtGetProgramBinarySourceQCOM(uint program, ShaderType shadertype, sbyte* source, int* length);
+		internal unsafe delegate void glExtGetProgramBinarySourceQCOM(uint program, ShaderType shadertype, StringBuilder source, int* length);
 		internal unsafe delegate void glExtGetProgramsQCOM(uint* programs, int maxPrograms, int* numPrograms);
 		internal unsafe delegate void glExtGetRenderbuffersQCOM(uint* renderbuffers, int maxRenderbuffers, int* numRenderbuffers);
 		internal unsafe delegate void glExtGetShadersQCOM(uint* shaders, int maxShaders, int* numShaders);
@@ -878,24 +880,24 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGenVertexArraysOES(int n, uint* arrays);
 		internal delegate uint glGenVertexShadersEXT(uint range);
 		internal unsafe delegate void glGetActiveAtomicCounterBufferiv(uint program, uint bufferIndex, AtomicCounterBufferPName pname, int* @params);
-		internal unsafe delegate void glGetActiveAttrib(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name);
-		internal unsafe delegate void glGetActiveAttribARB(uint programObj, uint index, int maxLength, int* length, int* size, AttributeType* type, sbyte* name);
-		internal unsafe delegate void glGetActiveSubroutineName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, sbyte* name);
+		internal unsafe delegate void glGetActiveAttrib(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name);
+		internal unsafe delegate void glGetActiveAttribARB(uint programObj, uint index, int maxLength, int* length, int* size, AttributeType* type, StringBuilder name);
+		internal unsafe delegate void glGetActiveSubroutineName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, StringBuilder name);
 		internal unsafe delegate void glGetActiveSubroutineUniformiv(uint program, ShaderType shadertype, uint index, SubroutineParameterName pname, int* values);
-		internal unsafe delegate void glGetActiveSubroutineUniformName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, sbyte* name);
-		internal unsafe delegate void glGetActiveUniform(uint program, uint index, int bufSize, int* length, int* size, UniformType* type, sbyte* name);
-		internal unsafe delegate void glGetActiveUniformARB(uint programObj, uint index, int maxLength, int* length, int* size, UniformType* type, sbyte* name);
+		internal unsafe delegate void glGetActiveSubroutineUniformName(uint program, ShaderType shadertype, uint index, int bufSize, int* length, StringBuilder name);
+		internal unsafe delegate void glGetActiveUniform(uint program, uint index, int bufSize, int* length, int* size, UniformType* type, StringBuilder name);
+		internal unsafe delegate void glGetActiveUniformARB(uint programObj, uint index, int maxLength, int* length, int* size, UniformType* type, StringBuilder name);
 		internal unsafe delegate void glGetActiveUniformBlockiv(uint program, uint uniformBlockIndex, UniformBlockPName pname, int* @params);
-		internal unsafe delegate void glGetActiveUniformBlockName(uint program, uint uniformBlockIndex, int bufSize, int* length, sbyte* uniformBlockName);
-		internal unsafe delegate void glGetActiveUniformName(uint program, uint uniformIndex, int bufSize, int* length, sbyte* uniformName);
+		internal unsafe delegate void glGetActiveUniformBlockName(uint program, uint uniformBlockIndex, int bufSize, int* length, StringBuilder uniformBlockName);
+		internal unsafe delegate void glGetActiveUniformName(uint program, uint uniformIndex, int bufSize, int* length, StringBuilder uniformName);
 		internal unsafe delegate void glGetActiveUniformsiv(uint program, int uniformCount, uint* uniformIndices, UniformPName pname, int* @params);
-		internal unsafe delegate void glGetActiveVaryingNV(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name);
+		internal unsafe delegate void glGetActiveVaryingNV(uint program, uint index, int bufSize, int* length, int* size, uint* type, StringBuilder name);
 		internal unsafe delegate void glGetArrayObjectfvATI(EnableCap array, ArrayObjectPNameATI pname, float* @params);
 		internal unsafe delegate void glGetArrayObjectivATI(EnableCap array, ArrayObjectPNameATI pname, int* @params);
 		internal unsafe delegate void glGetAttachedObjectsARB(uint containerObj, int maxCount, int* count, uint* obj);
 		internal unsafe delegate void glGetAttachedShaders(uint program, int maxCount, int* count, uint* shaders);
-		internal unsafe delegate int glGetAttribLocation(uint program, sbyte* name);
-		internal unsafe delegate int glGetAttribLocationARB(uint programObj, sbyte* name);
+		internal unsafe delegate int glGetAttribLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetAttribLocationARB(uint programObj, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glGetBooleani_v(BufferTargetARB target, uint index, Boolean* data);
 		internal unsafe delegate void glGetBooleanIndexedvEXT(BufferTargetARB target, uint index, Boolean* data);
 		internal unsafe delegate void glGetBooleanv(GetPName pname, Boolean* data);
@@ -942,17 +944,17 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetConvolutionParameterivEXT(ConvolutionTargetEXT target, ConvolutionParameterEXT pname, int* @params);
 		internal unsafe delegate void glGetConvolutionParameterxvOES(uint target, uint pname, int* @params);
 		internal unsafe delegate void glGetCoverageModulationTableNV(int bufSize, float* v);
-		internal unsafe delegate uint glGetDebugMessageLog(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, sbyte* messageLog);
-		internal unsafe delegate uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, DebugSeverity* severities, uint* ids, int* lengths, sbyte* message);
-		internal unsafe delegate uint glGetDebugMessageLogARB(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, sbyte* messageLog);
-		internal unsafe delegate uint glGetDebugMessageLogKHR(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, sbyte* messageLog);
+		internal unsafe delegate uint glGetDebugMessageLog(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, StringBuilder messageLog);
+		internal unsafe delegate uint glGetDebugMessageLogAMD(uint count, int bufSize, uint* categories, DebugSeverity* severities, uint* ids, int* lengths, StringBuilder message);
+		internal unsafe delegate uint glGetDebugMessageLogARB(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, StringBuilder messageLog);
+		internal unsafe delegate uint glGetDebugMessageLogKHR(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, StringBuilder messageLog);
 		internal unsafe delegate void glGetDetailTexFuncSGIS(TextureTarget target, float* points);
 		internal unsafe delegate void glGetDoublei_v(GetPName target, uint index, double* data);
 		internal unsafe delegate void glGetDoublei_vEXT(GetPName pname, uint index, double* @params);
 		internal unsafe delegate void glGetDoubleIndexedvEXT(GetPName target, uint index, double* data);
 		internal unsafe delegate void glGetDoublev(GetPName pname, double* data);
 		internal unsafe delegate void glGetDriverControlsQCOM(int* num, int size, uint* driverControls);
-		internal unsafe delegate void glGetDriverControlStringQCOM(uint driverControl, int bufSize, int* length, sbyte* driverControlString);
+		internal unsafe delegate void glGetDriverControlStringQCOM(uint driverControl, int bufSize, int* length, StringBuilder driverControlString);
 		internal delegate uint glGetError();
 		internal unsafe delegate void glGetFenceivNV(uint fence, FenceParameterNameNV pname, int* @params);
 		internal unsafe delegate void glGetFinalCombinerInputParameterfvNV(CombinerVariableNV variable, CombinerParameterNV pname, float* @params);
@@ -967,10 +969,10 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetFloatIndexedvEXT(GetPName target, uint index, float* data);
 		internal unsafe delegate void glGetFloatv(GetPName pname, float* data);
 		internal unsafe delegate void glGetFogFuncSGIS(float* points);
-		internal unsafe delegate int glGetFragDataIndex(uint program, sbyte* name);
-		internal unsafe delegate int glGetFragDataIndexEXT(uint program, sbyte* name);
-		internal unsafe delegate int glGetFragDataLocation(uint program, sbyte* name);
-		internal unsafe delegate int glGetFragDataLocationEXT(uint program, sbyte* name);
+		internal unsafe delegate int glGetFragDataIndex(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetFragDataIndexEXT(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetFragDataLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetFragDataLocationEXT(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glGetFragmentLightfvSGIX(FragmentLightNameSGIX light, FragmentLightParameterSGIX pname, float* @params);
 		internal unsafe delegate void glGetFragmentLightivSGIX(FragmentLightNameSGIX light, FragmentLightParameterSGIX pname, int* @params);
 		internal unsafe delegate void glGetFragmentMaterialfvSGIX(MaterialFace face, MaterialParameter pname, float* @params);
@@ -999,7 +1001,7 @@ namespace dgtk.OpenGL
 		internal delegate ulong glGetImageHandleNV(uint texture, int level, Boolean layered, int layer, PixelFormat format);
 		internal unsafe delegate void glGetImageTransformParameterfvHP(ImageTransformTargetHP target, ImageTransformPNameHP pname, float* @params);
 		internal unsafe delegate void glGetImageTransformParameterivHP(ImageTransformTargetHP target, ImageTransformPNameHP pname, int* @params);
-		internal unsafe delegate void glGetInfoLogARB(uint obj, int maxLength, int* length, sbyte* infoLog);
+		internal unsafe delegate void glGetInfoLogARB(uint obj, int maxLength, int* length, StringBuilder infoLog);
 		internal delegate int glGetInstrumentsSGIX();
 		internal unsafe delegate void glGetInteger64i_v(GetPName target, uint index, long* data);
 		internal unsafe delegate void glGetInteger64v(GetPName pname, long* data);
@@ -1084,8 +1086,8 @@ namespace dgtk.OpenGL
 		internal delegate void glGetNamedProgramStringEXT(uint program, ProgramTarget target, ProgramStringProperty pname, IntPtr @string);
 		internal unsafe delegate void glGetNamedRenderbufferParameteriv(uint renderbuffer, RenderbufferParameterName pname, int* @params);
 		internal unsafe delegate void glGetNamedRenderbufferParameterivEXT(uint renderbuffer, RenderbufferParameterName pname, int* @params);
-		internal unsafe delegate void glGetNamedStringARB(int namelen, sbyte* name, int bufSize, int* stringlen, sbyte* @string);
-		internal unsafe delegate void glGetNamedStringivARB(int namelen, sbyte* name, uint pname, int* @params);
+		internal unsafe delegate void glGetNamedStringARB(int namelen, [MarshalAs(UnmanagedType.LPStr)] string name, int bufSize, int* stringlen, StringBuilder @string);
+		internal unsafe delegate void glGetNamedStringivARB(int namelen, [MarshalAs(UnmanagedType.LPStr)] string name, uint pname, int* @params);
 		internal delegate void glGetnColorTable(ColorTableTarget target, PixelFormat format, PixelType type, int bufSize, IntPtr table);
 		internal delegate void glGetnColorTableARB(ColorTableTarget target, PixelFormat format, PixelType type, int bufSize, IntPtr table);
 		internal delegate void glGetnCompressedTexImage(TextureTarget target, int lod, int bufSize, IntPtr pixels);
@@ -1132,14 +1134,14 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetnUniformuivKHR(uint program, int location, int bufSize, uint* @params);
 		internal unsafe delegate void glGetObjectBufferfvATI(uint buffer, ArrayObjectPNameATI pname, float* @params);
 		internal unsafe delegate void glGetObjectBufferivATI(uint buffer, ArrayObjectPNameATI pname, int* @params);
-		internal unsafe delegate void glGetObjectLabel(ObjectIdentifier identifier, uint name, int bufSize, int* length, sbyte* label);
-		internal unsafe delegate void glGetObjectLabelEXT(uint type, uint @object, int bufSize, int* length, sbyte* label);
-		internal unsafe delegate void glGetObjectLabelKHR(uint identifier, uint name, int bufSize, int* length, sbyte* label);
+		internal unsafe delegate void glGetObjectLabel(ObjectIdentifier identifier, uint name, int bufSize, int* length, StringBuilder label);
+		internal unsafe delegate void glGetObjectLabelEXT(uint type, uint @object, int bufSize, int* length, StringBuilder label);
+		internal unsafe delegate void glGetObjectLabelKHR(uint identifier, uint name, int bufSize, int* length, StringBuilder label);
 		internal unsafe delegate void glGetObjectParameterfvARB(uint obj, uint pname, float* @params);
 		internal unsafe delegate void glGetObjectParameterivAPPLE(uint objectType, uint name, uint pname, int* @params);
 		internal unsafe delegate void glGetObjectParameterivARB(uint obj, uint pname, int* @params);
-		internal unsafe delegate void glGetObjectPtrLabel(IntPtr ptr, int bufSize, int* length, sbyte* label);
-		internal unsafe delegate void glGetObjectPtrLabelKHR(IntPtr ptr, int bufSize, int* length, sbyte* label);
+		internal unsafe delegate void glGetObjectPtrLabel(IntPtr ptr, int bufSize, int* length, StringBuilder label);
+		internal unsafe delegate void glGetObjectPtrLabelKHR(IntPtr ptr, int bufSize, int* length, StringBuilder label);
 		internal unsafe delegate void glGetOcclusionQueryivNV(uint id, OcclusionQueryParameterNameNV pname, int* @params);
 		internal unsafe delegate void glGetOcclusionQueryuivNV(uint id, OcclusionQueryParameterNameNV pname, uint* @params);
 		internal unsafe delegate void glGetPathColorGenfvNV(PathColor color, PathGenMode pname, float* value);
@@ -1155,16 +1157,16 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetPathSpacingNV(PathListMode pathListMode, int numPaths, PathElementType pathNameType, IntPtr paths, uint pathBase, float advanceScale, float kerningScale, PathTransformType transformType, float* returnedSpacing);
 		internal unsafe delegate void glGetPathTexGenfvNV(TextureUnit texCoordSet, PathGenMode pname, float* value);
 		internal unsafe delegate void glGetPathTexGenivNV(TextureUnit texCoordSet, PathGenMode pname, int* value);
-		internal unsafe delegate void glGetPerfCounterInfoINTEL(uint queryId, uint counterId, uint counterNameLength, sbyte* counterName, uint counterDescLength, sbyte* counterDesc, uint* counterOffset, uint* counterDataSize, uint* counterTypeEnum, uint* counterDataTypeEnum, ulong* rawCounterMaxValue);
+		internal unsafe delegate void glGetPerfCounterInfoINTEL(uint queryId, uint counterId, uint counterNameLength, StringBuilder counterName, uint counterDescLength, StringBuilder counterDesc, uint* counterOffset, uint* counterDataSize, uint* counterTypeEnum, uint* counterDataTypeEnum, ulong* rawCounterMaxValue);
 		internal unsafe delegate void glGetPerfMonitorCounterDataAMD(uint monitor, uint pname, int dataSize, uint* data, int* bytesWritten);
 		internal delegate void glGetPerfMonitorCounterInfoAMD(uint group, uint counter, uint pname, IntPtr data);
 		internal unsafe delegate void glGetPerfMonitorCountersAMD(uint group, int* numCounters, int* maxActiveCounters, int counterSize, uint* counters);
-		internal unsafe delegate void glGetPerfMonitorCounterStringAMD(uint group, uint counter, int bufSize, int* length, sbyte* counterString);
+		internal unsafe delegate void glGetPerfMonitorCounterStringAMD(uint group, uint counter, int bufSize, int* length, StringBuilder counterString);
 		internal unsafe delegate void glGetPerfMonitorGroupsAMD(int* numGroups, int groupsSize, uint* groups);
-		internal unsafe delegate void glGetPerfMonitorGroupStringAMD(uint group, int bufSize, int* length, sbyte* groupString);
+		internal unsafe delegate void glGetPerfMonitorGroupStringAMD(uint group, int bufSize, int* length, StringBuilder groupString);
 		internal unsafe delegate void glGetPerfQueryDataINTEL(uint queryHandle, uint flags, int dataSize, IntPtr data, uint* bytesWritten);
-		internal unsafe delegate void glGetPerfQueryIdByNameINTEL(sbyte* queryName, uint* queryId);
-		internal unsafe delegate void glGetPerfQueryInfoINTEL(uint queryId, uint queryNameLength, sbyte* queryName, uint* dataSize, uint* noCounters, uint* noInstances, uint* capsMask);
+		internal unsafe delegate void glGetPerfQueryIdByNameINTEL(StringBuilder queryName, uint* queryId);
+		internal unsafe delegate void glGetPerfQueryInfoINTEL(uint queryId, uint queryNameLength, StringBuilder queryName, uint* dataSize, uint* noCounters, uint* noInstances, uint* capsMask);
 		internal unsafe delegate void glGetPixelMapfv(PixelMap map, float* values);
 		internal unsafe delegate void glGetPixelMapuiv(PixelMap map, uint* values);
 		internal unsafe delegate void glGetPixelMapusv(PixelMap map, ushort* values);
@@ -1185,7 +1187,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetProgramEnvParameterfvARB(ProgramTarget target, uint index, float* @params);
 		internal unsafe delegate void glGetProgramEnvParameterIivNV(ProgramTarget target, uint index, int* @params);
 		internal unsafe delegate void glGetProgramEnvParameterIuivNV(ProgramTarget target, uint index, uint* @params);
-		internal unsafe delegate void glGetProgramInfoLog(uint program, int bufSize, int* length, sbyte* infoLog);
+		internal unsafe delegate void glGetProgramInfoLog(uint program, int bufSize, int* length, StringBuilder infoLog);
 		internal unsafe delegate void glGetProgramInterfaceiv(uint program, ProgramInterface programInterface, ProgramInterfacePName pname, int* @params);
 		internal unsafe delegate void glGetProgramiv(uint program, ProgramPropertyARB pname, int* @params);
 		internal unsafe delegate void glGetProgramivARB(ProgramTarget target, ProgramPropertyARB pname, int* @params);
@@ -1198,17 +1200,17 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetProgramNamedParameterfvNV(uint id, int len, byte* name, float* @params);
 		internal unsafe delegate void glGetProgramParameterdvNV(VertexAttribEnumNV target, uint index, VertexAttribEnumNV pname, double* @params);
 		internal unsafe delegate void glGetProgramParameterfvNV(VertexAttribEnumNV target, uint index, VertexAttribEnumNV pname, float* @params);
-		internal unsafe delegate void glGetProgramPipelineInfoLog(uint pipeline, int bufSize, int* length, sbyte* infoLog);
-		internal unsafe delegate void glGetProgramPipelineInfoLogEXT(uint pipeline, int bufSize, int* length, sbyte* infoLog);
+		internal unsafe delegate void glGetProgramPipelineInfoLog(uint pipeline, int bufSize, int* length, StringBuilder infoLog);
+		internal unsafe delegate void glGetProgramPipelineInfoLogEXT(uint pipeline, int bufSize, int* length, StringBuilder infoLog);
 		internal unsafe delegate void glGetProgramPipelineiv(uint pipeline, PipelineParameterName pname, int* @params);
 		internal unsafe delegate void glGetProgramPipelineivEXT(uint pipeline, PipelineParameterName pname, int* @params);
 		internal unsafe delegate void glGetProgramResourcefvNV(uint program, ProgramInterface programInterface, uint index, int propCount, uint* props, int count, int* length, float* @params);
-		internal unsafe delegate uint glGetProgramResourceIndex(uint program, ProgramInterface programInterface, sbyte* name);
+		internal unsafe delegate uint glGetProgramResourceIndex(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glGetProgramResourceiv(uint program, ProgramInterface programInterface, uint index, int propCount, ProgramResourceProperty* props, int count, int* length, int* @params);
-		internal unsafe delegate int glGetProgramResourceLocation(uint program, ProgramInterface programInterface, sbyte* name);
-		internal unsafe delegate int glGetProgramResourceLocationIndex(uint program, ProgramInterface programInterface, sbyte* name);
-		internal unsafe delegate int glGetProgramResourceLocationIndexEXT(uint program, ProgramInterface programInterface, sbyte* name);
-		internal unsafe delegate void glGetProgramResourceName(uint program, ProgramInterface programInterface, uint index, int bufSize, int* length, sbyte* name);
+		internal unsafe delegate int glGetProgramResourceLocation(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetProgramResourceLocationIndex(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetProgramResourceLocationIndexEXT(uint program, ProgramInterface programInterface, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate void glGetProgramResourceName(uint program, ProgramInterface programInterface, uint index, int bufSize, int* length, StringBuilder name);
 		internal unsafe delegate void glGetProgramStageiv(uint program, ShaderType shadertype, ProgramStagePName pname, int* values);
 		internal delegate void glGetProgramStringARB(ProgramTarget target, ProgramStringProperty pname, IntPtr @string);
 		internal unsafe delegate void glGetProgramStringNV(uint id, VertexAttribEnumNV pname, byte* program);
@@ -1246,19 +1248,19 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetSemaphoreParameterui64vEXT(uint semaphore, SemaphoreParameterName pname, ulong* @params);
 		internal delegate void glGetSeparableFilter(SeparableTargetEXT target, PixelFormat format, PixelType type, IntPtr row, IntPtr column, IntPtr span);
 		internal delegate void glGetSeparableFilterEXT(SeparableTargetEXT target, PixelFormat format, PixelType type, IntPtr row, IntPtr column, IntPtr span);
-		internal unsafe delegate void glGetShaderInfoLog(uint shader, int bufSize, int* length, sbyte* infoLog);
+		internal unsafe delegate void glGetShaderInfoLog(uint shader, int bufSize, int* length, StringBuilder infoLog);
 		internal unsafe delegate void glGetShaderiv(uint shader, ShaderParameterName pname, int* @params);
 		internal unsafe delegate void glGetShaderPrecisionFormat(ShaderType shadertype, PrecisionType precisiontype, int* range, int* precision);
-		internal unsafe delegate void glGetShaderSource(uint shader, int bufSize, int* length, sbyte* source);
-		internal unsafe delegate void glGetShaderSourceARB(uint obj, int maxLength, int* length, sbyte* source);
+		internal unsafe delegate void glGetShaderSource(uint shader, int bufSize, int* length, StringBuilder source);
+		internal unsafe delegate void glGetShaderSourceARB(uint obj, int maxLength, int* length, StringBuilder source);
 		internal unsafe delegate void glGetShadingRateImagePaletteNV(uint viewport, uint entry, uint* rate);
 		internal unsafe delegate void glGetShadingRateSampleLocationivNV(uint rate, uint samples, uint index, int* location);
 		internal unsafe delegate void glGetSharpenTexFuncSGIS(TextureTarget target, float* points);
 		internal delegate ushort glGetStageIndexNV(ShaderType shadertype);
 		internal unsafe delegate byte* glGetString(StringName name);
 		internal unsafe delegate byte* glGetStringi(StringName name, uint index);
-		internal unsafe delegate uint glGetSubroutineIndex(uint program, ShaderType shadertype, sbyte* name);
-		internal unsafe delegate int glGetSubroutineUniformLocation(uint program, ShaderType shadertype, sbyte* name);
+		internal unsafe delegate uint glGetSubroutineIndex(uint program, ShaderType shadertype, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetSubroutineUniformLocation(uint program, ShaderType shadertype, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glGetSynciv(IntPtr sync, SyncParameterName pname, int count, int* length, int* values);
 		internal unsafe delegate void glGetSyncivAPPLE(IntPtr sync, SyncParameterName pname, int count, int* length, int* values);
 		internal unsafe delegate void glGetTexBumpParameterfvATI(GetTexBumpParameterATI pname, float* param);
@@ -1314,22 +1316,22 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetTransformFeedbacki_v(uint xfb, TransformFeedbackPName pname, uint index, int* param);
 		internal unsafe delegate void glGetTransformFeedbacki64_v(uint xfb, TransformFeedbackPName pname, uint index, long* param);
 		internal unsafe delegate void glGetTransformFeedbackiv(uint xfb, TransformFeedbackPName pname, int* param);
-		internal unsafe delegate void glGetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name);
-		internal unsafe delegate void glGetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, sbyte* name);
+		internal unsafe delegate void glGetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name);
+		internal unsafe delegate void glGetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, StringBuilder name);
 		internal unsafe delegate void glGetTransformFeedbackVaryingNV(uint program, uint index, int* location);
-		internal unsafe delegate void glGetTranslatedShaderSourceANGLE(uint shader, int bufSize, int* length, sbyte* source);
-		internal unsafe delegate uint glGetUniformBlockIndex(uint program, sbyte* uniformBlockName);
+		internal unsafe delegate void glGetTranslatedShaderSourceANGLE(uint shader, int bufSize, int* length, StringBuilder source);
+		internal unsafe delegate uint glGetUniformBlockIndex(uint program, [MarshalAs(UnmanagedType.LPStr)] string uniformBlockName);
 		internal delegate int glGetUniformBufferSizeEXT(uint program, int location);
 		internal unsafe delegate void glGetUniformdv(uint program, int location, double* @params);
 		internal unsafe delegate void glGetUniformfv(uint program, int location, float* @params);
 		internal unsafe delegate void glGetUniformfvARB(uint programObj, int location, float* @params);
 		internal unsafe delegate void glGetUniformi64vARB(uint program, int location, long* @params);
 		internal unsafe delegate void glGetUniformi64vNV(uint program, int location, long* @params);
-		internal unsafe delegate void glGetUniformIndices(uint program, int uniformCount, sbyte* uniformNames, uint* uniformIndices);
+		internal unsafe delegate void glGetUniformIndices(uint program, int uniformCount, [MarshalAs(UnmanagedType.LPStr)] string[] uniformNames, uint* uniformIndices);
 		internal unsafe delegate void glGetUniformiv(uint program, int location, int* @params);
 		internal unsafe delegate void glGetUniformivARB(uint programObj, int location, int* @params);
-		internal unsafe delegate int glGetUniformLocation(uint program, sbyte* name);
-		internal unsafe delegate int glGetUniformLocationARB(uint programObj, sbyte* name);
+		internal unsafe delegate int glGetUniformLocation(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
+		internal unsafe delegate int glGetUniformLocationARB(uint programObj, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate IntPtr glGetUniformOffsetEXT(uint program, int location);
 		internal unsafe delegate void glGetUniformSubroutineuiv(ShaderType shadertype, int location, uint* @params);
 		internal unsafe delegate void glGetUniformui64vARB(uint program, int location, ulong* @params);
@@ -1344,7 +1346,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetVariantFloatvEXT(uint id, GetVariantValueEXT value, float* data);
 		internal unsafe delegate void glGetVariantIntegervEXT(uint id, GetVariantValueEXT value, int* data);
 		internal delegate void glGetVariantPointervEXT(uint id, GetVariantValueEXT value, IntPtr data);
-		internal unsafe delegate int glGetVaryingLocationNV(uint program, sbyte* name);
+		internal unsafe delegate int glGetVaryingLocationNV(uint program, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal unsafe delegate void glGetVertexArrayIndexed64iv(uint vaobj, uint index, VertexArrayPName pname, long* param);
 		internal unsafe delegate void glGetVertexArrayIndexediv(uint vaobj, uint index, VertexArrayPName pname, int* param);
 		internal unsafe delegate void glGetVertexArrayIntegeri_vEXT(uint vaobj, uint index, VertexArrayPName pname, int* param);
@@ -1383,7 +1385,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glGetVideoivNV(uint video_slot, uint pname, int* @params);
 		internal unsafe delegate void glGetVideoui64vNV(uint video_slot, uint pname, ulong* @params);
 		internal unsafe delegate void glGetVideouivNV(uint video_slot, uint pname, uint* @params);
-		internal unsafe delegate Delegate glGetVkProcAddrNV(sbyte* name);
+		internal unsafe delegate Delegate glGetVkProcAddrNV([MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate void glGlobalAlphaFactorbSUN(sbyte factor);
 		internal delegate void glGlobalAlphaFactordSUN(double factor);
 		internal delegate void glGlobalAlphaFactorfSUN(float factor);
@@ -1437,7 +1439,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glIndexxvOES(int* component);
 		internal delegate void glInitNames();
 		internal delegate void glInsertComponentEXT(uint res, uint src, uint num);
-		internal unsafe delegate void glInsertEventMarkerEXT(int length, sbyte* marker);
+		internal unsafe delegate void glInsertEventMarkerEXT(int length, [MarshalAs(UnmanagedType.LPStr)] string marker);
 		internal unsafe delegate void glInstrumentsBufferSGIX(int size, int* buffer);
 		internal delegate void glInterleavedArrays(InterleavedArrayFormat format, int stride, IntPtr pointer);
 		internal delegate void glInterpolatePathsNV(uint resultPath, uint pathA, uint pathB, float weight);
@@ -1471,7 +1473,7 @@ namespace dgtk.OpenGL
 		internal delegate bool glIsMemoryObjectEXT(uint memoryObject);
 		internal delegate bool glIsNameAMD(uint identifier, uint name);
 		internal delegate bool glIsNamedBufferResidentNV(uint buffer);
-		internal unsafe delegate bool glIsNamedStringARB(int namelen, sbyte* name);
+		internal unsafe delegate bool glIsNamedStringARB(int namelen, [MarshalAs(UnmanagedType.LPStr)] string name);
 		internal delegate bool glIsObjectBufferATI(uint buffer);
 		internal delegate bool glIsOcclusionQueryNV(uint id);
 		internal delegate bool glIsPathNV(uint path);
@@ -1509,7 +1511,7 @@ namespace dgtk.OpenGL
 
 		#region L:
 
-		internal unsafe delegate void glLabelObjectEXT(uint type, uint @object, int length, sbyte* label);
+		internal unsafe delegate void glLabelObjectEXT(uint type, uint @object, int length, [MarshalAs(UnmanagedType.LPStr)] string label);
 		internal delegate void glLGPUCopyImageSubDataNVX(uint sourceGpu, uint destinationGpuMask, uint srcName, uint srcTarget, int srcLevel, int srcX, int srxY, int srcZ, uint dstName, uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, int width, int height, int depth);
 		internal delegate void glLGPUInterlockNVX();
 		internal delegate void glLGPUNamedBufferSubDataNVX(uint gpuMask, uint buffer, IntPtr offset, int size, IntPtr data);
@@ -1878,7 +1880,7 @@ namespace dgtk.OpenGL
 		internal delegate void glNamedRenderbufferStorageMultisampleAdvancedAMD(uint renderbuffer, int samples, int storageSamples, InternalFormat internalformat, int width, int height);
 		internal delegate void glNamedRenderbufferStorageMultisampleCoverageEXT(uint renderbuffer, int coverageSamples, int colorSamples, InternalFormat internalformat, int width, int height);
 		internal delegate void glNamedRenderbufferStorageMultisampleEXT(uint renderbuffer, int samples, InternalFormat internalformat, int width, int height);
-		internal unsafe delegate void glNamedStringARB(uint type, int namelen, sbyte* name, int stringlen, sbyte* @string);
+		internal unsafe delegate void glNamedStringARB(uint type, int namelen, [MarshalAs(UnmanagedType.LPStr)] string name, int stringlen, [MarshalAs(UnmanagedType.LPStr)] string @string);
 		internal delegate void glNewList(uint list, ListMode mode);
 		internal delegate uint glNewObjectBufferATI(int size, IntPtr pointer, ArrayObjectUsageATI usage);
 		internal delegate void glNormal3b(sbyte nx, sbyte ny, sbyte nz);
@@ -1919,10 +1921,10 @@ namespace dgtk.OpenGL
 
 		#region O:
 
-		internal unsafe delegate void glObjectLabel(ObjectIdentifier identifier, uint name, int length, sbyte* label);
-		internal unsafe delegate void glObjectLabelKHR(ObjectIdentifier identifier, uint name, int length, sbyte* label);
-		internal unsafe delegate void glObjectPtrLabel(IntPtr ptr, int length, sbyte* label);
-		internal unsafe delegate void glObjectPtrLabelKHR(IntPtr ptr, int length, sbyte* label);
+		internal unsafe delegate void glObjectLabel(ObjectIdentifier identifier, uint name, int length, [MarshalAs(UnmanagedType.LPStr)] string label);
+		internal unsafe delegate void glObjectLabelKHR(ObjectIdentifier identifier, uint name, int length, [MarshalAs(UnmanagedType.LPStr)] string label);
+		internal unsafe delegate void glObjectPtrLabel(IntPtr ptr, int length, [MarshalAs(UnmanagedType.LPStr)] string label);
+		internal unsafe delegate void glObjectPtrLabelKHR(IntPtr ptr, int length, [MarshalAs(UnmanagedType.LPStr)] string label);
 		internal delegate uint glObjectPurgeableAPPLE(uint objectType, uint name, uint option);
 		internal delegate uint glObjectUnpurgeableAPPLE(uint objectType, uint name, uint option);
 		internal delegate void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
@@ -2228,9 +2230,9 @@ namespace dgtk.OpenGL
 		internal delegate void glPushAttrib(AttribMask mask);
 		internal delegate void glPushClientAttrib(ClientAttribMask mask);
 		internal delegate void glPushClientAttribDefaultEXT(ClientAttribMask mask);
-		internal unsafe delegate void glPushDebugGroup(DebugSource source, uint id, int length, sbyte* message);
-		internal unsafe delegate void glPushDebugGroupKHR(DebugSource source, uint id, int length, sbyte* message);
-		internal unsafe delegate void glPushGroupMarkerEXT(int length, sbyte* marker);
+		internal unsafe delegate void glPushDebugGroup(DebugSource source, uint id, int length, [MarshalAs(UnmanagedType.LPStr)] string message);
+		internal unsafe delegate void glPushDebugGroupKHR(DebugSource source, uint id, int length, [MarshalAs(UnmanagedType.LPStr)] string message);
+		internal unsafe delegate void glPushGroupMarkerEXT(int length, [MarshalAs(UnmanagedType.LPStr)] string marker);
 		internal delegate void glPushMatrix();
 		internal delegate void glPushName(uint name);
 		#endregion
@@ -2242,7 +2244,7 @@ namespace dgtk.OpenGL
 		internal unsafe delegate uint glQueryMatrixxOES(int* mantissa, int* exponent);
 		internal delegate void glQueryObjectParameteruiAMD(QueryTarget target, uint id, uint pname, OcclusionQueryEventMaskAMD param);
 		internal unsafe delegate int glQueryResourceNV(uint queryType, int tagId, uint count, int* buffer);
-		internal unsafe delegate void glQueryResourceTagNV(int tagId, sbyte* tagString);
+		internal unsafe delegate void glQueryResourceTagNV(int tagId, [MarshalAs(UnmanagedType.LPStr)] string tagString);
 		#endregion
 
 		#region R:
@@ -2449,8 +2451,8 @@ namespace dgtk.OpenGL
 		internal delegate void glShaderOp1EXT(VertexShaderOpEXT op, uint res, uint arg1);
 		internal delegate void glShaderOp2EXT(VertexShaderOpEXT op, uint res, uint arg1, uint arg2);
 		internal delegate void glShaderOp3EXT(VertexShaderOpEXT op, uint res, uint arg1, uint arg2, uint arg3);
-		internal unsafe delegate void glShaderSource(uint shader, int count, sbyte* @string, int* length);
-		internal unsafe delegate void glShaderSourceARB(uint shaderObj, int count, sbyte* @string, int* length);
+		internal unsafe delegate void glShaderSource(uint shader, int count, [MarshalAs(UnmanagedType.LPStr)] string[] @string, int* length);
+		internal unsafe delegate void glShaderSourceARB(uint shaderObj, int count, [MarshalAs(UnmanagedType.LPStr)] string[] @string, int* length);
 		internal delegate void glShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding);
 		internal delegate void glShadingRateImageBarrierNV(Boolean synchronize);
 		internal unsafe delegate void glShadingRateImagePaletteNV(uint viewport, uint first, int count, uint* rates);
@@ -2462,8 +2464,8 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glSignalSemaphoreui64NVX(uint signalGpu, int fenceObjectCount, uint* semaphoreArray, ulong* fenceValueArray);
 		internal delegate void glSignalVkFenceNV(ulong vkFence);
 		internal delegate void glSignalVkSemaphoreNV(ulong vkSemaphore);
-		internal unsafe delegate void glSpecializeShader(uint shader, sbyte* pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue);
-		internal unsafe delegate void glSpecializeShaderARB(uint shader, sbyte* pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue);
+		internal unsafe delegate void glSpecializeShader(uint shader, [MarshalAs(UnmanagedType.LPStr)] string pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue);
+		internal unsafe delegate void glSpecializeShaderARB(uint shader, [MarshalAs(UnmanagedType.LPStr)] string pEntryPoint, uint numSpecializationConstants, uint* pConstantIndex, uint* pConstantValue);
 		internal delegate void glSpriteParameterfSGIX(SpriteParameterNameSGIX pname, float param);
 		internal unsafe delegate void glSpriteParameterfvSGIX(SpriteParameterNameSGIX pname, float* @params);
 		internal delegate void glSpriteParameteriSGIX(SpriteParameterNameSGIX pname, int param);
@@ -2748,8 +2750,8 @@ namespace dgtk.OpenGL
 		internal delegate void glTransformFeedbackBufferBase(uint xfb, uint index, uint buffer);
 		internal delegate void glTransformFeedbackBufferRange(uint xfb, uint index, uint buffer, IntPtr offset, int size);
 		internal unsafe delegate void glTransformFeedbackStreamAttribsNV(int count, int* attribs, int nbuffers, int* bufstreams, uint bufferMode);
-		internal unsafe delegate void glTransformFeedbackVaryings(uint program, int count, sbyte* varyings, TransformFeedbackBufferMode bufferMode);
-		internal unsafe delegate void glTransformFeedbackVaryingsEXT(uint program, int count, sbyte* varyings, uint bufferMode);
+		internal unsafe delegate void glTransformFeedbackVaryings(uint program, int count, [MarshalAs(UnmanagedType.LPStr)] string[] varyings, TransformFeedbackBufferMode bufferMode);
+		internal unsafe delegate void glTransformFeedbackVaryingsEXT(uint program, int count, [MarshalAs(UnmanagedType.LPStr)] string[] varyings, uint bufferMode);
 		internal unsafe delegate void glTransformFeedbackVaryingsNV(uint program, int count, int* locations, uint bufferMode);
 		internal unsafe delegate void glTransformPathNV(uint resultPath, uint srcPath, PathTransformType transformType, float* transformValues);
 		internal delegate void glTranslated(double x, double y, double z);
