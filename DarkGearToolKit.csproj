@@ -65,6 +65,7 @@
     <Compile Include="OpenGL\OpenGLInitDels.cs" />
     <Compile Include="OpenGL\OpenGLMethods.cs" />
     <Compile Include="OpenGL\OpenGLDelegates.cs" />
+    <Compile Include="OpenGL\OpenGLHelpers.cs" />
     <Compile Include="events\dgtk_MouseWheelEventArgs.cs" />
     <Compile Include="events\dgtk_OnUpdateEventArgs.cs" />
     <Compile Include="events\dgtk_OnRenderEventArgs.cs" />
