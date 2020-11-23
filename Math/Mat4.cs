@@ -137,17 +137,18 @@ namespace dgtk.Math
 		public override int GetHashCode()
 		{
 			int hashCode = 0;
-				unchecked {
-					hashCode += 1000000007 * v_Row0.GetHashCode();
-					hashCode += 1000000009 * v_Row1.GetHashCode();
-					hashCode += 1000000021 * v_Row2.GetHashCode();
-					hashCode += 1000000033 * v_Row3.GetHashCode();
-				}
-					return hashCode;
+			unchecked {
+				hashCode += 1000000007 * v_Row0.GetHashCode();
+				hashCode += 1000000009 * v_Row1.GetHashCode();
+				hashCode += 1000000021 * v_Row2.GetHashCode();
+				hashCode += 1000000033 * v_Row3.GetHashCode();
+			}
+			return hashCode;
 		}
 		#endregion
 		
 		#region PROPIEDADES:
+
 		public Vector4 Row0
 		{
 			get { return this.v_Row0;}
@@ -157,6 +158,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Row1
 		{
 			get { return this.v_Row1;}
@@ -166,6 +168,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Row2
 		{
 			get { return this.v_Row2;}
@@ -175,6 +178,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Row3
 		{
 			get { return this.v_Row3;}
@@ -184,6 +188,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Column0
 		{
 			get { return  new Vector4(v_Row0.X, v_Row1.X, v_Row2.X, v_Row3.X);}
@@ -193,6 +198,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Column1
 		{
 			get { return  new Vector4(v_Row0.Y, v_Row1.Y, v_Row2.Y, v_Row3.Y);}
@@ -202,6 +208,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Column2
 		{
 			get { return  new Vector4(v_Row0.Z, v_Row1.Z, v_Row2.Z, v_Row3.Z);}
@@ -211,6 +218,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Vector4 Column3
 		{
 			get { return  new Vector4(v_Row0.W, v_Row1.W, v_Row2.W, v_Row3.W);}
@@ -220,6 +228,7 @@ namespace dgtk.Math
 				this.FloatMatrix = this.ToFloat();
 			}
 		}
+
 		public Single[] ToFloat()
 		{
 			return new float[]
@@ -230,6 +239,7 @@ namespace dgtk.Math
 				v_Row0.W, v_Row1.W, v_Row2.W, v_Row3.W
 			};
 		}
+
 		#endregion
 	}
 }
