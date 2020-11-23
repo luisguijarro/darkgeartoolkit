@@ -79,9 +79,10 @@
     <Compile Include="events\dgtk_MouseEnterLeaveEventArgs.cs" />
     <Compile Include="events\dgtk_MouseMoveEventArgs.cs" />
     <Compile Include="events\dgtk_events_tools.cs" />
+    <Compile Include="Math\Mat2.cs" />
     <Compile Include="Math\Mat3.cs" />
-    <Compile Include="Math\Size.cs" />
     <Compile Include="Math\Mat4.cs" />
+    <Compile Include="Math\Size.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />
