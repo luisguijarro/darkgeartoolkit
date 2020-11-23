@@ -77,16 +77,26 @@ namespace dgtk.Math
 		public override int GetHashCode()
 		{
 			int hashCode = 0;
-				unchecked {
-					hashCode += 1000000007 * v_Row0.GetHashCode();
-					hashCode += 1000000009 * v_Row1.GetHashCode();
-					hashCode += 1000000021 * v_Row2.GetHashCode();
-				}
-					return hashCode;
+			unchecked 
+			{
+				hashCode += 1000000007 * v_Row0.GetHashCode();
+				hashCode += 1000000009 * v_Row1.GetHashCode();
+				hashCode += 1000000021 * v_Row2.GetHashCode();
+			}
+			return hashCode;
 		}
 
 		#endregion
-		
+
+		public Single[] ToFloat()
+		{
+			return new float[]
+			{
+				v_Row0.X, v_Row1.X, v_Row2.X,  
+				v_Row0.Y, v_Row1.Y, v_Row2.Y,  
+				v_Row0.Z, v_Row1.Z, v_Row2.Z
+			};
+		}		
 		
 		#region PROPIEDADES:
 		public Vector3 Row0
