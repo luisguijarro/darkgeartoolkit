@@ -5,11 +5,11 @@ namespace dgtk.Math
 	/// <summary>
 	/// Matrix 3x3 dimensions.
 	/// </summary>
-	public struct Mat2 : IEquatable<Mat3>
+	public struct Mat2 : IEquatable<Mat2>
 	{
 		internal Vector2 v_Row0;
 		internal Vector2 v_Row1;
-		public static readonly Mat2 Identity = new Mat2(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1));
+		public static readonly Mat2 Identity = new Mat2(new Vector2(1, 0), new Vector2(0, 1));
 		public Mat2(Vector2 Row0, Vector2 Row1)
 		{
 			this.v_Row0 = Row0;
@@ -17,12 +17,12 @@ namespace dgtk.Math
 		}
 		public Mat2 Traspose()
 		{
-			this = new Mat2(this.Columna0, this.Columna1, this.Columna2);
+			this = new Mat2(this.Columna0, this.Columna1);
 			return this;
 		}
 		public Mat2 TrasposeCopy()
 		{
-			Mat2 mret = new Mat2(this.Columna0, this.Columna1, this.Columna2);
+			Mat2 mret = new Mat2(this.Columna0, this.Columna1);
 			return mret;
 		}
 		#region Operadores
