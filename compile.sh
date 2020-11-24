@@ -55,7 +55,7 @@ showfoot()
 {
     echo ""
     echo "\e[1m\e[38;2;128;128;255m"$barra
-    echo "\e[0m Compilation Finished    \e[1m\e[38;2;255;255;128mWarnings\e[0m: \e[1m\e[38;2;255;255;255m" $1 "\e[0m    \e[1m\e[38;2;255;128;128mErrors\e[0m: \e[1m\e[38;2;255;255;255m$2\e[0m"
+    echo "\e[0m Compilation Finished    \e[1m\e[38;2;255;255;128mWarnings\e[0m: \e[1m\e[38;2;255;255;255m" $1 "\e[0m    \e[1m\e[38;2;255;128;128mErrors\e[0m: \e[1m\e[38;2;255;255;255m " $2 "\e[0m"
     echo "\e[1m\e[38;2;128;128;255m"$barra"\e[0m"
 }
 
@@ -82,14 +82,27 @@ case "$1" in
         case $line in
         *warning*) echo ${line%%:*}":" "\e[1m\e[38;2;255;255;128mWarning\e[0m:" ${line##*:}
         war=$(($war+1))
-        echo $war
+        echo $war > war.tmp
         ;;
         *error*) echo ${line%%:*}":" "\e[1m\e[38;2;255;128;128mError\e[0m:" ${line##*:}
         err=$(($err+1))
+        echo $err > err.tmp
         ;;
         esac
     done #<"$salida"
-    echo $war
+    #Leer err.tmp y war.tmp y eliminarlos.
+    if [ -f ./war.tmp ];
+    then
+        war=$(cat war.tmp)
+        rm war.tmp
+    fi
+    #echo $war
+    if [ -f ./err.tmp ];
+    then
+        err=$(<err.tmp)
+        rm err.tmp
+    fi
+    #echo $err
     showfoot $war $err
     break
     ;;
