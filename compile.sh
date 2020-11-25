@@ -77,7 +77,7 @@ case "$1" in
     cp dgtk.dll.config ./bin/Debug/
     war=0
     err=0
-    #salida=$(csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll)
+    
     csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll | while read -r line; do    
         case $line in
         *warning*) echo ${line%%:*}":" "\e[1m\e[38;2;255;255;128mWarning\e[0m:" ${line##*:}
@@ -89,29 +89,41 @@ case "$1" in
         echo $err > err.tmp
         ;;
         esac
-    done #<"$salida"
-    #Leer err.tmp y war.tmp y eliminarlos.
-    if [ -f ./war.tmp ];
-    then
-        war=$(cat war.tmp)
-        rm war.tmp
-    fi
-    #echo $war
-    if [ -f ./err.tmp ];
-    then
-        err=$(<err.tmp)
-        rm err.tmp
-    fi
-    #echo $err
-    showfoot $war $err
+    done
+
     break
     ;;
     *)
     makedir "./bin"
     makedir "./bin/Release"
     cp dgtk.dll.config ./bin/Release/
-    csc -nologo -unsafe -target:library -recurse:./*.cs -out:./bin/Release/dgtk.dll
+    war=0
+    err=0
+    csc -nologo -unsafe -target:library -recurse:./*.cs -out:./bin/Release/dgtk.dll | while read -r line; do    
+        case $line in
+        *warning*) echo ${line%%:*}":" "\e[1m\e[38;2;255;255;128mWarning\e[0m:" ${line##*:}
+        war=$(($war+1))
+        echo $war > war.tmp
+        ;;
+        *error*) echo ${line%%:*}":" "\e[1m\e[38;2;255;128;128mError\e[0m:" ${line##*:}
+        err=$(($err+1))
+        echo $err > err.tmp
+        ;;
+        esac
+    done
     break;
     ;;
 esac
 
+if [ -f ./war.tmp ];
+then
+    war=$(cat war.tmp)
+    rm war.tmp
+fi
+
+if [ -f ./err.tmp ];
+then
+    err=$(cat err.tmp)
+    rm err.tmp
+fi
+showfoot $war $err
