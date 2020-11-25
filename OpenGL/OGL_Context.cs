@@ -43,7 +43,7 @@ namespace dgtk.OpenGL
             this.ptr_xglwin = xglwin;
             this.ptr_GLContext = GLContextPointer;
 
-            dgtk.OpenGL.OGL_SharedContext.LinkContext(this.ptr_GLContext);
+            dgtk.OpenGL.OGL_SharedContext.LinkContext(this.ptr_GLContext); // Solo se usa para el conteo.
         }
 
         public void Dispose()
