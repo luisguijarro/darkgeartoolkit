@@ -17,12 +17,14 @@ namespace dgtk.OpenGL
 
         internal static void InitSharedContext()
         {
-            os = dgtk.Platforms.Platform.Windows;
+            os = dgtk.Platforms.Tools.GetPlatform();
             switch (os)
             {
                 case dgtk.Platforms.Platform.Windows:
+                    CreateWin32Context();
                     break;
                 case dgtk.Platforms.Platform.Linux_X11:
+                    CreateLinuxContext();
                     break;
                 case dgtk.Platforms.Platform.Linux_Wayland:
                     break;
@@ -31,35 +33,38 @@ namespace dgtk.OpenGL
 
         private static void CreateLinuxContext()
         {
-            IntPtr display = dgtk.Platforms.X11.Imports.XOpenDisplay(IntPtr.Zero);
-            int screen = dgtk.Platforms.X11.Imports.XDefaultScreen(display);
+            /*IntPtr display*/Display = dgtk.Platforms.X11.Imports.XOpenDisplay(IntPtr.Zero);
+            int screen = dgtk.Platforms.X11.Imports.XDefaultScreen(Display);
             
-            DeviceC_SurfaceHandle = dgtk.Platforms.X11.Imports.XRootWindow(display, screen);
+            DeviceC_SurfaceHandle = dgtk.Platforms.X11.Imports.XRootWindow(Display, screen);
             
             int[] att = new int[]{ (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_RGBA, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DEPTH_SIZE, 1, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DOUBLEBUFFER, 0 };
             
-            dgtk.Platforms.X11.XVisualInfo visual = dgtk.Platforms.X11.glx.glXChooseVisual(display, screen, att);
+            dgtk.Platforms.X11.XVisualInfo visual = dgtk.Platforms.X11.glx.glXChooseVisual(Display, screen, att);
 
             IntPtr shareListConext = new IntPtr(0);
-            p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(display, ref visual, shareListConext, true);
+            p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(Display, ref visual, shareListConext, true);
             if (p_SharedContext == IntPtr.Zero)
             {
-                p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(display, ref visual, shareListConext, false);
+                p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(Display, ref visual, shareListConext, false);
                 if (p_SharedContext == IntPtr.Zero)
                 {
                     throw new Exception("ERROR: Shared Context Creation FAIL!!!");
                 }
             }
-
-            // Deshabilitar todo por defecto.
-			foreach (dgtk.OpenGL.EnableCap cap in Enum.GetValues(typeof(dgtk.OpenGL.EnableCap)))
-			{
-				dgtk.OpenGL.GL.glDisable(cap);
-			}
-			foreach (dgtk.OpenGL.EnableCap cap in Enum.GetValues(typeof(dgtk.OpenGL.EnableCap))) 
-			{
-				dgtk.OpenGL.GL.glDisableClientState (cap);
-			}
+            if (MakeCurrent())
+            {
+                // Deshabilitar todo por defecto.
+                foreach (dgtk.OpenGL.EnableCap cap in Enum.GetValues(typeof(dgtk.OpenGL.EnableCap)))
+                {
+                    //dgtk.OpenGL.GL.glDisable(cap);
+                }
+                foreach (dgtk.OpenGL.EnableCap cap in Enum.GetValues(typeof(dgtk.OpenGL.EnableCap)))
+                {
+                    //dgtk.OpenGL.GL.glDisableClientState (cap);
+                }
+            }
+            UnMakeCurrent();
         }
 
         private static void CreateWin32Context()
