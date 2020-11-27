@@ -34,17 +34,9 @@ namespace dgtk.Math
 		{
 			Mat4 ret = Mat4.Identity;
 
-            float invRL = 1.0f / (right - left);
-            float invTB = 1.0f / (top - bottom);
-            float invFN = 1.0f / (zFar - zNear);
-
-            ret.v_Row0.X = 2f * invRL;
-            ret.v_Row1.Y = 2f * invTB;
-            ret.v_Row2.Z = -2f * invFN;
-
-            ret.v_Row3.X = -(right + left) * invRL;
-            ret.v_Row3.Y = -(top + bottom) * invTB;
-            ret.v_Row3.Z = -(zFar + zNear) * invFN;
+			ret.v_Row0 = new Vector4(2f/(right-left), 0, 0, -(right+left)/(right-left));
+			ret.v_Row1 = new Vector4(0, 2f/(top-bottom), 0, -(top+bottom)/(top-bottom));
+			ret.v_Row2 = new Vector4(0, 0, -2/(zFar-zNear), -(zFar+zNear)/(zFar-zNear));
 
             return ret;
 		}
@@ -222,24 +214,7 @@ namespace dgtk.Math
 		/// <param name="center">Vector3 con las coordenadas sobre las que se va a realizar el giro.</param>
 		/// <returns>Matriz de transformación de un giro en torno a un punto en el espacio bidimensional.</returns>
 		public static Vector2 TwistVector2AroundPoint2D(Vector2 point2d, float degrees, Vector2 center)
-		{
-			/*Vector3 v_center = new Vector3(center.X, center.Y, 0);
-			//Mat4 ret;
-			float cos = (float)System.Math.Cos(dgtk.Math.Tools.DegreesToRadians(degrees));
-            float sin = (float)System.Math.Sin(dgtk.Math.Tools.DegreesToRadians(degrees));
-
-            //ret = Mat4.Identity;
-            Vector2 Row0 = new Vector2(cos, sin);
-            Vector2 Row1 = new Vector2(-sin, cos);
-            
-            Mat4 precam = MakeTraslationMatrix(-v_center);
-			Mat4 poscam = MakeTraslationMatrix(v_center);
-            
-            Vector2 ret = new Vector2((Row0.X * point2d.X) + (Row0.Y * point2d.Y), (Row1.X * point2d.X)+(Row1.Y*point2d.Y));
-            
-            
-            return ret;*/
-			
+		{			
 			//Mat4 ret;
 			Vector3 v_center = new Vector3(center.X, center.Y, 0);
 			Vector4 vtemp = new Vector4(point2d.X, point2d.Y, 0, 0);
