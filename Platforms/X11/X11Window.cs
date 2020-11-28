@@ -36,6 +36,7 @@ namespace dgtk.Platforms.X11
 		IntPtr WM_STATE_MAXIMIZED_VER;
 		IntPtr WM_ALLOWED_ACTION;
 		IntPtr WM_ACTION_RESIZE;
+		IntPtr WM_ICON;
 		#endregion
 
         private string s_title;
@@ -87,12 +88,12 @@ namespace dgtk.Platforms.X11
 			this.MouseLeave += delegate { };
 			this.RenderFrame += delegate { };
 
-            if (Imports.XInitThreads() == 0)
+            if (Imports.XInitThreads() == 0) // Esencial.
 			{
 				throw new Exception("XInitThreads(): fails");
 			}
             this.ptr_display = Imports.XOpenDisplay(null);
-			//Imports.XSynchronize(this.ptr_display, true); //It slows everything down. Use only for x11 debug
+			// Imports.XSynchronize(this.ptr_display, true); //It slows everything down. Use only for x11 debug
 			
             this.ScreenId = Imports.XDefaultScreen(this.ptr_display);
             
@@ -113,7 +114,7 @@ namespace dgtk.Platforms.X11
 			XWA.border_pixel = Imports.XWhitePixel(this.ptr_display, this.Visual.screen);
 			XWA.event_mask = (IntPtr)this.eventMask;
             
-			WinValueMask wvm = (WinValueMask.BorderPixel | WinValueMask.ColorMap | WinValueMask.EventMask | WinValueMask.BackPixel);
+			WinValueMask wvm = (WinValueMask.BackPixmap | WinValueMask.BorderPixmap | WinValueMask.BorderPixel | WinValueMask.ColorMap | WinValueMask.EventMask | WinValueMask.BackPixel);
 			
 			//Console.WriteLine("Depth: "+this.Visual.depth);
 			//Console.WriteLine("BitsPerRGB: "+this.Visual.BitsPerRGB);
@@ -124,19 +125,27 @@ namespace dgtk.Platforms.X11
 			this.ptr_handle = Imports.XCreateWindow(this.ptr_display, this.ptr_rootwin, 0, 0, (uint)width, (uint)height, 0, (int)this.Visual.depth, CreateWindowClass.InputOutput, this.Visual.Visual, wvm, this.XWA);
 			
 			Imports.XStoreName(this.ptr_display, this.ptr_handle, this.s_title);
-			Imports.XUnlockDisplay(this.ptr_display);
+			//Imports.XUnlockDisplay(this.ptr_display);
 
 			this.RegisterEventsAtoms();
 			Imports.XSelectInput(this.ptr_display, this.ptr_handle, this.eventMask);
 			Imports.XMapWindow(this.ptr_display, this.ptr_handle);
-
+			
+			Imports.XUnlockDisplay(this.ptr_display);
+			
 			this.GetSize();
 
 			IntPtr xglwin = OGLPreparation.Getglxwin(this.ptr_display, FBConfig, this.ptr_handle);
+
+			if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
+			{
+				dgtk.OpenGL.OGL_SharedContext.InitSharedContext();
+			}
+
 			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 			this.GL_Context.X11UnMakeCurrent();
 			this.b_created = true;
-			//this.isRunning = true; Will be use in Run() Method.
+			this.isRunning = true; //Lo quitamos del método Run() 
         }
 
 		#region Public Methods
@@ -150,7 +159,6 @@ namespace dgtk.Platforms.X11
 				{
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 					
-					//this.GL_Context.X11SwapBuffers();
 					this.GL_Context.X11UnMakeCurrent();
 				}
 			}
@@ -226,6 +234,7 @@ namespace dgtk.Platforms.X11
 			this.WM_STATE_MAXIMIZED_HOR = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_MAXIMIZED_HORZ", false);
 			this.WM_STATE_MAXIMIZED_VER = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_MAXIMIZED_VERT", false);
 			this.WM_ACTION_RESIZE = Imports.XInternAtom(this.ptr_display, "_NET_WM_ACTION_RESIZE", false);
+			this.WM_ICON = Imports.XInternAtom(this.ptr_display, "_NEW_WM_ICON", false);
 			this.WM_STATE_TOGGLE = (IntPtr)2;
 			this.WM_STATE_ADD = (IntPtr)1;
 			this.WM_STATE_REMOVE = (IntPtr)0;
@@ -243,10 +252,13 @@ namespace dgtk.Platforms.X11
 				dgtk.GameControlsManager.DetectNewDevices();
                 
 				XEvent xevento = new XEvent();
+				
 				while(Imports.XPending(this.ptr_display)>0)
-				{					
+				{				
+					Imports.XLockDisplay(this.ptr_display);	
 					Imports.XCheckWindowEvent(this.ptr_display, this.ptr_handle, this.eventMask, ref xevento);
 					Imports.XCheckTypedWindowEvent(this.ptr_display, this.ptr_handle, XEventType.ClientMessage, ref xevento);
+					Imports.XUnlockDisplay(this.ptr_display);
 					KeyCode kc;
 					switch(xevento.type)
 					{
@@ -338,6 +350,7 @@ namespace dgtk.Platforms.X11
 						default:
 							break;
 					}
+					
 				}
 				TimeSpan retraso = DateTime.Now - dt_ini;
                 if (retraso.TotalMilliseconds < (1f/(float)ups)*1000f)
@@ -403,7 +416,6 @@ namespace dgtk.Platforms.X11
 				this.WindowSizeChange(this, new dgtk_WinResizeEventArgs(this.ancho, this.alto));
 			//}
 		}
-
 
 		private void Maximizar()
 		{
