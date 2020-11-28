@@ -222,7 +222,7 @@ namespace dgtk.Math
 			Mat4 precam = MakeTraslationMatrix(-v_center);
 			Mat4 poscam = MakeTraslationMatrix(v_center);
 			
-			Vector4 v3f = vtemp * (precam * m4 * poscam);
+			Vector4 v3f = vtemp * (poscam * m4 * precam);
 			return new Vector2(v3f.X, v3f.Y);
 		}
 
@@ -241,7 +241,7 @@ namespace dgtk.Math
 			Mat4 m4z = MakeRotationMatrixZ(Tools.DegreesToRadians(degreesZ));
 			Mat4 precam = MakeTraslationMatrix(-center);
 			Mat4 poscam = MakeTraslationMatrix(center);
-			return precam * m4x * m4y * m4z * poscam;
+			return poscam * m4x * m4y * m4z * precam;
 		}
 
 		/// <summary>
