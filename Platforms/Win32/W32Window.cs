@@ -183,6 +183,7 @@ namespace dgtk.Platforms.Win32
 			this.GL_Context.Win32UnMakeCurrent();
 			
 			this.b_created = true;
+            this.isRunning = true; // Lo retiramos de Run();
         }
 
 		#region Public Methods
@@ -236,7 +237,7 @@ namespace dgtk.Platforms.Win32
 
 		public void ProcessEvent(ref uint ups)
 		{
-			this.isRunning = true;
+			//this.isRunning = true;
 			MSG w32msg = new MSG();
 			dgtk.GameControlsManager.DetectNewDevices(); // Puesto aquí para las pruebas.
 			
