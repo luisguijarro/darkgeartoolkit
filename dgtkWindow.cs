@@ -286,7 +286,7 @@ namespace dgtk
             this.th_update.Start();
             this.th_redraw = new Thread(this.Render_frame);
             this.th_redraw.Start();
-            this.NativeWindow.IsRunning = true;
+            // this.NativeWindow.IsRunning = true; // No debería estar aquí, al menos en linux
         }
 
         public void Run(uint fps, uint ups, uint ueps)
@@ -299,7 +299,7 @@ namespace dgtk
             this.th_update.Start();
             this.th_redraw = new Thread(this.Render_frame);
             this.th_redraw.Start();
-            this.NativeWindow.IsRunning = true;
+            // this.NativeWindow.IsRunning = true; // No deberia estar aquí, al menos in linux
         }
 
         public bool MakeCurrent()
