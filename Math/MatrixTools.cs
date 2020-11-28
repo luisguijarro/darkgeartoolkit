@@ -189,8 +189,8 @@ namespace dgtk.Math
 		{
 			Mat4 precam = MakeTraslationMatrix(-center);
 			Mat4 poscam = MakeTraslationMatrix(center);
-			return precam * m4 * poscam;
-		}
+			return poscam * m4 * precam; // <----- (Dirección de Orden).
+        }
 
 		/// <summary>
 		/// Metodo que devuelve una matriz de transformación de un giro en torno a un punto en el espacio Bidimensional.
@@ -204,7 +204,7 @@ namespace dgtk.Math
 			Mat4 m4 = MakeRotationMatrixZ(Tools.DegreesToRadians(degrees));
 			Mat4 precam = MakeTraslationMatrix(-v_center);
 			Mat4 poscam = MakeTraslationMatrix(v_center);
-			return precam * m4 * poscam;
+			return poscam * m4 * precam; // <----- (Dirección de Orden).
 		}
 		
 		/// <summary>
