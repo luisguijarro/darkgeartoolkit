@@ -34,11 +34,6 @@ namespace dgtk.OpenGL
         {
             os = dgtk.Platforms.Platform.Linux_X11;
 
-			if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
-			{
-				dgtk.OpenGL.OGL_SharedContext.InitSharedContext();
-			}
-
             this.ptr_Display_Device = Display;
             this.ptr_xglwin = xglwin;
             this.ptr_GLContext = GLContextPointer;
