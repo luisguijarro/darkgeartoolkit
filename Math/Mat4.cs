@@ -92,7 +92,7 @@ namespace dgtk.Math
 			ret.v_Row1.X = ((izq.Row1.X * der.Row0.X) + (izq.Row1.Y * der.Row1.X) + (izq.Row1.Z * der.Row2.X) + (izq.Row1.W * der.Row3.X));
 			ret.v_Row1.Y = ((izq.Row1.X * der.Row0.Y) + (izq.Row1.Y * der.Row1.Y) + (izq.Row1.Z * der.Row2.Y) + (izq.Row1.W * der.Row3.Y));
 			ret.v_Row1.Z = ((izq.Row1.X * der.Row0.Z) + (izq.Row1.Y * der.Row1.Z) + (izq.Row1.Z * der.Row2.Z) + (izq.Row1.W * der.Row3.Z));
-			ret.v_Row1.W = ((izq.Row1.X * der.Row0.Z) + (izq.Row1.Y * der.Row1.Z) + (izq.Row1.Z * der.Row2.Z) + (izq.Row1.W * der.Row3.Z));
+			ret.v_Row1.W = ((izq.Row1.X * der.Row0.W) + (izq.Row1.Y * der.Row1.W) + (izq.Row1.Z * der.Row2.W) + (izq.Row1.W * der.Row3.W));
 			ret.v_Row2.X = ((izq.Row2.X * der.Row0.X) + (izq.Row2.Y * der.Row1.X) + (izq.Row2.Z * der.Row2.X) + (izq.Row2.W * der.Row3.X));
 			ret.v_Row2.Y = ((izq.Row2.X * der.Row0.Y) + (izq.Row2.Y * der.Row1.Y) + (izq.Row2.Z * der.Row2.Y) + (izq.Row2.W * der.Row3.Y));
 			ret.v_Row2.Z = ((izq.Row2.X * der.Row0.Z) + (izq.Row2.Y * der.Row1.Z) + (izq.Row2.Z * der.Row2.Z) + (izq.Row2.W * der.Row3.Z));
