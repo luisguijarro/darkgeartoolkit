@@ -388,7 +388,7 @@ namespace dgtk.OpenAL
         public static extern void alDistanceModel( AL_DistanceModel distanceModel );
     }
 
-    public static partial class EXT
+    public static partial class EFX
     {
         /* Create Effect objects. */
         [SuppressUnmanagedCodeSecurity]
