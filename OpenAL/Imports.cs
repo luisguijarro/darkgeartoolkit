@@ -166,53 +166,53 @@ namespace dgtk.OpenAL
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListenerf", ExactSpelling = true)]
-        public static extern void alListenerf( AL_ListenerfParam param, float value );
+        public static extern void alListenerf( AL_ListenerParam param, float value );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListener3f", ExactSpelling = true)]
-        public static extern void alListener3f( AL_Listener3Param param, float value1, float value2, float value3 );
+        public static extern void alListener3f( AL_ListenerParam param, float value1, float value2, float value3 );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListenerfv", ExactSpelling = true)]
-        public static extern void alListenerfv( AL_Listener3Param param, float[] values ); 
+        public static extern void alListenerfv( AL_ListenerParam param, float[] values ); 
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListeneri", ExactSpelling = true)]
-        public static extern void alListeneri( ALEnum param, int value );
+        public static extern void alListeneri( AL_ListenerParam param, int value );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListener3i", ExactSpelling = true)]
-        public static extern void alListener3i( AL_Listener3Param param, int value1, int value2, int value3 );
+        public static extern void alListener3i( AL_ListenerParam param, int value1, int value2, int value3 );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListeneriv", ExactSpelling = true)]
-        public static extern void alListeneriv( AL_Listener3Param param, int[] values );
+        public static extern void alListeneriv( AL_ListenerParam param, int[] values );
 
 
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListenerf", ExactSpelling = true)]
-        public static unsafe extern void alGetListenerf( AL_ListenerfParam param, [Out] float* value );
+        public static unsafe extern void alGetListenerf( AL_ListenerParam param, [Out] float* value );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListener3f", ExactSpelling = true)]
-        public static unsafe extern void alGetListener3f( AL_Listener3Param param, [Out] float* value1, [Out] float* value2, [Out] float* value3 );
+        public static unsafe extern void alGetListener3f( AL_ListenerParam param, [Out] float* value1, [Out] float* value2, [Out] float* value3 );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListenerfv", ExactSpelling = true)]
-        public static unsafe extern void alGetListenerfv( AL_Listener3Param param, [Out] float* values );
+        public static unsafe extern void alGetListenerfv( AL_ListenerParam param, [Out] float* values );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListeneri", ExactSpelling = true)]
-        public static unsafe extern void alGetListeneri( ALEnum param, [Out] int* value );
+        public static unsafe extern void alGetListeneri( AL_ListenerParam param, [Out] int* value );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListener3i", ExactSpelling = true)]
-        public static unsafe extern void alGetListener3i( AL_Listener3Param param, [Out] int* value1, [Out] int* value2, [Out] int* value3 );
+        public static unsafe extern void alGetListener3i( AL_ListenerParam param, [Out] int* value1, [Out] int* value2, [Out] int* value3 );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListeneriv", ExactSpelling = true)]
-        public static unsafe extern void alGetListeneriv( AL_Listener3Param param, [Out] int* values );
+        public static unsafe extern void alGetListeneriv( AL_ListenerParam param, [Out] int* values );
 
 
 

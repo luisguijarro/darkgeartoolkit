@@ -114,18 +114,13 @@ namespace dgtk.OpenAL
 		AL_BUFFERS_PROCESSED = ALEnum.AL_BUFFERS_PROCESSED
 	}
 	
-	public enum AL_ListenerfParam : int
+	public enum AL_ListenerParam : int
 	{
-		AL_GAIN = ALEnum.AL_GAIN
-	}
-	
-	public enum AL_Listener3Param : int
-	{
+		AL_GAIN = ALEnum.AL_GAIN,
 		AL_POSITION = ALEnum.AL_POSITION, 
 		AL_VELOCITY = ALEnum.AL_VELOCITY, 
-		AL_DIRECTION = ALEnum.AL_DIRECTION
-	}
-	
+		AL_ORIENTATION = ALEnum.AL_ORIENTATION
+	}	
 	
 	public enum AL_GetParam : int
 	{
@@ -167,6 +162,7 @@ namespace dgtk.OpenAL
 		AL_STREAMING = ALEnum.AL_STREAMING,
 		AL_UNDETERMINED = ALEnum.AL_UNDETERMINED,
 	}
+
     public enum ALEnum : int
     {
         /* Enumerant values begin at column 50. No tabs. */
