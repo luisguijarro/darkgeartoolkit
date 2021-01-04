@@ -32,9 +32,19 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="dgtkWindow.cs" />
+    <Compile Include="dgtkWFControl.cs" />
+    <Compile Include="dgtkWFControlGL.cs">
+      <DependentUpon>dgtkWFControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Platforms\I_Window.cs" />
     <Compile Include="Platforms\Tools.cs" />
     <Compile Include="Platforms\X11\enums.cs" />
@@ -63,6 +73,7 @@
     <Compile Include="OpenGL\GLInternalTool.cs" />
     <Compile Include="OpenGL\OpenGLInternals.cs" />
     <Compile Include="OpenGL\OpenGLInitDels.cs" />
+    <Compile Include="OpenGL\OpenGLInitDelsExts.cs" />
     <Compile Include="OpenGL\OpenGLMethods.cs" />
     <Compile Include="OpenGL\OpenGLDelegates.cs" />
     <Compile Include="OpenGL\OpenGLHelpers.cs" />
@@ -115,6 +126,7 @@
     <Compile Include="OpenAL\Imports.cs" />  
     <Compile Include="OpenAL\Helper.cs" />   
     <Compile Include="OpenAL\OAL_Context.cs" />  
+    <Compile Include="SoundSystem\Init.cs" />  
   </ItemGroup>
   <ItemGroup>
     <None Include="dgtk.dll.config" />
