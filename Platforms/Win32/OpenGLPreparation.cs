@@ -110,6 +110,7 @@ namespace dgtk.Platforms.Win32
             ret = new OpenGL.OGL_Context(DeviceC, GLContextPointer);
 			ret.Win32MakeCurrent();
 			dgtk.OpenGL.DelegastesInitGL.InitDelegates();
+			dgtk.OpenGL.DelegastesInitGL.InitDelegatesExts();
 			ret.Win32UnMakeCurrent();
             return ret;
         }
