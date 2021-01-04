@@ -103,20 +103,24 @@ namespace dgtk.OpenGL
 				throw new Exception("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 			
-			IntPtr GLDummyContext = dgtk.Platforms.Win32.wgl.wglCreateContext(DeviceC_SurfaceHandle); //¿ESTÁ CASCANDO O NO? En el Statico creo que sí.
+			/*IntPtr GLDummyContext*/p_SharedContext = dgtk.Platforms.Win32.wgl.wglCreateContext(DeviceC_SurfaceHandle); //¿ESTÁ CASCANDO O NO? En el Statico creo que sí.
 
-			if (GLDummyContext == IntPtr.Zero) //NO ES NULL
+			if (/*GLDummyContext*/p_SharedContext == IntPtr.Zero) //NO ES NULL
 			{
 				error = Marshal.GetLastWin32Error();
 				throw new Exception("Error wglCreateContext "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 
-			if(!dgtk.Platforms.Win32.wgl.wglMakeCurrent(DeviceC_SurfaceHandle, GLDummyContext)) // FALLA en Estatico con NVIDIA
+			if(!dgtk.Platforms.Win32.wgl.wglMakeCurrent(DeviceC_SurfaceHandle, /*GLDummyContext*/p_SharedContext))
 			{
 				error = Marshal.GetLastWin32Error();
 				throw new Exception("MakeCurrentFail"+error.ToString()+": " + new Win32Exception(error).Message);				
 				//Console.WriteLine("MakeCurrentFail"+this.error.ToString()+": " + new Win32Exception(this.error).Message);
 			}
+
+            // FALTA CREAR CONTEXTO DEFINITIVO PARA p_SharedContext
+
+
         }
 
         #region LinkSection
