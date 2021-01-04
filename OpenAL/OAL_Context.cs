@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace dgtk.OpenAL
 {
-    internal class OAL_Context : IDisposable
+    public class OAL_Context : IDisposable
     {
         private IntPtr ptr_OpenALContext;
         private IntPtr ptr_OutPutDevice;
@@ -30,28 +30,32 @@ namespace dgtk.OpenAL
 		{
 			try
 			{
-				this.ptr_OutPutDevice = ALC.alcOpenDevice(this.s_actualOutPutDevice);
+				this.ptr_OutPutDevice = ALC.alcOpenDevice(this.s_actualOutPutDevice); // Establecemos el dispositivo de salida elegido
+				
+				#if DEBUG
 				if (this.ptr_OutPutDevice == IntPtr.Zero)
 				{
-					#if DEBUG
 					throw new Exception("alcOpenDevice Fail tu Open Device: "+this.s_actualOutPutDevice);
-					#endif
 				}
-				this.ptr_OpenALContext = ALC.alcCreateContext(this.ptr_OutPutDevice, this.pb_context_attributes);
+				#endif
+
+				this.ptr_OpenALContext = ALC.alcCreateContext(this.ptr_OutPutDevice, this.pb_context_attributes); // Creamos el contexto de salida.
+				
+				#if DEBUG
 				if (this.ptr_OpenALContext == IntPtr.Zero)
 				{
-					#if DEBUG
 					throw new Exception("alcCreateContext Fail tu Create Context to Device: "+this.s_actualOutPutDevice);
-					#endif
 				}
+				#endif
 				
-	 			this.ptr_InPutdevice = ALC.alcCaptureOpenDevice(this.s_actualInPutDevice, 22050/*Hz*/, ALC_BufferFormat.AL_FORMAT_MONO16, 4410);
+	 			this.ptr_InPutdevice = ALC.alcCaptureOpenDevice(this.s_actualInPutDevice, 22050/*Hz*/, ALC_BufferFormat.AL_FORMAT_MONO16, 4410); // Establecemos el dispositivo de entrada elegido
+				
+				#if DEBUG
 				if (this.ptr_InPutdevice == IntPtr.Zero)
 				{
-					#if DEBUG
 					throw new Exception("alcCaptureOpenDevice Fail tu Open Record Device: "+this.s_actualInPutDevice);
-					#endif
 				}
+				#endif
 				
 				//this.Recordcontext = ALCMethods.
 				ALC.alcMakeContextCurrent(this.ptr_OpenALContext);
@@ -60,7 +64,7 @@ namespace dgtk.OpenAL
 			{
 				#if DEBUG
 				Console.WriteLine("AL ERROR: "+ALC.alcGetError(this.ptr_OutPutDevice));
-					#endif
+				#endif
 			}
 		}
 
