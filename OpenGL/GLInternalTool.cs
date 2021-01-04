@@ -33,7 +33,17 @@ namespace dgtk.OpenGL
 
 			if (p_ret != IntPtr.Zero)
 			{
-				return Marshal.GetDelegateForFunctionPointer(p_ret, type_origen);
+				try
+				{
+					return Marshal.GetDelegateForFunctionPointer(p_ret, type_origen);
+				}
+				catch
+				{
+					#if DEBUG
+					Console.WriteLine(type_origen.ToString());
+					#endif
+					return null;
+				}
 			}
 			else
 			{
