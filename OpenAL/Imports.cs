@@ -34,8 +34,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetContextsDevice", ExactSpelling = true)]
         public static extern IntPtr alcGetContextsDevice( IntPtr context );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcOpenDevice", ExactSpelling = true)]
         public static extern IntPtr alcOpenDevice( string devicename );
@@ -60,8 +58,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetEnumValue", ExactSpelling = true)]
         public static extern ALCEnum alcGetEnumValue( IntPtr device, string enumname );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetString", ExactSpelling = true)]
         public static extern IntPtr alcGetString( IntPtr device, ALC_GetStringParam param );
@@ -69,8 +65,6 @@ namespace dgtk.OpenAL
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetIntegerv", ExactSpelling = true)]
         public static extern void alcGetIntegerv( IntPtr device, ALC_GetIntegerParam param, int size, int[] data );
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcCaptureOpenDevice", ExactSpelling = true)]
@@ -143,13 +137,9 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetDouble", ExactSpelling = true)]
         public static extern double alGetDouble( AL_GetParam param );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetError", ExactSpelling = true)]
         public static extern AL_ERROR alGetError();
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetBoolean", ExactSpelling = true)]
@@ -162,8 +152,6 @@ namespace dgtk.OpenAL
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetEnumValue", ExactSpelling = true)]
         public static extern bool alGetEnumValue( string ename );
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListenerf", ExactSpelling = true)]
@@ -189,8 +177,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alListeneriv", ExactSpelling = true)]
         public static extern void alListeneriv( AL_ListenerifParam param, int[] values );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListenerf", ExactSpelling = true)]
         public static unsafe extern void alGetListenerf( AL_ListenerifParam param, [Out] float* value );
@@ -215,8 +201,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetListeneriv", ExactSpelling = true)]
         public static unsafe extern void alGetListeneriv( AL_Listener3vParam param, [Out] int* values );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGenSources", ExactSpelling = true)]
         public static unsafe extern void alGenSources(Int32 n, [Out] UInt32* idsources);
@@ -228,8 +212,6 @@ namespace dgtk.OpenAL
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alIsSource", ExactSpelling = true)]
         public static extern bool alIsSource( uint sid ); 
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourcef", ExactSpelling = true)]
@@ -255,8 +237,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourceiv", ExactSpelling = true)]
         public static unsafe extern void alSourceiv( uint sid, AL_Source3Param param, int* values );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetSourcef", ExactSpelling = true)]
         public static unsafe extern void alGetSourcef( uint sid, AL_SourcefParam param, [Out] float* value );
@@ -281,8 +261,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetSourceiv", ExactSpelling = true)]
         public static unsafe extern void alGetSourceiv( uint sid,  AL_Source3Param param, [Out] int* values );
 
-
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourcePlayv", ExactSpelling = true)]
         public static unsafe extern void alSourcePlayv( int ns, uint* sids );
@@ -298,8 +276,6 @@ namespace dgtk.OpenAL
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourcePausev", ExactSpelling = true)]
         public static unsafe extern void alSourcePausev( int ns, uint* sids );
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourcePlay", ExactSpelling = true)]
@@ -317,7 +293,6 @@ namespace dgtk.OpenAL
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourcePause", ExactSpelling = true)]
         public static extern void alSourcePause( uint sid );
 
-
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourceQueueBuffers", ExactSpelling = true)]
         public static unsafe extern void alSourceQueueBuffers( uint sid, int numEntries, uint* bids );
@@ -325,8 +300,6 @@ namespace dgtk.OpenAL
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alSourceUnqueueBuffers", ExactSpelling = true)]
         public static unsafe extern void alSourceUnqueueBuffers( uint sid, int numEntries, uint* bids );
-
-
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGenBuffers", ExactSpelling = true)]
@@ -415,4 +388,170 @@ namespace dgtk.OpenAL
         public static extern void alDistanceModel( AL_DistanceModel distanceModel );
     }
 
+    public static partial class EXT
+    {
+        /* Create Effect objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGenEffects", ExactSpelling = true)]
+        public static unsafe extern void alGenEffects( int n, uint* effects );
+
+        /* Delete Effect objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alDeleteEffects", ExactSpelling = true)]
+        public static unsafe extern void alDeleteEffects( int n, uint* effects );
+
+        /* Verify a handle is a valid Effect. */ 
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alIsEffect", ExactSpelling = true)]
+        public static extern bool alIsEffect( uint eid );
+
+        /* Set an integer parameter for an Effect object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alEffecti", ExactSpelling = true)]
+        public static extern void alEffecti( uint eid, AL_EffectParam param, int value); 
+
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alEffectiv", ExactSpelling = true)]
+        public static unsafe extern void alEffectiv( uint eid, AL_EffectParam param, int* values ); 
+
+        /* Set a floating point parameter for an Effect object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alEffectf", ExactSpelling = true)]
+        public static extern void alEffectf( uint eid, AL_EffectParam param, float value); 
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alEffectfv", ExactSpelling = true)]
+        public static unsafe extern void alEffectfv( uint eid, AL_EffectParam param, float* values ); 
+
+        /* Get an integer parameter for an Effect object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetEffecti", ExactSpelling = true)]
+        public static unsafe extern void alGetEffecti( uint eid, AL_EffectParam pname, int* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetEffrctiv", ExactSpelling = true)]
+        public static unsafe extern void alGetEffrctiv( uint eid, AL_EffectParam pname, int* values );
+
+        /* Get a floating point parameter for an Effect object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetEffectf", ExactSpelling = true)]
+        public static unsafe extern void alGetEffectf( uint eid, AL_EffectParam pname, float* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetEffectfv", ExactSpelling = true)]
+        public static unsafe extern void alGetEffectfv( uint eid, AL_EffectParam pname, float* values );
+
+
+        /**
+        * Filter object functions
+        */
+
+        /* Create Filter objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGenFilters", ExactSpelling = true)]
+        public static unsafe extern void alGenFilters( int n, uint* filters ); 
+
+        /* Delete Filter objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alDeleteFilters", ExactSpelling = true)]
+        public static unsafe extern void alDeleteFilters( int n, uint* filters );
+
+        /* Verify a handle is a valid Filter. */ 
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alIsFilter", ExactSpelling = true)]
+        public static extern bool alIsFilter( uint fid );
+
+        /* Set an integer parameter for a Filter object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilteri", ExactSpelling = true)]
+        public static extern void alFilteri( uint fid, AL_FilterParam param, int value ); 
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilteriv", ExactSpelling = true)]
+        public static unsafe extern void alFilteriv( uint fid, AL_FilterParam param, int* values ); 
+
+        /* Set a floating point parameter for an Filter object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilterf", ExactSpelling = true)]
+        public static extern void alFilterf( uint fid, AL_FilterParam param, float value); 
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilterfv", ExactSpelling = true)]
+        public static unsafe extern void alFilterfv( uint fid, AL_FilterParam param, float* values ); 
+
+        /* Get an integer parameter for a Filter object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilteri", ExactSpelling = true)]
+        public static unsafe extern void alGetFilteri( uint fid, AL_FilterParam pname, int* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilteriv", ExactSpelling = true)]
+        public static unsafe extern void alGetFilteriv( uint fid, AL_FilterParam pname, int* values );
+
+        /* Get a floating point parameter for a Filter object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilterf", ExactSpelling = true)]
+        public static unsafe extern void alGetFilterf( uint fid, AL_FilterParam pname, float* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilterfv", ExactSpelling = true)]
+        public static unsafe extern void alGetFilterfv( uint fid, AL_FilterParam pname, float* values );
+
+
+        /**
+        * Auxiliary Slot object functions
+        */
+
+        /* Create Auxiliary Slot objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGenAuxiliaryEffectSlots", ExactSpelling = true)]
+        public static unsafe extern void alGenAuxiliaryEffectSlots( int n, uint* slots ); 
+
+        /* Delete Auxiliary Slot objects. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alDdeleteAuxiliaryEffectSlots", ExactSpelling = true)]
+        public static unsafe extern void alDdeleteAuxiliaryEffectSlots( int n, uint* slots );
+
+        /* Verify a handle is a valid Auxiliary Slot. */ 
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alIsAuxiliaryEffectSlot", ExactSpelling = true)]
+        public static extern bool alIsAuxiliaryEffectSlot( uint slot ); 
+
+        /* Set an integer parameter for a Auxiliary Slot object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alAuxiliaryEffectSloti", ExactSpelling = true)]
+        public static extern void alAuxiliaryEffectSloti( uint asid, AL_AuxiliaryEffectSlot param, int value ); 
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alAuxiliaryEffectSlotiv", ExactSpelling = true)]
+        public static unsafe extern void alAuxiliaryEffectSlotiv( uint asid, AL_AuxiliaryEffectSlot param, int* values ); 
+
+        /* Set a floating point parameter for an Auxiliary Slot object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alAuxiliaryEffectSlotf", ExactSpelling = true)]
+        public static extern void alAuxiliaryEffectSlotf( uint asid, AL_AuxiliaryEffectSlot param, float value ); 
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alAuxiliaryEffectSlotfv", ExactSpelling = true)]
+        public static unsafe extern void alAuxiliaryEffectSlotfv( uint asid, AL_AuxiliaryEffectSlot param, float* values ); 
+
+        /* Get an integer parameter for a Auxiliary Slot object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetAuxiliaryEffectSloti", ExactSpelling = true)]
+        public static unsafe extern void alGetAuxiliaryEffectSloti( uint asid, AL_AuxiliaryEffectSlot pname, int* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetAuxiliaryEffectSlotiv", ExactSpelling = true)]
+        public static unsafe extern void alGetAuxiliaryEffectSlotiv( uint asid, AL_AuxiliaryEffectSlot pname, int* values );
+
+        /* Get a floating point parameter for a Auxiliary Slot object. */
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetAuxiliaryEffectSlotf", ExactSpelling = true)]
+        public static unsafe extern void alGetAuxiliaryEffectSlotf( uint asid, AL_AuxiliaryEffectSlot pname, float* value );
+
+        [SuppressUnmanagedCodeSecurity]
+		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetAuxiliaryEffectSlotfv", ExactSpelling = true)]
+        public static unsafe extern void alGetAuxiliaryEffectSlotfv( uint asid, AL_AuxiliaryEffectSlot pname, float* values );
+    }
 }
