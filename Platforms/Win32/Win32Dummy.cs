@@ -7,7 +7,7 @@ namespace dgtk.Platforms.Win32
     internal class W32Dummy : IDisposable
     {
         internal IntPtr Handle;	
-        private MSG win32msg;
+        //private MSG win32msg;
 
         [DllImport("uxtheme", ExactSpelling = true, CharSet = CharSet.Unicode)]
         internal extern static Int32 SetWindowTheme (IntPtr hWnd, String textSubAppName, String textSubIdList);
