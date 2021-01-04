@@ -124,7 +124,7 @@
     <Compile Include="GameControlSystem\GameControlsManager.cs" />     
     <Compile Include="OpenAL\Enums.cs" />  
     <Compile Include="OpenAL\Imports.cs" />  
-    <Compile Include="OpenAL\Helper.cs" />   
+    <Compile Include="OpenAL\OpenALHelpers.cs" />   
     <Compile Include="OpenAL\OAL_Context.cs" />  
     <Compile Include="SoundSystem\Init.cs" />  
   </ItemGroup>
