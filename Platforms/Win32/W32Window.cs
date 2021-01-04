@@ -7,6 +7,7 @@ namespace dgtk.Platforms.Win32
 {
     internal class W32Window : I_Window
     {
+		private IntPtr DeviceC;
         private IntPtr ptr_handle;
 		private IntPtr notificationHandle; // InPtr para notificaciones de cambio de dispositivos (Plug y UnPlug).
 		private bool isRunning;
@@ -174,7 +175,7 @@ namespace dgtk.Platforms.Win32
 			#endregion
 
 
-			IntPtr DeviceC;
+			//IntPtr DeviceC;
 			
 			OGLPreparation.PreparationOGLContext(this.ptr_handle, 32, 24, out DeviceC);
 			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
@@ -185,6 +186,14 @@ namespace dgtk.Platforms.Win32
 			this.b_created = true;
             this.isRunning = true; // Lo retiramos de Run();
         }
+
+		/*internal void OGLContextGen() // Metodo creado para crear el contexto en el hilo del render (Mierda de Windows!)
+		{
+			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
+			this.GL_Context.Win32MakeCurrent();
+			this.SwapControlSupported = VSync.SupportedVSync();
+			this.GL_Context.Win32UnMakeCurrent();
+		}*/
 
 		#region Public Methods
 
@@ -247,6 +256,7 @@ namespace dgtk.Platforms.Win32
 
 				int GetMsgResult;                
 				while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
+				//while(Imports.PeekMessage(out w32msg, this.ptr_handle, 0, 0, 1))
 				{
 					//lock(this.lockobject)
 					//{
