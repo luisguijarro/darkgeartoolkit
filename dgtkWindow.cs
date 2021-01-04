@@ -21,6 +21,8 @@ namespace dgtk
         private uint ui_c_fps; // Fotogramas por Segundo (CALCULADOS).
         private uint ui_c_fps_show; // Fotogramas por Segundo (CALCULADOS).
 
+        //private bool IsGLConfigSeted;
+
         #region Attribute Events
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose; // Evento de cierre de Ventana
         public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
@@ -191,9 +193,16 @@ namespace dgtk
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
             Core.AddWin(this);
 
+            SoundSystem.Init(); // Creamos el contexto de Audio por defecto.
+
             this.WindowClose += delegate { Core.RemoveWin(this); }; //Inicialización del evento por defecto.
-            this.ProcessEvents(); //Iniciar el procesamiento de Venetos de Ventana.
+            this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
         }
+
+        /*protected virtual void GLConfig()
+        {
+            
+        }*/
 
         private void ProcessEvents()
         {
@@ -205,14 +214,23 @@ namespace dgtk
         private void Render_frame()
         {
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
+            /*if (Platforms.Tools.GetPlatform() == Platforms.Platform.Windows) // Mierda de Windows.
+            {
+                ((Platforms.Win32.W32Window)this.NativeWindow).OGLContextGen(); // Creamos el Contexto de OpenGL para windows en el mismo hilo que el Renderizado.
+            }*/
             while(!this.NativeWindow.IsRunning) // Esperar a que la ventana nativa exista.
             {
                 //Esperar al inicio de ProcessEvent();
                 Thread.Sleep(1000);
             }
+            /*this.MakeCurrent();
+            this.GLConfig(); // LLamamos al metodo de Configuración de OpenGL
+            this.UnMakeCurrent();*/
+            //this.IsGLConfigSeted = true;
             while(this.NativeWindow.IsRunning) // Procesar mientras la ventana nativa exista y este funcionando.
             {
                 DateTime dt_ini = DateTime.Now;
+                
                 this.NativeWindow.Redraw(); // Lanza renderizado, el cual lanza evento de Renderizado.
                 if ((this.ui_fps > 0) && !this.NativeWindow.VSyncEnabled)
                 {
