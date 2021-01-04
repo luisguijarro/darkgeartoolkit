@@ -10,6 +10,9 @@ namespace dgtk.Platforms.Win32
         [DllImport("User32.dll", SetLastError = true)]
         internal static extern System.Int32 GetMessage(ref MSG msg, IntPtr windowHandle, int messageFilterMin, int messageFilterMax);
 
+        [DllImport("user32.dll")]
+        internal static extern bool PeekMessage(out MSG lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
+
         [SuppressUnmanagedCodeSecurity]
         [DllImport("User32.dll", SetLastError = true)]
         internal static extern Boolean TranslateMessage(ref MSG lpMsg);
