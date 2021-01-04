@@ -66,6 +66,13 @@ namespace dgtk.OpenAL
 			buffer = ret[0];
 		}
 
+		public static uint alGenBuffer()
+		{
+			UInt32[] ret = new uint[1];
+			alGenBuffers(1, out ret);
+			return ret[0];
+		}
+
         public static unsafe void alDeleteBuffer(UInt32 buffer)
 		{
 			UInt32[] arraybuffer = new uint[]{buffer};
