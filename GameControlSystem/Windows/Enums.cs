@@ -15,6 +15,7 @@ namespace dgtk.GameControlSystem.Windows
 		RIDI_DEVICEINFO = 0x2000000b,
 		RIDI_PREPARSEDDATA = 0x20000005
 	}
+	
     internal enum HIDResults : int
 	{
 		HIDP_STATUS_SUCCESS                  = (0x0 << 28) | (0x11 << 16) | 0,
