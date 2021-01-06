@@ -176,12 +176,12 @@ namespace dgtk
             {
                 this.MouseLeave(this, e);
             };
-
+            /*
             this.NativeWindow.RenderFrame += delegate (object sender, dgtk_OnRenderEventArgs e)
             {
                 this.RenderFrame(this, e);
             };
-
+            */
             // Update Frame no se maneja en Ventana nativa.
 
             #endregion
