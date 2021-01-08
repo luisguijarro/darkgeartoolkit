@@ -258,7 +258,7 @@ namespace dgtk.Platforms.Win32
 
 				// int GetMsgResult;                
 				//while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
-				while(Imports.PeekMessage(ref w32msg, this.ptr_handle, 0, 0, 0x0001))
+				while(Imports.PeekMessage(ref w32msg, this.ptr_handle, 0, 0, 0x0001)) // 0x0001 es REMOVE.
 				{
 					//lock(this.lockobject)
 					//{
@@ -283,6 +283,8 @@ namespace dgtk.Platforms.Win32
 			KeyCode kc;
             switch(msg)
 			{
+            	case WindowMessage.NCACTIVATE:
+            		return new IntPtr(0); // Evitar crashes.
 				case WindowMessage.ERASEBKGND:
 					return new IntPtr(1);
 				/*
@@ -426,6 +428,7 @@ namespace dgtk.Platforms.Win32
 						//this.IsRunning = false;
 					}
 					break;*/
+
                 case WindowMessage.SIZE:
 					if (wParam.ToInt64() == 0)
 					{
@@ -458,7 +461,7 @@ namespace dgtk.Platforms.Win32
 					int ancho = this.rect.right-this.rect.left;
 					int alto = this.rect.bottom-this.rect.top;	
                     this.WindowSizeChange(this, new dgtk_WinResizeEventArgs(ancho, alto));
-                    return IntPtr.Zero;
+                    return new IntPtr(0);
             }
 			if ((msg == WindowMessage.CLOSE) && (wParam != new IntPtr(1)))
             {
