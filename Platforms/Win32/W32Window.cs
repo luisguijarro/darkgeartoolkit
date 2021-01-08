@@ -258,7 +258,7 @@ namespace dgtk.Platforms.Win32
 
 				// int GetMsgResult;                
 				//while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
-				while(Imports.PeekMessage(ref w32msg, this.ptr_handle, 0, 0, 0x0001)) // 0x0001 es REMOVE.
+				while(Imports.PeekMessage(ref w32msg, new IntPtr(0), 0, 0, 0x0001)) // 0x0001 es REMOVE.
 				{
 					//lock(this.lockobject)
 					//{
