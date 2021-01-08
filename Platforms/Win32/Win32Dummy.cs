@@ -7,7 +7,8 @@ namespace dgtk.Platforms.Win32
     internal class W32Dummy : IDisposable
     {
         internal IntPtr Handle;	
-        //private MSG win32msg;
+		private WndClassEx wce; // Al ponerlo aqui evitamos que se lo coma el Recolector de basura y se provoque un fallo total.
+		
 
         [DllImport("uxtheme", ExactSpelling = true, CharSet = CharSet.Unicode)]
         internal extern static Int32 SetWindowTheme (IntPtr hWnd, String textSubAppName, String textSubIdList);
@@ -15,14 +16,14 @@ namespace dgtk.Platforms.Win32
         {
             IntPtr mInstancia = Marshal.GetHINSTANCE(typeof(W32Dummy).Module);
 			IntPtr mClassName = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString()+"Dummy"); 
-			WndClassEx wce;
-			wce = new WndClassEx();
-			wce.Size = WndClassEx.SizeInBytes;
-			wce.Style = WinClassStyle.OwnDC;
-			wce.Instance = mInstancia;
-			wce.WndProc = this.WinProcDelegate;
-			wce.ClassName = mClassName;
-            ushort atom = Imports.RegisterClassEx(ref wce);
+			
+			this.wce = new WndClassEx();
+			this.wce.Size = WndClassEx.SizeInBytes;
+			this.wce.Style = WinClassStyle.OwnDC;
+			this.wce.Instance = mInstancia;
+			this.wce.WndProc = this.WinProcDelegate;
+			this.wce.ClassName = mClassName;
+            ushort atom = Imports.RegisterClassEx(ref this.wce);
             if (atom == 0)
 	        {
 	          	throw new Exception(String.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
