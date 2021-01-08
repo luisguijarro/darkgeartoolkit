@@ -143,7 +143,6 @@ namespace dgtk.OpenGL
 			contx--;
 			if (contx <= 0) // Estupidamente paranoico.
 			{
-				UnMakeCurrent();
                 switch(os)
                 {
                     case dgtk.Platforms.Platform.Windows:
