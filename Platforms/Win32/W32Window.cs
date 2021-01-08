@@ -11,6 +11,7 @@ namespace dgtk.Platforms.Win32
         private IntPtr ptr_handle;
 		private IntPtr notificationHandle; // InPtr para notificaciones de cambio de dispositivos (Plug y UnPlug).
 		private WndClassEx wce; // Al ponerlo aqui evitamos que se lo coma el Recolector de basura y se provoque un fallo total.
+		private MSG w32msg; //Evitar al recolector de Basura en la estructura de eventos.
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
@@ -248,7 +249,7 @@ namespace dgtk.Platforms.Win32
 		public void ProcessEvent(ref uint ups)
 		{
 			//this.isRunning = true;
-			MSG w32msg = new MSG();
+			/*MSG*/ this.w32msg = new MSG();
 			dgtk.GameControlsManager.DetectNewDevices(); // Puesto aquí para las pruebas.
 			
 			while(this.isRunning)
@@ -257,7 +258,7 @@ namespace dgtk.Platforms.Win32
 
 				// int GetMsgResult;                
 				//while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
-				while(Imports.PeekMessage(out w32msg, this.ptr_handle, 0, 0, 0x0001))
+				while(Imports.PeekMessage(ref w32msg, this.ptr_handle, 0, 0, 0x0001))
 				{
 					//lock(this.lockobject)
 					//{
