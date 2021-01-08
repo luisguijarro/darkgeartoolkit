@@ -10,6 +10,7 @@ namespace dgtk.Platforms.Win32
 		private IntPtr DeviceC;
         private IntPtr ptr_handle;
 		private IntPtr notificationHandle; // InPtr para notificaciones de cambio de dispositivos (Plug y UnPlug).
+		private WndClassEx wce; // Al ponerlo aqui evitamos que se lo coma el Recolector de basura y se provoque un fallo total.
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
@@ -77,32 +78,32 @@ namespace dgtk.Platforms.Win32
             string s_guid = Guid.NewGuid().ToString();
             IntPtr mClassName = Marshal.StringToHGlobalAuto(s_guid);
             IntPtr mInstancia = Marshal.GetHINSTANCE(typeof(W32Window).Module);
-            this.baseStyle = ( WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings);
+            this.baseStyle = ( WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings | WindowStyle.Border);
             this.ExtendStyle = (ExWindowStyle.WS_EX_APPWINDOW | ExWindowStyle.WS_EX_WINDOWEDGE);
 
-			Win32Rect rect = new Win32Rect();
-			rect.left = posX; 
-			rect.top = posY; 
-			rect.right = (int)(posX + width); 
-			rect.bottom = (int)(posY + height);
-			if (Imports.AdjustWindowRectEx(ref rect, baseStyle, false, ExtendStyle))
+			this.rect = new Win32Rect();
+			this.rect.left = posX; 
+			this.rect.top = posY; 
+			this.rect.right = (int)(posX + width); 
+			this.rect.bottom = (int)(posY + height);
+			if (Imports.AdjustWindowRectEx(ref this.rect, baseStyle, false, ExtendStyle))
 			{
 				//Console.WriteLine("Ajustado");
 			}
-			WndClassEx wce;
+			//  WndClassEx wce;
 			if (!this.registered)
 			{
-				wce = new WndClassEx();
-				wce.Size = WndClassEx.SizeInBytes;
-				wce.Style = WinClassStyle.OwnDC | WinClassStyle.HRedraw | WinClassStyle.VRedraw;
-				wce.Instance = mInstancia;
-				wce.WndProc = WinProcDelegate;
-				wce.ClassName = mClassName;
-				wce.Background = IntPtr.Zero;
+				this.wce = new WndClassEx();
+				this.wce.Size = WndClassEx.SizeInBytes;
+				this.wce.Style = WinClassStyle.OwnDC | WinClassStyle.HRedraw | WinClassStyle.VRedraw;
+				this.wce.Instance = mInstancia;
+				this.wce.WndProc = WinProcDelegate;
+				this.wce.ClassName = mClassName;
+				this.wce.Background = IntPtr.Zero;
 				//wce.Icon = IntPtr.Zero;
 				//wce.IconSm = IntPtr.Zero;
-				wce.Cursor = Imports.LoadCursor(CursorName.Arrow);
-				ushort atom = Imports.RegisterClassEx(ref wce);
+				this.wce.Cursor = Imports.LoadCursor(CursorName.Arrow);
+				ushort atom = Imports.RegisterClassEx(ref this.wce);
 				if (atom == 0)
 				{
 					throw new Exception(String.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
@@ -254,9 +255,9 @@ namespace dgtk.Platforms.Win32
 			{				
 				DateTime dt_ini = DateTime.Now;
 
-				int GetMsgResult;                
-				while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
-				//while(Imports.PeekMessage(out w32msg, this.ptr_handle, 0, 0, 1))
+				// int GetMsgResult;                
+				//while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
+				while(Imports.PeekMessage(out w32msg, this.ptr_handle, 0, 0, 0x0001))
 				{
 					//lock(this.lockobject)
 					//{
