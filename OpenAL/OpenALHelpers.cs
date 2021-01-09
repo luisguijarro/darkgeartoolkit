@@ -89,6 +89,36 @@ namespace dgtk.OpenAL
 			ptr.Free();
 		}
 
+
+        public static void alBufferData( uint idbuffer, AL_FORMAT format, short[] data, int size, int freq )
+		{
+			GCHandle ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
+			alBufferData(idbuffer, format, ptr.AddrOfPinnedObject(), size, freq);
+			ptr.Free();
+		}
+
+        public static void alBufferData( uint idbuffer, AL_FORMAT format, int[] data, int size, int freq )
+		{
+			GCHandle ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
+			alBufferData(idbuffer, format, ptr.AddrOfPinnedObject(), size, freq);
+			ptr.Free();
+		}
+
+        public static void alBufferData( uint idbuffer, AL_FORMAT format, float[] data, int size, int freq )
+		{
+			GCHandle ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
+			alBufferData(idbuffer, format, ptr.AddrOfPinnedObject(), size, freq);
+			ptr.Free();
+		}
+
+        public static void alBufferData( uint idbuffer, AL_FORMAT format, double[] data, int size, int freq )
+		{
+			GCHandle ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
+			alBufferData(idbuffer, format, ptr.AddrOfPinnedObject(), size, freq);
+			ptr.Free();
+		}
+
+
         public static unsafe void alGenSources(Int32 n, out UInt32[] idsources)
 		{
 			UInt32* p_ret = stackalloc UInt32[n];
@@ -386,38 +416,6 @@ namespace dgtk.OpenAL
 			{
 				alDeleteBuffers( buffers.Length, ptr );
 			}
-		}
-
-        public static void alBufferData( uint bid, AL_FORMAT format, short[] data, int size, int freq )
-		{
-			IntPtr data_ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, data_ptr, data.Length);
-			alBufferData( bid, format, data_ptr, size, freq );
-			Marshal.FreeHGlobal(data_ptr);
-		}
-
-        public static void alBufferData( uint bid, AL_FORMAT format, int[] data, int size, int freq )
-		{
-			IntPtr data_ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, data_ptr, data.Length);
-			alBufferData( bid, format, data_ptr, size, freq );
-			Marshal.FreeHGlobal(data_ptr);
-		}
-
-        public static void alBufferData( uint bid, AL_FORMAT format, float[] data, int size, int freq )
-		{
-			IntPtr data_ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, data_ptr, data.Length);
-			alBufferData( bid, format, data_ptr, size, freq );
-			Marshal.FreeHGlobal(data_ptr);
-		}
-
-        public static void alBufferData( uint bid, AL_FORMAT format, double[] data, int size, int freq )
-		{
-			IntPtr data_ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, data_ptr, data.Length);
-			alBufferData( bid, format, data_ptr, size, freq );
-			Marshal.FreeHGlobal(data_ptr);
 		}
 
         public static unsafe void alBufferfv( uint bid, AL_BufferParam param, float[] values )
