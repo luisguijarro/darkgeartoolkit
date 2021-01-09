@@ -184,18 +184,12 @@ namespace dgtk.Platforms.Win32
 			this.GL_Context.Win32MakeCurrent();
 			this.SwapControlSupported = VSync.SupportedVSync();
 			this.GL_Context.Win32UnMakeCurrent();
+
+			dgtk.SoundSystem.Init(); // Iniciamos contexto de sonido de OpenAL.
 			
 			this.b_created = true;
             this.isRunning = true; // Lo retiramos de Run();
         }
-
-		/*internal void OGLContextGen() // Metodo creado para crear el contexto en el hilo del render (Mierda de Windows!)
-		{
-			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
-			this.GL_Context.Win32MakeCurrent();
-			this.SwapControlSupported = VSync.SupportedVSync();
-			this.GL_Context.Win32UnMakeCurrent();
-		}*/
 
 		#region Public Methods
 

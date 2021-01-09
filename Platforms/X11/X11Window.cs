@@ -144,6 +144,9 @@ namespace dgtk.Platforms.X11
 
 			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 			this.GL_Context.X11UnMakeCurrent();
+
+			dgtk.SoundSystem.Init(); // Iniciamos contexto de sonido de OpenAL.
+			
 			this.b_created = true;
 			this.isRunning = true; //Lo quitamos del método Run() 
         }
