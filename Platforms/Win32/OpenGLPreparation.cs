@@ -80,7 +80,8 @@ namespace dgtk.Platforms.Win32
 			uint numFormats;
             if (!wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pixelFormat, out numFormats))
             {
-                throw new Exception("wglChoosePixelFormatARB FAIL!!!");
+				error = Marshal.GetLastWin32Error();
+                throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
             }
         }
 
