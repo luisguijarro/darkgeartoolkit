@@ -193,8 +193,6 @@ namespace dgtk
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
             Core.AddWin(this);
 
-            SoundSystem.Init(); // Creamos el contexto de Audio por defecto.
-
             this.WindowClose += delegate { Core.RemoveWin(this); }; //Inicialización del evento por defecto.
             this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
         }
