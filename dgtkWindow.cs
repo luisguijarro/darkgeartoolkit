@@ -87,7 +87,7 @@ namespace dgtk
                 throw new Exception("Operating System Not Supported");
             }
 
-            this.WindowClose += delegate {}; //Inicialización del evento por defecto.
+            this.WindowClose += delegate { Core.RemoveWin(this); }; //Inicialización del evento por defecto.
             this.WindowSizeChange += delegate {}; //Inicialización del evento por defecto.
             this.WindowStateChange += delegate {}; //Inicialización del evento por defecto.
             this.KeyPulsed += delegate {}; //Inicialización del evento por defecto.
@@ -190,14 +190,8 @@ namespace dgtk
             Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
             Core.AddWin(this);
 
-            this.WindowClose += delegate { Core.RemoveWin(this); }; //Inicialización del evento por defecto.
             this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
         }
-
-        /*protected virtual void GLConfig()
-        {
-            
-        }*/
 
         private void ProcessEvents()
         {
