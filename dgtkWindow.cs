@@ -21,8 +21,6 @@ namespace dgtk
         private uint ui_c_fps; // Fotogramas por Segundo (CALCULADOS).
         private uint ui_c_fps_show; // Fotogramas por Segundo (CALCULADOS).
 
-        //private bool IsGLConfigSeted;
-
         #region Attribute Events
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose; // Evento de cierre de Ventana
         public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
@@ -42,8 +40,7 @@ namespace dgtk
         public event EventHandler<dgtk_InputHatsEventArgs> GameControlEventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> GameControlEventButtons; // Evento de accionamiento de Botones.
         public event EventHandler<dgtk_GameControllerStatusEventArgs> GameControllerStatusChanged; // Evento que se lanza cuando salta algún evento.
-
-
+        
         #endregion
 
         public dgtk_Window() : this(1024, 600, "Dark Gear Tool Kit Window") // Consuctor Básico.
@@ -391,6 +388,10 @@ namespace dgtk
         public uint CalculatedFPS
         {
             get { return this.ui_c_fps_show;}
+        }
+        public OpenAL.OAL_Context OpenALContext
+        {
+            get { return this.NativeWindow.OpenAlContext; }
         }
 
         #endregion

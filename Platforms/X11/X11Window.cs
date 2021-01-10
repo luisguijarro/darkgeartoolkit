@@ -20,6 +20,8 @@ namespace dgtk.Platforms.X11
         private XSetWindowAttributes XWA;
 		private OpenGL.OGL_Context GL_Context;
 
+		private OpenAL.OAL_Context OpenAL_Cntx;
+
 		private LinuxSwapControlExt SwapControlSupported;
 
 		private bool vSyncEnabled;
@@ -145,7 +147,7 @@ namespace dgtk.Platforms.X11
 			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 			this.GL_Context.X11UnMakeCurrent();
 
-			dgtk.SoundSystem.Init(); // Iniciamos contexto de sonido de OpenAL.
+			this.OpenAL_Cntx = new OpenAL.OAL_Context();
 			
 			this.b_created = true;
 			this.isRunning = true; //Lo quitamos del método Run() 
@@ -457,6 +459,10 @@ namespace dgtk.Platforms.X11
             get { return this.s_title;}
             set { this.s_title = value; Imports.XStoreName(this.ptr_display, this.ptr_handle, value);}
         }
+		public OpenAL.OAL_Context OpenAlContext
+		{
+			get { return this.OpenAL_Cntx; }
+		}
         public IntPtr Handle
         {
             get { return this.ptr_handle; }

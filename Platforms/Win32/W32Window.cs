@@ -19,6 +19,8 @@ namespace dgtk.Platforms.Win32
         private bool registered;
 		private OpenGL.OGL_Context GL_Context;
 
+		private OpenAL.OAL_Context OpenAL_Cntx;
+
 		private bool SwapControlSupported;
 
 		private bool vSyncEnabled;
@@ -185,7 +187,7 @@ namespace dgtk.Platforms.Win32
 			this.SwapControlSupported = VSync.SupportedVSync();
 			this.GL_Context.Win32UnMakeCurrent();
 
-			dgtk.SoundSystem.Init(); // Iniciamos contexto de sonido de OpenAL.
+			this.OpenAL_Cntx = new OpenAL.OAL_Context();
 			
 			this.b_created = true;
             this.isRunning = true; // Lo retiramos de Run();
@@ -471,6 +473,10 @@ namespace dgtk.Platforms.Win32
             get { return this.s_title;}
             set { this.s_title = value; Imports.SetWindowText(this.Handle, this.s_title);}
         }
+		public OpenAL.OAL_Context OpenAlContext
+		{
+			get { return this.OpenAL_Cntx; }
+		}
         public IntPtr Handle
         {
             get { return this.ptr_handle; }

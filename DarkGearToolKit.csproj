@@ -90,6 +90,7 @@
     <Compile Include="events\dgtk_MouseEnterLeaveEventArgs.cs" />
     <Compile Include="events\dgtk_MouseMoveEventArgs.cs" />
     <Compile Include="events\dgtk_events_tools.cs" />
+    <Compile Include="events\dgtk_RegenerateSoundContextEventArgs.cs" />
     <Compile Include="Math\Mat2.cs" />
     <Compile Include="Math\Mat3.cs" />
     <Compile Include="Math\Mat4.cs" />
@@ -125,8 +126,7 @@
     <Compile Include="OpenAL\Enums.cs" />  
     <Compile Include="OpenAL\Imports.cs" />  
     <Compile Include="OpenAL\OpenALHelpers.cs" />   
-    <Compile Include="OpenAL\OAL_Context.cs" />  
-    <Compile Include="SoundSystem\Init.cs" />  
+    <Compile Include="OpenAL\OAL_Context.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dgtk.dll.config" />
