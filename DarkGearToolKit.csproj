@@ -129,7 +129,9 @@
     <Compile Include="OpenAL\OAL_Context.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dgtk.dll.config" />
+    <None Include="dgtk.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="DarkGearToolKit.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
