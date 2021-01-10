@@ -236,8 +236,9 @@ namespace dgtk.Platforms.Win32
 
 		public void Close()
 		{
-			Imports.UnregisterDeviceNotification(this.notificationHandle);
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
+			this.OpenAL_Cntx.Dispose();
+			Imports.UnregisterDeviceNotification(this.notificationHandle);
 			this.isRunning = false;
 		}
 		#endregion

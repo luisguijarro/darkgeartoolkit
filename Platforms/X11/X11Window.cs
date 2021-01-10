@@ -224,6 +224,7 @@ namespace dgtk.Platforms.X11
 		public void Close()
 		{
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
+			this.OpenAL_Cntx.Dispose();
 			this.isRunning = false;
 		}
 		#endregion
