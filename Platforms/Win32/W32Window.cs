@@ -93,7 +93,7 @@ namespace dgtk.Platforms.Win32
 			{
 				//Console.WriteLine("Ajustado");
 			}
-			//  WndClassEx wce;
+			
 			if (!this.registered)
 			{
 				this.wce = new WndClassEx();
@@ -113,8 +113,11 @@ namespace dgtk.Platforms.Win32
 				}
 				this.registered = true;
 			}
+
+		#if DEBUG
 			try
-			{
+			{			
+		#endif
 				this.ptr_handle = Imports.CreateWindowEx(ExtendStyle, mClassName, mTitle, baseStyle, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, IntPtr.Zero, IntPtr.Zero, mInstancia, IntPtr.Zero);
 				//Win32Rect temprect;
 				Imports.GetClientRect(this.ptr_handle, out this.rect);
@@ -125,12 +128,14 @@ namespace dgtk.Platforms.Win32
 				Imports.SetFocus(this.ptr_handle);			
 				Imports.ShowWindow(this.ptr_handle, showCmd.SW_SHOW);
 				Imports.UpdateWindow(this.ptr_handle);
+		#if DEBUG
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e);
 				throw new Exception(String.Format("Error: {0} - Fallo en la Creación de la Ventana.", Marshal.GetLastWin32Error()));
 			}
+		#endif
 			if (this.ptr_handle == IntPtr.Zero)
 			{
 				throw new Exception(String.Format("Error: {0} - Fallo en la Creación de la Ventana.", Marshal.GetLastWin32Error()));
@@ -178,14 +183,15 @@ namespace dgtk.Platforms.Win32
 
 			#endregion
 
-
-			//IntPtr DeviceC;
+			#region OpenGL Context
 			
 			OGLPreparation.PreparationOGLContext(this.ptr_handle, 32, 24, out DeviceC);
 			this.GL_Context = OGLPreparation.GenerateOGLContext(DeviceC);
 			this.GL_Context.Win32MakeCurrent();
 			this.SwapControlSupported = VSync.SupportedVSync();
 			this.GL_Context.Win32UnMakeCurrent();
+
+			#endregion
 
 			this.OpenAL_Cntx = new OpenAL.OAL_Context();
 			
