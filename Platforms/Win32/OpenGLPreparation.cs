@@ -8,6 +8,7 @@ namespace dgtk.Platforms.Win32
     {
         public static void PreparationOGLContext(IntPtr SurfaceHandle, int ColorBits, int DepthBits, out IntPtr DeviceC)
         {
+			dgtk.OpenGL.InternalTool.GetOS();
 			int error;
 
             PIXELFORMATDESCRIPTOR pfd = new PIXELFORMATDESCRIPTOR();
@@ -80,11 +81,14 @@ namespace dgtk.Platforms.Win32
 			uint numFormats;
             if (!wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pixelFormat, out numFormats))
             {
+				#if DEBUG
+				
 				// Comentamos por que en algunos equipos siempre devuelve false;
-
 				//error = Marshal.GetLastWin32Error();
                 //throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
-            }
+
+				#endif
+			}
         }
 
         public static unsafe OpenGL.OGL_Context GenerateOGLContext(IntPtr DeviceC) //, IntPtr SharedContext)
