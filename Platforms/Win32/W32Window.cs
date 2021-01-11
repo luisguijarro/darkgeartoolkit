@@ -119,10 +119,8 @@ namespace dgtk.Platforms.Win32
 			{			
 		#endif
 				this.ptr_handle = Imports.CreateWindowEx(ExtendStyle, mClassName, mTitle, baseStyle, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, IntPtr.Zero, IntPtr.Zero, mInstancia, IntPtr.Zero);
-				//Win32Rect temprect;
+				
 				Imports.GetClientRect(this.ptr_handle, out this.rect);
-				//this.ancho = temprect.right-temprect.left;
-				//this.alto = temprect.bottom-temprect.top;	
 
 				Imports.SetForegroundWindow(this.ptr_handle); //Mejorar la prioridad de la ventana.
 				Imports.SetFocus(this.ptr_handle);			
@@ -196,7 +194,7 @@ namespace dgtk.Platforms.Win32
 			this.OpenAL_Cntx = new OpenAL.OAL_Context();
 			
 			this.b_created = true;
-            this.isRunning = true; // Lo retiramos de Run();
+            this.isRunning = true;
         }
 
 		#region Public Methods
@@ -211,7 +209,6 @@ namespace dgtk.Platforms.Win32
 				
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 
-					//this.GL_Context.Win32SwapBuffers();
 					this.GL_Context.Win32UnMakeCurrent();
 				}
 			}
@@ -251,23 +248,19 @@ namespace dgtk.Platforms.Win32
 
 		public void ProcessEvent(ref uint ups)
 		{
-			//this.isRunning = true;
-			/*MSG*/ this.w32msg = new MSG();
+			this.w32msg = new MSG();
 			dgtk.GameControlsManager.DetectNewDevices(); // Puesto aquí para las pruebas.
 			
 			while(this.isRunning)
 			{				
 				DateTime dt_ini = DateTime.Now;
 
-				// int GetMsgResult;                
+				//int GetMsgResult;                
 				//while((GetMsgResult = Imports.GetMessage(ref w32msg, this.ptr_handle, 0, 0)) > 0)
 				while(Imports.PeekMessage(ref w32msg, new IntPtr(0), 0, 0, 0x0001)) // 0x0001 es REMOVE.
 				{
-					//lock(this.lockobject)
-					//{
-						Imports.TranslateMessage(ref w32msg); 
-						Imports.DispatchMessage(ref w32msg); 
-					//}
+					Imports.TranslateMessage(ref w32msg); 
+					Imports.DispatchMessage(ref w32msg); 
 				}
 				TimeSpan retraso = DateTime.Now - dt_ini;
 				if (retraso.TotalMilliseconds < (1f/(float)ups)*1000f)
@@ -290,28 +283,6 @@ namespace dgtk.Platforms.Win32
             		return new IntPtr(0); // Evitar crashes.
 				case WindowMessage.ERASEBKGND:
 					return new IntPtr(1);
-				/*
-				case WindowMessage.DEVICECHANGE:
-					switch(wParam.ToInt64())
-					{
-						case 0x8000: // DBT_DEVICEARRIVAL
-							#if DEBUG
-								Console.WriteLine("Plug HID");
-							#endif
-							Thread.Sleep(100); // Da tiempo a Windows a Listar los dispositivos.
-							dgtk.GameControlsManager.DetectNewDevices();
-							break;
-						case 0x8004: // DBT_DEVICEREMOVECOMPLETE
-							#if DEBUG
-								Console.WriteLine("UnPlug HID");
-							#endif
-							Thread.Sleep(100); // Da tiempo a Windows a Listar los dispositivos.
-							dgtk.GameControlSystem.Windows.GMSystem.RemovedInputDeviceList();
-							break;
-					}
-					//return IntPtr.Zero;
-					break;
-				*/
 				case WindowMessage.INPUT_DEVICE_CHANGE:
 				    if (wParam.ToInt64() == 1)
                     {
@@ -331,9 +302,6 @@ namespace dgtk.Platforms.Win32
 
 				case WindowMessage.INPUT:
 					uint pcbsize=0;
-					#if DEBUG
-						//Console.WriteLine("WM_INPUT: ");
-					#endif
 					int result;
                     if ((result = Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, IntPtr.Zero, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader)))) < 0)
                     { 
@@ -397,20 +365,18 @@ namespace dgtk.Platforms.Win32
 						this.mouseinwindow = true;
 						this.MouseEnter(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Enter));
 					}
-					//return new IntPtr(0);
 					break;
 					
 				case WindowMessage.MOUSELEAVE:
 					this.mouseinwindow = false;
 					this.MouseLeave(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Leave));
-					//return new IntPtr(0);
 					break;
 									
 				case WindowMessage.CHAR: //wParam es ASCII CODE
 					if ((wParam.ToInt32() != 8) && (wParam.ToInt32() != 13) &&(wParam.ToInt32() != 27)) // Discriminar Return, Backspace y ESC
 					{
 						this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs((char)wParam));
-					} //Console.WriteLine("wParam: "+wParam);
+					} 
 					return IntPtr.Zero; 
 					
 				case WindowMessage.KEYDOWN: //wParam es VIRTUAL KEY CODE
@@ -423,22 +389,12 @@ namespace dgtk.Platforms.Win32
 					this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
 					break;
 
-                /*case WindowMessage.SYSCOMMAND:
-					if (wParam.ToInt32() == (int)WM_SYSCOMMANDS.SC_CLOSE)
-					{
-						//this.Close();
-						//this.WindowClose(this, new dgtk_WinCloseEventArgs());
-						//this.IsRunning = false;
-					}
-					break;*/
-
                 case WindowMessage.SIZE:
 					if (wParam.ToInt64() == 0)
 					{
 						if(this.WinState != WindowState.Normal)
 						{
 							this.WinState = WindowState.Normal;
-							//Console.WriteLine("Restaurada");
 							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
 						}
 					}
@@ -447,7 +403,6 @@ namespace dgtk.Platforms.Win32
 						if(this.WinState != WindowState.Minimized)
 						{
 							this.WinState = WindowState.Minimized;
-							//Console.WriteLine("minimized");
 							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
 						}
 					}
@@ -456,7 +411,6 @@ namespace dgtk.Platforms.Win32
 						if (this.WinState != WindowState.Maximized)
 						{
 							this.WinState = WindowState.Maximized;
-							//Console.WriteLine("Maximized");
 							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
 						}
 					}
@@ -470,7 +424,6 @@ namespace dgtk.Platforms.Win32
             {
 				this.Close();
 				return  Imports.DefWindowProcW(handle, msg, wParam, lParam);
-				//return new IntPtr(0);
             } 
             return  Imports.DefWindowProcW(handle, msg, wParam, lParam);
         }
@@ -505,7 +458,6 @@ namespace dgtk.Platforms.Win32
 						Console.WriteLine("Ajustado");
 					}
 					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0004 | 0x0002 | 0x0200));
-					//this.ancho = (int)value.Width; this.alto = (int)value.Height;
 				}
 			}
 			get 
