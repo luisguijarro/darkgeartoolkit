@@ -457,4 +457,179 @@ namespace dgtk.OpenAL
             return alGetStringh((AL_GetStringParam)param);
         }
     }
+
+	public static partial class EFX
+	{
+		public static unsafe uint alGenEffect()
+		{
+			uint[] ret = new uint[1];
+            fixed (uint* retp = ret)
+            {
+                alGenEffects( 1, retp );
+			}
+			return ret[0];
+		}
+
+		public static unsafe uint[] alGenEffects(int n)
+		{
+			uint[] ret = new uint[n];
+            fixed (uint* retp = ret)
+            {
+                alGenEffects( n, retp );
+			}
+			return ret;
+		}
+
+        public static unsafe void alDeleteEffect(uint effect )
+		{
+			fixed (uint* ptr = new uint[]{effect})
+			{
+				alDeleteEffects(1, ptr);
+			}
+		}
+
+        public static unsafe void alDeleteEffects(uint[] effects )
+		{
+			fixed (uint* ptr = effects)
+			{
+				alDeleteEffects(effects.Length, ptr);
+			}
+		}
+
+		public static unsafe void alEffectiv( uint eid, AL_EffectParam param, int[] values )
+		{
+			fixed(int* ptr = values)
+			{
+				alEffectiv( eid, param, ptr); 
+			}
+		}
+
+		public static unsafe void alEffectfv( uint eid, AL_EffectParam param, float[] values )
+		{
+			fixed(float* ptr = values)
+			{
+				alEffectfv( eid, param, ptr); 
+			}
+		}
+
+		public static unsafe int alGetEffecti( uint eid, AL_EffectParam pname)
+		{
+			int* ptr = stackalloc int[1];
+			alGetEffecti( eid, pname, ptr);
+			return ptr[0];
+		}
+
+		public static unsafe int[] alGetEffrctiv( uint eid, AL_EffectParam pname)
+		{
+			int[] ret = new int[3];
+			fixed (int* ptr = ret)
+			{
+				alGetEffecti( eid, pname, ptr);
+			}
+			return ret;
+		}
+
+		public static unsafe float alGetEffectf( uint eid, AL_EffectParam pname)
+		{
+			float* ptr = stackalloc float[1];
+			alGetEffectf( eid, pname, ptr);
+			return ptr[0];
+		}
+
+		public static unsafe float[] alGetEffectfv( uint eid, AL_EffectParam pname)
+		{
+			float[] ret = new float[3];
+			fixed (float* ptr = ret)
+			{
+				alGetEffectfv( eid, pname, ptr);
+			}
+			return ret;
+		}
+
+		public static unsafe uint alGenFilter()
+		{
+			uint[] ret = new uint[1];
+            fixed (uint* retp = ret)
+            {
+                alGenFilters(1, retp);
+			}
+			return ret[0];
+		}
+
+		public static unsafe uint[] alGenFilters( int n)
+		{
+			uint[] ret = new uint[n];
+            fixed (uint* retp = ret)
+            {
+                alGenFilters(n, retp);
+			}
+			return ret;
+		}
+
+		public static unsafe void alDeleteFilter( uint filter )
+		{
+			fixed (uint* ptr = new uint[]{filter})
+			{
+				alDeleteEffects(1, ptr);
+			}
+		}
+
+		public static unsafe void alDeleteFilters( int n, uint[] filters )
+		{
+			fixed (uint* ptr = filters)
+			{
+				alDeleteEffects(filters.Length, ptr);
+			}
+		}
+
+		public static unsafe void alFilteriv( uint fid, AL_FilterParam param, int[] values )
+		{
+			fixed (int* ptr = values)
+			{
+				alFilteriv(fid, param, ptr);
+			}
+		}
+
+		public static unsafe void alFilterfv( uint fid, AL_FilterParam param, float[] values )
+		{
+			fixed (float* ptr = values)
+			{
+				alFilterfv(fid, param, ptr);
+			}
+		}
+
+		public static unsafe int alGetFilteri( uint fid, AL_FilterParam pname)
+		{
+			int* ret = stackalloc int[1];
+			alGetFilteri( fid, pname, ret );
+			return ret[0];
+		}
+
+        public static unsafe int[] alGetFilteriv( uint fid, AL_FilterParam pname)
+		{
+			int[] ret = new int[3];
+			fixed (int* ptr = ret)
+			{
+				alGetFilteriv( fid, pname, ptr );
+			}
+			return ret;
+		}
+
+        public static unsafe float alGetFilterf( uint fid, AL_FilterParam pname)
+		{
+			float* ret = stackalloc float[1];
+			alGetFilterf( fid, pname, ret );
+			return ret[0];
+		}
+
+        public static unsafe float[] alGetFilterfv( uint fid, AL_FilterParam pname)
+		{
+			float[] ret = new float[3];
+			fixed (float* ptr = ret)
+			{
+				alGetFilterfv( fid, pname, ptr );
+			}
+			return ret;
+		}
+	}
 }
