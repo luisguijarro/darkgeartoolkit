@@ -7,6 +7,7 @@ namespace dgtk.Platforms.X11
     {
         public static void PreparationOGLContext(IntPtr ptr_display, int ScreenId, ref IntPtr FBConfig, out XVisualInfo visual, out IntPtr P_Visual)//, IntPtr SharedContext, bool Direct)
         {
+			dgtk.OpenGL.InternalTool.GetOS();
             int glx_mayor=0; int glx_minor=0;
             if(!glx.glXQueryVersion(ptr_display, ref glx_mayor, ref glx_minor))
 			{
