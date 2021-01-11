@@ -13,7 +13,6 @@ namespace dgtk.OpenGL
 		internal static Delegate GetGLMethodAdress(String MethodName, Type type_origen)
 		{
 			IntPtr p_ret = IntPtr.Zero;
-            GetOS(); // Confirmar obtención de Sistema
             switch (OS)
 			{
 				case OperatingSystem.WindowsVistaOrHigher:
