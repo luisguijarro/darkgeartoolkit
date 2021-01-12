@@ -631,5 +631,88 @@ namespace dgtk.OpenAL
 			}
 			return ret;
 		}
+
+		public static unsafe uint alGenAuxiliaryEffectSlot()
+		{
+			uint* ret = stackalloc uint[1];
+			alGenAuxiliaryEffectSlots( 1, ret );			
+			return ret[0];
+		}
+
+		public static unsafe uint[] alGenAuxiliaryEffectSlots( int n )
+		{
+			uint[] ret = new uint[n];
+			fixed(uint* ptr = ret)
+			{
+				alGenAuxiliaryEffectSlots( n, ptr );
+			}
+			return ret;
+		}
+
+        public static unsafe void alDdeleteAuxiliaryEffectSlot(uint slot )
+		{
+			fixed(uint* ptr = new uint[]{slot})
+			{
+				alDdeleteAuxiliaryEffectSlots( 1, ptr );
+			}
+		}
+
+        public static unsafe void alDdeleteAuxiliaryEffectSlots(uint[] slots )
+		{
+			fixed(uint* ptr = slots)
+			{
+				alDdeleteAuxiliaryEffectSlots( slots.Length, ptr );
+			}
+		}
+
+		public static unsafe void alAuxiliaryEffectSlotiv( uint asid, AL_AuxiliaryEffectSlot param, int[] values )
+		{
+			fixed(int* ptr = values)
+			{
+				alAuxiliaryEffectSlotiv( asid, param, ptr ); 
+			}
+		}
+
+		public static unsafe void alAuxiliaryEffectSlotfv( uint asid, AL_AuxiliaryEffectSlot param, float[] values )
+		{
+			fixed(float* ptr = values)
+			{
+				alAuxiliaryEffectSlotfv( asid, param, ptr ); 
+			}
+		}
+
+        public static unsafe int alGetAuxiliaryEffectSloti( uint asid, AL_AuxiliaryEffectSlot pname)
+		{
+			int* ret = stackalloc int[1];
+			alGetAuxiliaryEffectSloti(asid, pname, ret);
+			return ret[0];
+		}
+
+        public static unsafe int[] alGetAuxiliaryEffectSlotiv( uint asid, AL_AuxiliaryEffectSlot pname)
+		{
+			int[] ret = new int[3];
+			fixed(int* ptr = ret)
+			{
+				alGetAuxiliaryEffectSlotiv( asid, pname, ptr);
+			}
+			return ret;
+		}
+
+        public static unsafe float alGetAuxiliaryEffectSlotf( uint asid, AL_AuxiliaryEffectSlot pname)
+		{
+			float* ret = stackalloc float[1];
+			alGetAuxiliaryEffectSlotf( asid, pname, ret );
+			return ret[0];
+		}
+
+        public static unsafe float[] alGetAuxiliaryEffectSlotfv( uint asid, AL_AuxiliaryEffectSlot pname)
+		{
+			float[] ret = new float[3];
+			fixed(float* ptr = ret)
+			{
+				alGetAuxiliaryEffectSlotf( asid, pname, ptr );
+			}
+			return ret;
+		}
 	}
 }
