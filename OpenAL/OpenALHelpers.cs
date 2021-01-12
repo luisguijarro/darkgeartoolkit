@@ -590,7 +590,7 @@ namespace dgtk.OpenAL
 			}
 		}
 
-		public static unsafe void alFilterfv( uint fid, AL_FilterParam param, float[] values )
+		public static unsafe void alFilterfv( uint fid, AL_FilterPassParam param, float[] values )
 		{
 			fixed (float* ptr = values)
 			{
@@ -615,14 +615,14 @@ namespace dgtk.OpenAL
 			return ret;
 		}
 
-        public static unsafe float alGetFilterf( uint fid, AL_FilterParam pname)
+        public static unsafe float alGetFilterf( uint fid, AL_FilterPassParam pname)
 		{
 			float* ret = stackalloc float[1];
 			alGetFilterf( fid, pname, ret );
 			return ret[0];
 		}
 
-        public static unsafe float[] alGetFilterfv( uint fid, AL_FilterParam pname)
+        public static unsafe float[] alGetFilterfv( uint fid, AL_FilterPassParam pname)
 		{
 			float[] ret = new float[3];
 			fixed (float* ptr = ret)

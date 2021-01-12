@@ -474,11 +474,11 @@ namespace dgtk.OpenAL
         /* Set a floating point parameter for an Filter object. */
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilterf", ExactSpelling = true)]
-        public static extern void alFilterf( uint fid, AL_FilterParam param, float value); 
+        public static extern void alFilterf( uint fid, AL_FilterPassParam param, float value); 
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alFilterfv", ExactSpelling = true)]
-        public static unsafe extern void alFilterfv( uint fid, AL_FilterParam param, float* values ); 
+        public static unsafe extern void alFilterfv( uint fid, AL_FilterPassParam param, float* values ); 
 
         /* Get an integer parameter for a Filter object. */
         [SuppressUnmanagedCodeSecurity]
@@ -492,11 +492,11 @@ namespace dgtk.OpenAL
         /* Get a floating point parameter for a Filter object. */
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilterf", ExactSpelling = true)]
-        public static unsafe extern void alGetFilterf( uint fid, AL_FilterParam pname, float* value );
+        public static unsafe extern void alGetFilterf( uint fid, AL_FilterPassParam pname, float* value );
 
         [SuppressUnmanagedCodeSecurity]
 		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetFilterfv", ExactSpelling = true)]
-        public static unsafe extern void alGetFilterfv( uint fid, AL_FilterParam pname, float* values );
+        public static unsafe extern void alGetFilterfv( uint fid, AL_FilterPassParam pname, float* values );
 
 
         /**
