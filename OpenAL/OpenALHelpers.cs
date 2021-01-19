@@ -48,31 +48,6 @@ namespace dgtk.OpenAL
 
     public static partial class AL
     {
-        public static unsafe void alGenBuffers(Int32 n, out UInt32[] buffers)
-		{
-			UInt32* p_buffers = stackalloc UInt32[n];
-            alGenBuffers(n, p_buffers);
-            buffers = new UInt32[n];
-            for (int i=0;i<n;i++)
-            {
-            	buffers[i] = p_buffers[i];
-            }
-		}
-		
-		public static void alGenBuffer(out UInt32 buffer)
-		{
-			UInt32[] ret = new uint[1];
-			alGenBuffers(1, out ret);
-			buffer = ret[0];
-		}
-
-		public static uint alGenBuffer()
-		{
-			UInt32[] ret = new uint[1];
-			alGenBuffers(1, out ret);
-			return ret[0];
-		}
-
         public static unsafe void alDeleteBuffer(UInt32 buffer)
 		{
 			UInt32[] arraybuffer = new uint[]{buffer};
@@ -119,25 +94,6 @@ namespace dgtk.OpenAL
 		}
 
 
-        public static unsafe void alGenSources(Int32 n, out UInt32[] idsources)
-		{
-			UInt32* p_ret = stackalloc UInt32[n];
-			alGenSources(n, p_ret);
-			idsources = new UInt32[n];
-			for (int i=0;i<n;i++)
-			{
-				idsources[i] = p_ret[i];
-			}
-		}
-		
-		public static unsafe void alGenSource(out UInt32 idsource)
-		{
-			UInt32* p_ret = stackalloc UInt32[1];
-			//UInt32[] ret;// = new UInt32[1];
-			alGenSources(1, p_ret);
-			idsource = p_ret[0];
-		}
-
         public static unsafe void alDeleteSource(ref UInt32 idsource)
 		{
 			UInt32[] del = new UInt32[]{idsource};
@@ -154,9 +110,16 @@ namespace dgtk.OpenAL
 
 		#region Source
 
-		public static unsafe uint[] alGenSources(Int32 n)
+		public static unsafe uint alGenSource()
 		{
-			uint[] ret = new uint[n];
+			UInt32* p_ret = stackalloc UInt32[1];
+			alGenSources(1, p_ret);
+			return p_ret[0];
+		}
+
+        public static unsafe uint[] alGenSources(Int32 n)
+		{
+			UInt32[] ret = new UInt32[n];
 			fixed(uint* ptr = ret)
 			{
 				alGenSources(n, ptr);
@@ -190,11 +153,8 @@ namespace dgtk.OpenAL
 
 		public static unsafe float alGetSourcef( uint sid, AL_SourcefParam param)
 		{
-			float[] value = new float[1];
-			fixed(float* ptr = value)
-			{
-				alGetSourcef(sid, param, ptr);
-			}
+			float* value = stackalloc float[1];
+			alGetSourcef(sid, param, value);
 			return value[0];
 		}
 		
@@ -400,16 +360,23 @@ namespace dgtk.OpenAL
 
 		#region Buffers
 
-        public static unsafe uint[] alGenBuffers( int n)
+		public static unsafe uint alGenBuffer()
+		{
+			uint* ret = stackalloc uint[1];
+			alGenBuffers(1, ret);
+			return ret[0];
+		}
+
+        public static unsafe uint[] alGenBuffers(int n)
 		{
 			uint[] ret = new uint[n];
 			fixed(uint* ptr = ret)
 			{
-				alGenBuffers(n, ptr);
+				alGenBuffers(n, ptr); 
 			}
 			return ret;
 		}
-
+		
         public static unsafe void alDeleteBuffers(uint[] buffers )
 		{
 			fixed(uint* ptr = buffers)
@@ -649,7 +616,7 @@ namespace dgtk.OpenAL
 			return ret;
 		}
 
-        public static unsafe void alDdeleteAuxiliaryEffectSlot(uint slot )
+        public static unsafe void alDeleteAuxiliaryEffectSlot(uint slot )
 		{
 			fixed(uint* ptr = new uint[]{slot})
 			{
