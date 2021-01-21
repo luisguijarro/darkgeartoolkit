@@ -240,7 +240,7 @@ namespace dgtk
                     this.dt_lastTime = DateTime.Now; //Reiniciar fecha de base de cálculo.
                 }
             }
-            Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
+            //Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
         }
 
         private void Update_frame()
@@ -267,7 +267,7 @@ namespace dgtk
                     }
                 }
             }
-            Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
+            //Thread.CurrentThread.Abort(); // Abortar el hilo cuando la ventana ya no esté corriendo.
         }
 
         #endregion

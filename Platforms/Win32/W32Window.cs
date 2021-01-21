@@ -271,7 +271,7 @@ namespace dgtk.Platforms.Win32
 			while(this.isDrawing){ /* WAIT FOR RENDER: Avoid crash in close */}
 			this.GL_Context.Dispose();
 			Imports.DestroyWindow(this.ptr_handle);
-			Thread.CurrentThread.Abort();
+			//Thread.CurrentThread.Abort();
 		}
 
         IntPtr WinProcDelegate(IntPtr handle, WindowMessage msg, IntPtr wParam, IntPtr lParam)

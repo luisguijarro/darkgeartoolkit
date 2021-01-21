@@ -369,7 +369,7 @@ namespace dgtk.Platforms.X11
 			this.GL_Context.Dispose();
 			Imports.XDestroyWindow(this.ptr_display, this.ptr_handle);
 			Imports.XCloseDisplay(this.ptr_display);
-			Thread.CurrentThread.Abort();
+			//Thread.CurrentThread.Abort();
 		}
 
 		private void GetState()
