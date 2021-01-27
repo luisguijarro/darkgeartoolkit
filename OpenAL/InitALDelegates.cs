@@ -4,7 +4,8 @@ namespace dgtk.OpenAL
 {
     internal static class Init_AL_Delegates
     {
-        private static bool Iniciated;
+        private static bool IniciatedAL;
+        private static bool IniciatedEFX;
         internal static void InitAlcDelegates(IntPtr device)
         {
             #region ALC
@@ -52,10 +53,10 @@ namespace dgtk.OpenAL
             #endregion
         }
 
-
         internal static void InitAlDelegates()
         {
-            if (Iniciated) {return;}
+            if (IniciatedAL) {return;}
+            IniciatedAL = true;
 
             #region AL
 
@@ -210,7 +211,8 @@ namespace dgtk.OpenAL
 
         internal static void InitEFXDelegates()
         {
-            if (Iniciated) {return;}
+            if (IniciatedEFX) {return;}
+            IniciatedEFX = true;
             
             #region EFX
 
