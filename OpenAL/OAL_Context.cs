@@ -28,9 +28,9 @@ namespace dgtk.OpenAL
 
 		private void UpdateContextDevices()
 		{
-			try
-			{
-				this.ptr_OutPutDevice = ALC.alcOpenDevice(this.s_actualOutPutDevice); // Establecemos el dispositivo de salida elegido
+			/*try
+			{*/
+				this.ptr_OutPutDevice = ALInternalTool.alcOpenDevice(this.s_actualOutPutDevice); // Establecemos el dispositivo de salida elegido
 				
 				#if DEBUG
 				if (this.ptr_OutPutDevice == IntPtr.Zero)
@@ -38,6 +38,10 @@ namespace dgtk.OpenAL
 					throw new Exception("alcOpenDevice Fail tu Open Device: "+this.s_actualOutPutDevice);
 				}
 				#endif
+				
+				Init_AL_Delegates.InitAlcDelegates(ptr_OutPutDevice);
+				Init_AL_Delegates.InitAlDelegates();
+				Init_AL_Delegates.InitEFXDelegates();
 
 				this.ptr_OpenALContext = ALC.alcCreateContext(this.ptr_OutPutDevice, this.pb_context_attributes); // Creamos el contexto de salida.
 				
@@ -53,19 +57,20 @@ namespace dgtk.OpenAL
 				#if DEBUG
 				if (this.ptr_InPutdevice == IntPtr.Zero)
 				{
-					throw new Exception("alcCaptureOpenDevice Fail tu Open Record Device: "+this.s_actualInPutDevice);
+					Console.WriteLine("alcCaptureOpenDevice Fail tu Open Record Device: "+this.s_actualInPutDevice);
 				}
 				#endif
 				
 				//this.Recordcontext = ALCMethods.
 				ALC.alcMakeContextCurrent(this.ptr_OpenALContext);
-			}
-			catch
+			/*}
+			catch (Exception exc)
 			{
 				#if DEBUG
 				Console.WriteLine("AL ERROR: "+ALC.alcGetError(this.ptr_OutPutDevice));
+				Console.WriteLine("Exception: "+exc.Message);
 				#endif
-			}
+			}*/
 		}
 
         private static void RefreshDevices()
@@ -76,7 +81,10 @@ namespace dgtk.OpenAL
                 l_InPutDevices = new List<string>();
             }
 
-            IntPtr device_temp = ALC.alcOpenDevice(null);
+            IntPtr device_temp = ALInternalTool.alcOpenDevice(null);
+
+			Init_AL_Delegates.InitAlcDelegates(device_temp);
+
 			IntPtr context_temp = ALC.alcCreateContext(device_temp, (int[])null);
 			
 			if (!ALC.alcMakeContextCurrent(context_temp))
@@ -99,6 +107,7 @@ namespace dgtk.OpenAL
 					l_OutPutDevices = ALC.alcGetStringList(IntPtr.Zero, ALC_GetStringParam.ALC_DEVICE_SPECIFIER);
 					defaultOutPutDevice = ALC.alcGetStringh(IntPtr.Zero, ALC_GetStringParam.ALC_DEFAULT_DEVICE_SPECIFIER);				
 				}
+
 				#if DEBUG
 				Console.WriteLine("PlayBackDevices: ");
 				for (int i=0;i<l_OutPutDevices.Count;i++)
