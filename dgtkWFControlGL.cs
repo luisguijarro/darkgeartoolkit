@@ -1,3 +1,4 @@
+/*
 using System;
 
 namespace dgtk
@@ -65,3 +66,4 @@ namespace dgtk
         }
     }
 }
+*/
