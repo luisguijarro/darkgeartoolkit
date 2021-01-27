@@ -83,6 +83,7 @@ namespace dgtk.Platforms.Win32
             {
 				#if DEBUG
 				
+				Console.WriteLine("wglChoosePixelFormatARB FAIL!!!");
 				// Comentamos por que en algunos equipos siempre devuelve false;
 				//error = Marshal.GetLastWin32Error();
                 //throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
