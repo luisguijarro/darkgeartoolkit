@@ -13,9 +13,9 @@ namespace dgtk.OpenGL
 		internal static Delegate GetGLMethodAdress(String MethodName, Type type_origen)
 		{
 			IntPtr p_ret = IntPtr.Zero;
+			if (OS == OperatingSystem.None) {GetOS();}
             switch (OS)
 			{
-				case OperatingSystem.WindowsVistaOrHigher:
 				case OperatingSystem.Windows:
 					p_ret = wglGetProcAddress(MethodName);
 					if (p_ret == IntPtr.Zero)
@@ -71,6 +71,7 @@ namespace dgtk.OpenGL
 		internal static extern IntPtr LoadLibrary(string dllName);
 
 		internal static OperatingSystem OS;
+
 		internal static void GetOS()
 		{
 			if (!isX11())
@@ -107,13 +108,6 @@ namespace dgtk.OpenGL
 			switch(Environment.OSVersion.Platform)
 			{
 				case PlatformID.Win32NT:
-					if (Environment.OSVersion.Version.Major >= 6)
-					{
-						OS = OperatingSystem.WindowsVistaOrHigher;
-						return true;
-					}
-					OS = OperatingSystem.Windows;
-					return true;
 				case PlatformID.Win32S:
 				case PlatformID.Win32Windows:
 				case PlatformID.WinCE:
@@ -125,7 +119,7 @@ namespace dgtk.OpenGL
 
 		internal enum OperatingSystem
 		{
-			Windows, WindowsVistaOrHigher, Linux_X11, Linux_Wayland, NotSuported
+			None = 0, Windows, Linux_X11, Linux_Wayland, MacOS, NotSuported
 		}
 	}
 }
