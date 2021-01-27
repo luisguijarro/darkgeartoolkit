@@ -59,12 +59,12 @@ namespace dgtk
             {
                 Thread.Sleep(100);
             }
-            Console.WriteLine("Ventana Existe");
+            //Console.WriteLine("Ventana Existe");
             while(!this.NativeWindow.Created) //Esperamos a que la ventana nativa indique que ha terminado su inicio.
             {
                 Thread.Sleep(100);
             }
-            Console.WriteLine("Ventana Creada");
+            //Console.WriteLine("Ventana Creada");
         }
 
         #region Metodos Privados:
