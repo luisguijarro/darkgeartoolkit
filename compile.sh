@@ -78,7 +78,7 @@ case "$1" in
     war=0
     err=0
     
-    csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -out:./bin/Debug/dgtk.dll | while read -r line; do    
+    csc -nologo -unsafe -target:library -debug:full -define:DEBUG -recurse:./*.cs -o:./bin/Debug/dgtk.dll | while read -r line; do    
         case $line in
         *warning*) echo ${line%%:*}":" "\e[1m\e[38;2;255;255;128mWarning\e[0m:" ${line##*:}
         war=$(($war+1))
