@@ -28,7 +28,7 @@ namespace dgtk.GameControlSystem.Linux
         internal static extern int libevdev_has_event_code (IntPtr dev, GameControlEventType type, uint code); //¿Tiene le código de evento? 	
 
         [DllImport("libevdev.so.2", EntryPoint = "libevdev_next_event")]
-        internal static extern int libevdev_next_event (IntPtr dev, libevdev_read_flag banderas, ref input_event ev);
+        internal static extern int libevdev_next_event (IntPtr dev, libevdev_read_flag banderas, out input_event ev);
 
         [DllImport("libevdev.so.2", EntryPoint = "libevdev_has_event_pending")]
         internal static extern int libevdev_has_event_pending (IntPtr dev); // 0 o 1
