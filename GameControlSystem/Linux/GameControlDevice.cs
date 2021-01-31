@@ -7,6 +7,7 @@ namespace dgtk.GameControlSystem.Linux
 {
     internal class GameControlDevice : dgtk.GameControlSystem.I_GameControlDevice
     {
+        private input_event ev;
         internal bool disposed;
         internal int file;
         internal IntPtr dev; // Puntero de dispositivo de libevdev.
@@ -78,14 +79,14 @@ namespace dgtk.GameControlSystem.Linux
 
         private void ProcessEvents()
         {
-            input_event ev = new input_event(); // Generamos la estructura receptora d elos eventos.
-            Imports.libevdev_next_event(this.dev, libevdev_read_flag.LIBEVDEV_READ_FLAG_NORMAL, ref ev); // Inicializamos lectura de eventos para que el hilo no consuma todo el procesador posible.
+            this.ev = new input_event(); // Generamos la estructura receptora de los eventos.
             while(!disposed) // no dejar de trabajar nunca salvo llamada a Dispose.
             {
-                int hasPending = Imports.libevdev_has_event_pending(this.dev); // Revisar si hay eventos pendientes de recoger.
-                while (hasPending != 0) // si hay eventos pendientes hay que recogerlos para que no se pierdan.
-                {                        
-                    int result = Imports.libevdev_next_event(this.dev, libevdev_read_flag.LIBEVDEV_READ_FLAG_NORMAL, ref ev);
+                //int hasPending = Imports.libevdev_has_event_pending(this.dev); // Revisar si hay eventos pendientes de recoger.
+                //if (hasPending > 0) // si hay eventos pendientes hay que recogerlos para que no se pierdan.
+                while (Imports.libevdev_has_event_pending(this.dev) >0) // No perdemos ningún evento
+                {                
+                    int result = Imports.libevdev_next_event(this.dev, libevdev_read_flag.LIBEVDEV_READ_FLAG_NORMAL /*| libevdev_read_flag.LIBEVDEV_READ_FLAG_SYNC*/, out this.ev);
                     if (result == 0) // Si no hay fallos en la recogida de eventos...
                     {
                         //Leer eventos.
@@ -128,7 +129,8 @@ namespace dgtk.GameControlSystem.Linux
                                 break;
                         }
                     }
-                }    
+                }
+                Thread.Sleep(100);  // Descargamos carga de CPU.
             }
         }
 
@@ -153,6 +155,7 @@ namespace dgtk.GameControlSystem.Linux
         {
             //this.hilo.Abort(); // Abortamos hilo que gestiona la recepción de eventos dle hardware.
             this.disposed = true; // Thread.Abort() Obsoleto.
+            Console.WriteLine("this.disposed = true;");
 
             this.EventAxis -= this.InputAxisEvent;
             this.EventHats -= this.InputHatsEvent;
