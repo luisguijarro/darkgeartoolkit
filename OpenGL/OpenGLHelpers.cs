@@ -47,6 +47,46 @@ namespace dgtk.OpenGL
             return ret;
         }
 
+		public static unsafe uint glGenFramebuffer()
+		{
+            uint[] ret = new uint[1];
+            fixed (uint* retp = ret)
+            {
+                internalGL.glGenFramebuffers(1, retp);
+            }
+            return ret[0];
+		}
+
+		public static unsafe uint[] glGenFramebuffers(int n)
+		{
+            uint[] ret = new uint[n];
+            fixed (uint* retp = ret)
+            {
+                internalGL.glGenFramebuffers(n, retp);
+            }
+            return ret;
+		}
+
+		public static unsafe uint glGenRenderbuffer()
+		{
+            uint[] ret = new uint[1];
+            fixed (uint* retp = ret)
+            {
+                internalGL.glGenRenderbuffers(1, retp);
+            }
+            return ret[0];
+		}
+
+		public static unsafe uint[] glGenRenderbuffers(int n)
+		{
+            uint[] ret = new uint[n];
+            fixed (uint* retp = ret)
+            {
+                internalGL.glGenRenderbuffers(n, retp);
+            }
+            return ret;
+		}
+
         public static unsafe uint glGenTexture()
         {
             uint[] ret = new uint[1];
