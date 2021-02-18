@@ -111,7 +111,7 @@ namespace dgtk
             // Recogemos los eventos de la ventana nativa.
             this.NativeWindow.RenderFrame += delegate (object sender, dgtk_OnRenderEventArgs e)
             {
-                this.RenderFrame(this, e); //El renderizado en ventana nativa lanza el evento.
+                this.OnRenderFrame(this, e);
             };
 
             this.NativeWindow.WindowClose += delegate (object sender, dgtk_WinCloseEventArgs e)
@@ -193,6 +193,11 @@ namespace dgtk
             this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
         }
 
+        protected virtual void OnRenderFrame(object sender, dgtk_OnRenderEventArgs e)
+        {
+            this.RenderFrame(this, e); //El renderizado en ventana nativa lanza el evento.
+        }
+
         private void ProcessEvents()
         {
             //dgtk.GameControlSystem.Linux.System.RefreshDeviceList();
@@ -221,6 +226,7 @@ namespace dgtk
                 DateTime dt_ini = DateTime.Now;
                 
                 this.NativeWindow.Redraw(); // Lanza renderizado, el cual lanza evento de Renderizado.
+                
                 if ((this.ui_fps > 0) && !this.NativeWindow.VSyncEnabled)
                 {
                     TimeSpan retraso = DateTime.Now - dt_ini;
