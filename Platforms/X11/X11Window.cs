@@ -164,6 +164,7 @@ namespace dgtk.Platforms.X11
 				{
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 					
+					this.SwapBuffers();
 					this.GL_Context.X11UnMakeCurrent();
 				}
 			}

@@ -209,6 +209,7 @@ namespace dgtk.Platforms.Win32
 				
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 
+					this.SwapBuffers();
 					this.GL_Context.Win32UnMakeCurrent();
 				}
 			}
