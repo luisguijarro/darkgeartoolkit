@@ -1,5 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
@@ -22,5 +22,95 @@
     <DebugType>none</DebugType>
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
-
+  <ItemGroup>
+    <Content Include="Enums\InputEventsEnums.cs" />
+    <Content Include="Enums\WindowEnums.cs" />
+    <Content Include="events\dgtk_events_tools.cs" />
+    <Content Include="events\dgtk_KeyBoardKeysEventArgs.cs" />
+    <Content Include="events\dgtk_KeyBoardTextEventArgs.cs" />
+    <Content Include="events\dgtk_MouseButtonEventArgs.cs" />
+    <Content Include="events\dgtk_MouseEnterLeaveEventArgs.cs" />
+    <Content Include="events\dgtk_MouseMoveEventArgs.cs" />
+    <Content Include="events\dgtk_MouseWheelEventArgs.cs" />
+    <Content Include="events\dgtk_OnRenderEventArgs.cs" />
+    <Content Include="events\dgtk_OnUpdateEventArgs.cs" />
+    <Content Include="events\dgtk_WinCloseEventArgs.cs" />
+    <Content Include="events\dgtk_WinMoveEventArgs.cs" />
+    <Content Include="events\dgtk_WinResizeEventArgs.cs" />
+    <Content Include="events\dgtk_WinStateChangeEventArgs.cs" />
+    <Content Include="GameControlSystem\Linux\Enums.cs" />
+    <Content Include="GameControlSystem\Linux\GameControlDevice.cs" />
+    <Content Include="GameControlSystem\Linux\GCDetector.cs" />
+    <Content Include="GameControlSystem\Linux\Imports.cs" />
+    <Content Include="GameControlSystem\Linux\Structs.cs" />
+    <Content Include="GameControlSystem\Windows\Enums.cs" />
+    <Content Include="GameControlSystem\Windows\GameControlDevice.cs" />
+    <Content Include="GameControlSystem\Windows\GCDetector.cs" />
+    <Content Include="GameControlSystem\Windows\Imports.cs" />
+    <Content Include="GameControlSystem\Windows\Structs.cs" />
+    <Content Include="GameControlSystem\Axis.cs" />
+    <Content Include="GameControlSystem\dgtk_GameControler.cs" />
+    <Content Include="GameControlSystem\dgtk_GameControllerEventArgs.cs" />
+    <Content Include="GameControlSystem\dgtk_InputAxisEventArgs.cs" />
+    <Content Include="GameControlSystem\dgtk_InputButtonsEventArgs.cs" />
+    <Content Include="GameControlSystem\dgtk_InputHatsEventArgs.cs" />
+    <Content Include="GameControlSystem\Enums.cs" />
+    <Content Include="GameControlSystem\GameControlsManager.cs" />
+    <Content Include="GameControlSystem\I_GameControlDevice.cs" />
+    <Content Include="Graphics\Color4.cs" />
+    <Content Include="Math\Mat2.cs" />
+    <Content Include="Math\Mat3.cs" />
+    <Content Include="Math\Mat4.cs" />
+    <Content Include="Math\MatrixTools.cs" />
+    <Content Include="Math\Point.cs" />
+    <Content Include="Math\Rect.cs" />
+    <Content Include="Math\Retf.cs" />
+    <Content Include="Math\Size.cs" />
+    <Content Include="Math\Tools.cs" />
+    <Content Include="Math\Vector2.cs" />
+    <Content Include="Math\Vector3.cs" />
+    <Content Include="Math\Vector4.cs" />
+    <Content Include="OpenAL\ALInternalTool.cs" />
+    <Content Include="OpenAL\DelegatesAL.cs" />
+    <Content Include="OpenAL\Enums.cs" />
+    <Content Include="OpenAL\InitALDelegates.cs" />
+    <Content Include="OpenAL\InternalsAL.cs" />
+    <Content Include="OpenAL\MethodsAL.cs" />
+    <Content Include="OpenAL\OAL_Context.cs" />
+    <Content Include="OpenAL\OpenALHelpers.cs" />
+    <Content Include="OpenGL\Enums.cs" />
+    <Content Include="OpenGL\ExtMethods.cs" />
+    <Content Include="OpenGL\GLInternalTool.cs" />
+    <Content Include="OpenGL\OGL_Context.cs" />
+    <Content Include="OpenGL\OGL_SharedContext.cs" />
+    <Content Include="OpenGL\OpenGLDelegates.cs" />
+    <Content Include="OpenGL\OpenGLHelpers.cs" />
+    <Content Include="OpenGL\OpenGLInitDels.cs" />
+    <Content Include="OpenGL\OpenGLInitDelsExts.cs" />
+    <Content Include="OpenGL\OpenGLInternals.cs" />
+    <Content Include="OpenGL\OpenGLMethods.cs" />
+    <Content Include="Platforms\Structs\InputEventsStruct.cs" />
+    <Content Include="Platforms\Structs\th_params.cs" />
+    <Content Include="Platforms\Win32\enums.cs" />
+    <Content Include="Platforms\Win32\imports.cs" />
+    <Content Include="Platforms\Win32\OpenGLPreparation.cs" />
+    <Content Include="Platforms\Win32\structs.cs" />
+    <Content Include="Platforms\Win32\V-Sync.cs" />
+    <Content Include="Platforms\Win32\W32Window.cs" />
+    <Content Include="Platforms\Win32\wgl.cs" />
+    <Content Include="Platforms\Win32\Win32Dummy.cs" />
+    <Content Include="Platforms\X11\enums.cs" />
+    <Content Include="Platforms\X11\glx.cs" />
+    <Content Include="Platforms\X11\imports.cs" />
+    <Content Include="Platforms\X11\OpenGLPreparation.cs" />
+    <Content Include="Platforms\X11\structs.cs" />
+    <Content Include="Platforms\X11\V-Sync.cs" />
+    <Content Include="Platforms\X11\X11Window.cs" />
+    <Content Include="Platforms\I_Window.cs" />
+    <Content Include="Platforms\Tools.cs" />
+    <Content Include="Core.cs" />
+    <Content Include="dgtkWFControl.cs" />
+    <Content Include="dgtkWindow.cs" />
+    <Content Include="dgtkWFControlGL.cs" />
+  </ItemGroup>
 </Project>
