@@ -2,6 +2,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 
+using dgtk.Platforms.X11;
+
 namespace dgtk.OpenGL
 {
     public static class OGL_SharedContext
@@ -38,8 +40,17 @@ namespace dgtk.OpenGL
             
             DeviceC_SurfaceHandle = dgtk.Platforms.X11.Imports.XRootWindow(Display, screen);
             
-            int[] att = new int[]{ (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_RGBA, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DEPTH_SIZE, 1, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DOUBLEBUFFER, 0 };
+            //int[] att = new int[]{ (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_RGBA, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DEPTH_SIZE, 1, (int)dgtk.Platforms.X11.glxVisualFBAttributes.GLX_DRAWABLE_TYPE, (int)dgtk.Platforms.X11.glxVisualFBAttributes.GLX_PIXMAP_BIT, (int)dgtk.Platforms.X11.glxVisualAttributes.GLX_DOUBLEBUFFER, 0 };
             
+            int[] att = new int[] {
+							(int)glxVisualAttributes.GLX_RGBA, 
+							(int)glxVisualAttributes.GLX_DOUBLEBUFFER,
+							(int)glxVisualAttributes.GLX_RED_SIZE, 1, 
+							(int)glxVisualAttributes.GLX_GREEN_SIZE, 1, 
+							(int)glxVisualAttributes.GLX_BLUE_SIZE, 1,
+							0
+						};
+
             dgtk.Platforms.X11.XVisualInfo visual = dgtk.Platforms.X11.glx.glXChooseVisual(Display, screen, att);
 
             IntPtr shareListConext = new IntPtr(0);
