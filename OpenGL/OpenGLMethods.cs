@@ -2957,13 +2957,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 1.5</sumary>
-		public static unsafe IntPtr* glMapBuffer(BufferTargetARB target, BufferAccessARB access)
+		public static IntPtr glMapBuffer(BufferTargetARB target, BufferAccessARB access)
 		{
 			return internalGL.glMapBuffer(target, access);
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static unsafe IntPtr* glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access)
+		public static IntPtr glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access)
 		{
 			return internalGL.glMapBufferRange(target, offset, length, access);
 		}

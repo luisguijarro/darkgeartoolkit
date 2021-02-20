@@ -1582,11 +1582,11 @@ namespace dgtk.OpenGL
 		internal unsafe delegate void glMap2d(MapTarget target, double u1, double u2, int ustride, int uorder, double v1, double v2, int vstride, int vorder, double* points);
 		internal unsafe delegate void glMap2f(MapTarget target, float u1, float u2, int ustride, int uorder, float v1, float v2, int vstride, int vorder, float* points);
 		internal delegate void glMap2xOES(MapTarget target, int u1, int u2, int ustride, int uorder, int v1, int v2, int vstride, int vorder, int points);
-		internal unsafe delegate IntPtr* glMapBuffer(BufferTargetARB target, BufferAccessARB access);
-		internal unsafe delegate IntPtr* glMapBufferARB(BufferTargetARB target, BufferAccessARB access);
-		internal unsafe delegate IntPtr* glMapBufferOES(BufferTargetARB target, BufferAccessARB access);
-		internal unsafe delegate IntPtr* glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access);
-		internal unsafe delegate IntPtr* glMapBufferRangeEXT(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access);
+		internal delegate IntPtr glMapBuffer(BufferTargetARB target, BufferAccessARB access);
+		internal delegate IntPtr glMapBufferARB(BufferTargetARB target, BufferAccessARB access);
+		internal delegate IntPtr glMapBufferOES(BufferTargetARB target, BufferAccessARB access);
+		internal delegate IntPtr glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access);
+		internal delegate IntPtr glMapBufferRangeEXT(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access);
 		internal delegate void glMapControlPointsNV(EvalTargetNV target, uint index, MapTypeNV type, int ustride, int vstride, int uorder, int vorder, Boolean packed, IntPtr points);
 		internal delegate void glMapGrid1d(int un, double u1, double u2);
 		internal delegate void glMapGrid1f(int un, float u1, float u2);
