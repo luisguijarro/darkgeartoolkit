@@ -33,6 +33,11 @@ namespace dgtk.Math
 			return this;
 		}
 		public static readonly int SizeInBytes = Marshal.SizeOf(new Vector4());
+
+		public float[] ToArray()
+		{
+			return new float[]{this.f_X, this.f_Y, this.f_Z, this.f_W};
+		}
 				
 		#region Operadores:
 		public static Vector4 operator +(Vector4 izq, Vector4 der)
@@ -125,7 +130,9 @@ namespace dgtk.Math
 		{
 			return this == v;
 		}
+
 		#endregion
+
 		#region PROPIEDADES
 		public float X
 		{

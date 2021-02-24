@@ -24,6 +24,12 @@ namespace dgtk.Math
 			this.f_Z *= s;
 			return this;
 		}
+		
+		public float[] ToArray()
+		{
+			return new float[]{this.f_X, this.f_Y, this.f_Z};
+		}
+				
 		public static readonly int SizeInBytes = Marshal.SizeOf(new Vector3());
 
 		#region Operadores:
