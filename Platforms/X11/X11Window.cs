@@ -338,7 +338,7 @@ namespace dgtk.Platforms.X11
 						case XEventType.EnterNotify:
 							this.MouseEnter(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Enter));
 							break;
-							
+
 						case XEventType.LeaveNotify:
 							this.MouseLeave(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Leave));
 							break;
@@ -349,18 +349,13 @@ namespace dgtk.Platforms.X11
 														
 							ulong ks = 0;
 							int bsize = 8;
-							char chRet;
 							IntPtr ptr_chret = Marshal.AllocHGlobal(bsize);
 							int i_status=0;
-
-							int longi = Imports.XLookupString(ref xevento.xkey, out chRet, 256, ref ks, IntPtr.Zero);
 
 							int nmb = 0;
 							do
 							{
 								nmb  = Imports.XmbLookupString(this.ptr_XIC, ref xevento.xkey, ptr_chret, bsize -1 , ref ks, ref i_status);
-								//s_chret[nmb] = '\0'; //El string acabará en NULL
-								Console.WriteLine("Count: "+nmb);
 								if (i_status == -1)
 								{
 									bsize = nmb + 1;
@@ -373,10 +368,11 @@ namespace dgtk.Platforms.X11
 
 							if ((!Filtered) && (nmb>0))
 							{
-								if ((ks != 65293) && (ks != 65288) && (ks != 65307)) // Discriminar Return, Backspace y ESC
+								if ((ks != 65293) && (ks != 65288) && (ks != 65307) && (ks != 65535) && (ks != 65289)) // Discriminar Return, Backspace, ESC, Del, Tab.
 								{
-									char cosa = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
-									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(cosa));//LANZAR EVENTO CHARACTER
+									Console.WriteLine("KS: "+ks);
+									char character = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
+									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(character));//LANZAR EVENTO CHARACTER
 								}
 							}
 
