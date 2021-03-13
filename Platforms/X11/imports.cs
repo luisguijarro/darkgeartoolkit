@@ -127,7 +127,10 @@ namespace dgtk.Platforms.X11
 		internal extern static int XGetGeometry(IntPtr Display, IntPtr drawable, out IntPtr VentanaRoot, out Int32 xpos, out Int32 ypos, out Int32 ancho, out Int32 alto, out Int32 grosorBorde, out Int32 bits_por_pixel); 
 
 		[DllImport("libX11", EntryPoint = "XLookupString", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int XLookupString(ref XKeyEvent evento, out char CharsReturned, int lengReturned, ref ushort keysym, IntPtr xCompEstatus);
+		internal extern static int XLookupString(ref XKeyEvent evento, out char CharsReturned, int lengReturned, ref ulong keysym, IntPtr xCompEstatus);
+
+		//[DllImport("libX11", EntryPoint = "XmbLookUpString")]
+		//internal extern static int XmbLookupString(XIC ic, ref XKeyEvent event, out char[] buffer_return, int bytes_buffer, ref ushort keysym_return, out int/*Status */status_return);
 
 		[DllImport("libX11", EntryPoint = "XIconifyWindow")]
 		internal extern static int XIconifyWindow(IntPtr display, IntPtr w, int screen);
@@ -143,5 +146,26 @@ namespace dgtk.Platforms.X11
 
 		[DllImport("libX11", EntryPoint = "XDefaultVisual")]
 		internal extern static unsafe void XGetErrorText(IntPtr display, int code, out char* buffer_return, out int length);
+
+		[DllImport("libX11", EntryPoint = "XOpenIM")]
+		internal extern static IntPtr XOpenIM(IntPtr display, IntPtr XrmDatabase, IntPtr res_name, IntPtr res_class);
+
+		[DllImport("libX11", EntryPoint = "XCreateIC")]
+		internal extern static IntPtr XCreateIC (IntPtr xim, string XNInputStyle, long xim_style, string XNClientWindow, IntPtr cwin, string XNFocusWindow, IntPtr win, IntPtr IDontKnowThatIsIt);
+
+		[DllImport("libX11", EntryPoint = "XGetIMValues")]
+		internal extern static /* char* */ IntPtr XGetIMValues (IntPtr xim, string XNQueryInputStyle, out XIMStyles xim_styles, IntPtr IDontKnowThatIsIt);
+
+		[DllImport("libX11", EntryPoint = "XmbLookupString")]
+		internal extern static int XmbLookupString( IntPtr XIC, ref XKeyEvent XKeyPressedEvent, IntPtr buffer_return, int bytes_buffer, ref ulong KeySym, ref int Status);
+
+		[DllImport("libX11", EntryPoint = "XKeysymToString")]
+		internal extern static IntPtr XKeysymToString(ulong keysym);
+
+		[DllImport("libX11", EntryPoint = "XSetLocaleModifiers")]
+		internal extern static IntPtr /*string*/XSetLocaleModifiers(string localemod);
+
+		[DllImport("libX11", EntryPoint = "XFilterEvent")]
+		internal extern static bool XFilterEvent(ref XEvent e, IntPtr win);
     }
 }
