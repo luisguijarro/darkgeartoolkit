@@ -15,7 +15,7 @@ namespace dgtk.Platforms.Win32
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
-		private object lockobject;
+		//private object lockobject;
         private bool registered;
 		private OpenGL.OGL_Context GL_Context;
 
@@ -60,7 +60,7 @@ namespace dgtk.Platforms.Win32
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
-			this.lockobject = new object();
+			//this.lockobject = new object();
 
             this.WindowClose += delegate {};
 			this.WindowSizeChange += delegate {};
@@ -202,7 +202,7 @@ namespace dgtk.Platforms.Win32
 		public void Redraw()
 		{
 			isDrawing = true;
-			lock(this.lockobject)
+			lock(Core.lockObject) //this.lockobject)
 			{
 				if (this.GL_Context.Win32MakeCurrent())
 				{
@@ -442,15 +442,17 @@ namespace dgtk.Platforms.Win32
         {
             get { return this.ptr_handle; }
         } 
+		/*
 		public object LockObject
         {
             get { return this.lockobject; }
         }
+		*/
 		public dgtk.Math.Size Size
 		{
 			set 
 			{
-				lock(this.lockobject)
+				lock(Core.lockObject) //this.lockobject)
 				{
 					this.rect.right = this.rect.left+value.Width;
 					this.rect.bottom = this.rect.top+value.Height;
@@ -469,7 +471,7 @@ namespace dgtk.Platforms.Win32
 		public bool Created {get{return b_created;}}
 		public bool IsRunning 
 		{
-			get { bool ret; lock(this.lockobject){ret = this.isRunning; }return ret; }
+			get { bool ret; lock(Core.lockObject/*this.lockobject*/){ret = this.isRunning; }return ret; }
 			set { this.isRunning = value;}
 		}	
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
