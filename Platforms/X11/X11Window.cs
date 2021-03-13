@@ -10,8 +10,10 @@ namespace dgtk.Platforms.X11
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
-		private object lockobject;
+		//private object lockobject;
         private IntPtr ptr_display;
+		private IntPtr ptr_XIM; // Entorno Para eventos.
+		private IntPtr ptr_XIC; // Contexto Para eventos.
         private int ScreenId;
         private IntPtr ptr_rootwin;
         private EventMask eventMask;
@@ -74,7 +76,7 @@ namespace dgtk.Platforms.X11
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
-			this.lockobject = new object();
+			//this.lockobject = new object();
 
             this.WindowClose += delegate {};
 			this.WindowSizeChange += delegate {};
@@ -95,6 +97,8 @@ namespace dgtk.Platforms.X11
 				throw new Exception("XInitThreads(): fails");
 			}
             this.ptr_display = Imports.XOpenDisplay(null);
+			
+			IntPtr xLocalmods = Imports.XSetLocaleModifiers("@im=none");
 			// Imports.XSynchronize(this.ptr_display, true); //It slows everything down. Use only for x11 debug
 			
             this.ScreenId = Imports.XDefaultScreen(this.ptr_display);
@@ -106,7 +110,7 @@ namespace dgtk.Platforms.X11
 
             this.eventMask = (EventMask.ExposureMask | EventMask.EnterWindowMask | EventMask.LeaveWindowMask | EventMask.KeyPressMask | EventMask.KeyReleaseMask | 
 				EventMask.StructureNotifyMask | EventMask.FocusChangeMask | EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | 
-				EventMask.PropertyChangeMask | EventMask.PointerMotionMask);
+				EventMask.PropertyChangeMask | EventMask.PointerMotionMask | EventMask.SubstructureRedirectMask);
 
 			this.ptr_rootwin = Imports.XRootWindow(this.ptr_display, this.Visual.screen);
 			
@@ -148,7 +152,36 @@ namespace dgtk.Platforms.X11
 			this.GL_Context.X11UnMakeCurrent();
 
 			this.OpenAL_Cntx = new OpenAL.OAL_Context();
-			
+
+			#region XMB Events
+			this.ptr_XIM = Imports.XOpenIM(this.ptr_display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero); //Obtenemos entorno de eventos.
+
+			long xim_style = 0;
+			XIMStyles xim_styles;
+			IntPtr imvalret = Imports.XGetIMValues(this.ptr_XIM, "queryInputStyle", out xim_styles, IntPtr.Zero);
+			if ((imvalret != IntPtr.Zero) || (xim_styles.count_styles == 0))
+			{
+				throw new Exception("Error XGetIMValues: AnyStyles is Supported.");
+			}
+			for (int i=0;i<xim_styles.count_styles;i++)
+			{
+				unsafe
+				{
+					if (((long)xim_styles.supported_styles+i) == (/*XIMPreeditNothing*/ 8 | /*XIMStatusNothing*/ 1024))
+					{
+						xim_style = ((long)xim_styles.supported_styles+i);
+						break;
+					}
+				}				
+			}
+
+			this.ptr_XIC = Imports.XCreateIC(this.ptr_XIM, "inputStyle", xim_style, "clientWindow", this.ptr_handle, "focusWindow", this.ptr_handle, IntPtr.Zero);
+			if (ptr_XIC == IntPtr.Zero)
+			{
+				throw new Exception("Error XCreateIC: FAIL.");
+			}
+			#endregion
+
 			this.b_created = true;
 			this.isRunning = true; //Lo quitamos del método Run() 
         }
@@ -158,7 +191,7 @@ namespace dgtk.Platforms.X11
 		public void Redraw()
 		{
 			isDrawing = true;
-			lock(this.lockobject)
+			lock(Core.lockObject)
 			{
 				if (this.GL_Context.X11MakeCurrent())
 				{
@@ -305,31 +338,49 @@ namespace dgtk.Platforms.X11
 						case XEventType.EnterNotify:
 							this.MouseEnter(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Enter));
 							break;
+							
 						case XEventType.LeaveNotify:
 							this.MouseLeave(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Leave));
 							break;
 
 						case XEventType.KeyPress:
-							//Console.WriteLine("-------------");
-							//Console.WriteLine("xKeyCode: " + this.xevento.xkey.keycode);
 							kc = EventsTools.X11key(xevento.xkey.keycode);
 							this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
-							
-							
-							ushort ks = 0;
+														
+							ulong ks = 0;
+							int bsize = 8;
 							char chRet;
+							IntPtr ptr_chret = Marshal.AllocHGlobal(bsize);
+							int i_status=0;
+
 							int longi = Imports.XLookupString(ref xevento.xkey, out chRet, 256, ref ks, IntPtr.Zero);
-							//Console.WriteLine("Longi: " + longi);
-							if(longi > 0)
+
+							int nmb = 0;
+							do
 							{
-								Console.WriteLine("chRet: "+chRet);
-								Console.WriteLine("ks: "+ks);
+								nmb  = Imports.XmbLookupString(this.ptr_XIC, ref xevento.xkey, ptr_chret, bsize -1 , ref ks, ref i_status);
+								//s_chret[nmb] = '\0'; //El string acabará en NULL
+								Console.WriteLine("Count: "+nmb);
+								if (i_status == -1)
+								{
+									bsize = nmb + 1;
+									ptr_chret = Marshal.AllocHGlobal(bsize);
+								}
+							}
+							while(i_status == -1);
+							
+							bool Filtered = Imports.XFilterEvent(ref xevento, this.ptr_handle);
+
+							if ((!Filtered) && (nmb>0))
+							{
 								if ((ks != 65293) && (ks != 65288) && (ks != 65307)) // Discriminar Return, Backspace y ESC
 								{
-									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(chRet));//LANZAR EVENTO CHARACTER
+									char cosa = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
+									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(cosa));//LANZAR EVENTO CHARACTER
 								}
-							} 
-							break;
+							}
+
+							break;							
 							
 						case XEventType.KeyRelease:
 							kc = EventsTools.X11key(xevento.xkey.keycode);
@@ -342,18 +393,22 @@ namespace dgtk.Platforms.X11
 								this.Close();
 							}
 							break;
+
 						case XEventType.PropertyNotify:		//WINDOW STATE					
 							if(xevento.xproperty.atom == this.WM_STATE)
 							{
 								this.GetState();
 							} 
 							break;
+
 						case XEventType.ConfigureNotify:
 							this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
 							break;
+
 						case XEventType.ConfigureRequest:
 							this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
 							break;
+
 						default:
 							break;
 					}
@@ -469,10 +524,10 @@ namespace dgtk.Platforms.X11
         {
             get { return this.ptr_handle; }
         }        
-		public object LockObject
+		/*public object LockObject
         {
             get { return this.lockobject; }
-        }
+        }*/
 
 		public WindowState WindowState
 		{
