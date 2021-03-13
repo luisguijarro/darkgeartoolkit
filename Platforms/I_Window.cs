@@ -6,9 +6,7 @@ namespace dgtk.Platforms
     {
         string Title {get; set;}
         IntPtr Handle { get; }
-		object LockObject { get; }
 		bool IsRunning {get; set;}
-		//bool IsDrawing {get; set;}
         event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
 		event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
 		event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
