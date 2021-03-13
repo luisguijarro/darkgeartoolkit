@@ -6,6 +6,7 @@ namespace dgtk
 {
     internal static class Core
     {
+        internal static object lockObject;
         internal static List<dgtk_Window> windows;
         internal static void AddWin(dgtk_Window window)
         {
