@@ -606,4 +606,11 @@ namespace dgtk.Platforms.X11
 		public IntPtr PAD23;
 	}
 
-}
+	internal unsafe struct XIMStyles
+	{
+		public ushort count_styles;
+		//[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6500)]
+		public long* supported_styles;
+	}
+} 
+
