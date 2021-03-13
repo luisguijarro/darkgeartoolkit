@@ -50,6 +50,7 @@ namespace dgtk
 
         public dgtk_Window(uint Width, uint Height, string Title) //Constructor completo.
         {
+            if (Core.lockObject == null) {Core.lockObject = new object(); }
             //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establecer afinidad del proceso inicial
             
             this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
@@ -111,66 +112,79 @@ namespace dgtk
             // Recogemos los eventos de la ventana nativa.
             this.NativeWindow.RenderFrame += delegate (object sender, dgtk_OnRenderEventArgs e)
             {
-                this.OnRenderFrame(this, e);
+                this.RenderFrame(this, e); //El renderizado en ventana nativa lanza el evento.
+                this.OnRenderFrame(this, e); // Lo ponemos despues para evitar glClear.
             };
 
             this.NativeWindow.WindowClose += delegate (object sender, dgtk_WinCloseEventArgs e)
             {
+                this.OnWinClose(this, e);
                 this.WindowClose(this, e); //El cierre de la ventana nativa lanza evento.
             };
 
             this.NativeWindow.WindowSizeChange += delegate (object sender, dgtk_WinResizeEventArgs e)
             {
+                this.OnWindowSizeChange(this, e);
                 this.WindowSizeChange(this, e); //El cambio de tamaño de la ventana nativa lanza evento.
             };
 
             this.NativeWindow.WindowStateChange += delegate (object sender, dgtk_WinStateChangeEventArgs e)
             {
+                this.OnWinStateChange(this, e);
                 this.WindowStateChange(this, e); //El cambio de estado de la ventana nativa lanza evento.
             };
 
             this.NativeWindow.KeyPulsed += delegate (object sender, dgtk_KeyBoardKeysEventArgs e)
             {
-                this.KeyPulsed(this, e);
+                this.OnKeyPulsed(this, e);
+                this.KeyPulsed(this, e); //La pulsación de la tecla en la ventana nativa lanza el evento.
             };
 
             this.NativeWindow.KeyReleased += delegate (object sender, dgtk_KeyBoardKeysEventArgs e)
             {
+                this.OnKeyReleased(sender, e);
                 this.KeyReleased(this, e);
             };
 
             this.NativeWindow.KeyCharReturned += delegate (object sender, dgtk_KeyBoardTextEventArgs e)
             {
+                this.OnKeyCharReturned(this, e);
                 this.KeyCharReturned(this, e);
             };
 
             this.NativeWindow.MouseDown += delegate (object sender, dgtk_MouseButtonEventArgs e)
             {
+                this.OnMouseDown(this, e);
                 this.MouseDown(this, e);
             };
 
             this.NativeWindow.MouseUp += delegate (object sender, dgtk_MouseButtonEventArgs e)
             {
+                this.OnMouseUp(this, e);
                 this.MouseUp(this, e);
             };
 
             this.NativeWindow.MouseMove += delegate (object sender, dgtk_MouseMoveEventArgs e)
             {
+                this.OnMouseMove(this, e);
                 this.MouseMove(this, e);
             };
 
             this.NativeWindow.MouseWheel += delegate (object sender, dgtk_MouseWheelEventArgs e)
             {
+                this.OnMouseWheel(this, e);
                 this.MouseWheel(this, e);
             };
 
             this.NativeWindow.MouseEnter += delegate (object sender, dgtk_MouseEnterLeaveEventArgs e)
             {
+                this.OnMouseEnter(this, e);
                 this.MouseEnter(this, e);
             };
 
             this.NativeWindow.MouseLeave += delegate (object sender, dgtk_MouseEnterLeaveEventArgs e)
             {
+                this.OnMouseLeave(this, e);
                 this.MouseLeave(this, e);
             };
             /*
@@ -195,7 +209,67 @@ namespace dgtk
 
         protected virtual void OnRenderFrame(object sender, dgtk_OnRenderEventArgs e)
         {
-            this.RenderFrame(this, e); //El renderizado en ventana nativa lanza el evento.
+            
+        }
+
+        protected virtual void OnWinClose(object sender, dgtk_WinCloseEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnWindowSizeChange(object sender, dgtk_WinResizeEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnWinStateChange(object sender, dgtk_WinStateChangeEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnKeyPulsed(object sender, dgtk_KeyBoardKeysEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnKeyReleased(object sender, dgtk_KeyBoardKeysEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnKeyCharReturned(object sender, dgtk_KeyBoardTextEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnMouseDown(object sender, dgtk_MouseButtonEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnMouseUp(object sender, dgtk_MouseButtonEventArgs e)
+        {
+            
+        }
+
+        protected virtual void OnMouseMove(object sender, dgtk_MouseMoveEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnMouseWheel(object sender, dgtk_MouseWheelEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnMouseEnter(object sender, dgtk_MouseEnterLeaveEventArgs e)
+        {
+
+        }
+
+        protected virtual void OnMouseLeave(object sender, dgtk_MouseEnterLeaveEventArgs e)
+        {
+
         }
 
         private void ProcessEvents()
@@ -260,7 +334,7 @@ namespace dgtk
             while(this.NativeWindow.IsRunning) // Procesar mientras la ventana nativa exista y este funcionando.
             {
                 DateTime dt_ini = DateTime.Now;
-                lock(this.NativeWindow.LockObject)
+                lock(Core.lockObject) //this.NativeWindow.LockObject)
                 {
                     this.UpdateFrame(this, new dgtk_OnUpdateEventArgs()); //Lanza evento de Actualización de datos.
                 }
@@ -392,6 +466,11 @@ namespace dgtk
         public OpenAL.OAL_Context OpenALContext
         {
             get { return this.NativeWindow.OpenAlContext; }
+        }
+
+        protected object LockObject
+        {
+            get { return Core.lockObject; }
         }
 
         #endregion
