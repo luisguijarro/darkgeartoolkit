@@ -174,6 +174,16 @@ namespace dgtk.OpenGL
             return fret;
         }
 
+        public static unsafe int[] glGetViewport()
+        {
+            int[] iret = new int[4];
+            fixed(int* ptr = &iret[0])
+            {
+                internalGL.glGetIntegerv(GetPName.GL_VIEWPORT, ptr);
+            }
+            return iret;
+        }
+
         #endregion
 
         #region S:
