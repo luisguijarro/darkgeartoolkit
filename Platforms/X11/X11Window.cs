@@ -306,12 +306,12 @@ namespace dgtk.Platforms.X11
 							if (xevento.xbutton.button == 4)
 							{
 								//if Button4 or Button5 => WHEEL;
-								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(1f));
+								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, 1f));
 							}
 							else if (xevento.xbutton.button == 5)
 							{
 								//if Button4 or Button5 => WHEEL;
-								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(-1f));
+								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, -1f));
 							}
 							else
 							{

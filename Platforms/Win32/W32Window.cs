@@ -337,11 +337,11 @@ namespace dgtk.Platforms.Win32
 				case WindowMessage.MOUSEWHEEL:
 					if (wParam.ToInt64()>=0)
 					{
-						this.MouseWheel(this, new dgtk_MouseWheelEventArgs(1f));
+						this.MouseWheel(this, new dgtk_MouseWheelEventArgs((int)unchecked((short)(long)lParam), (int)unchecked((short)((long)lParam >> 16)), 1f));
 					}
 					else
 					{
-						this.MouseWheel(this, new dgtk_MouseWheelEventArgs(-1f));
+						this.MouseWheel(this, new dgtk_MouseWheelEventArgs((int)unchecked((short)(long)lParam), (int)unchecked((short)((long)lParam >> 16)), -1f));
 					}
 					break;
 				case WindowMessage.MOUSEMOVE:
