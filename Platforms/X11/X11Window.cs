@@ -50,7 +50,7 @@ namespace dgtk.Platforms.X11
 
 		#region AttributeEvents
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
-        public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
+        public event EventHandler<dgtk_ResizeEventArgs> WindowSizeChange;
 		public event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed;
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased;
@@ -471,7 +471,7 @@ namespace dgtk.Platforms.X11
 			Imports.XGetGeometry(this.ptr_display, this.ptr_handle, out ventroottemp, out x, out y, out this.ancho, out this.alto, out grosorborde, out bxp_temp);
 			//if ((v2_s.X.Equals(this.ancho)) || (v2_s.Y.Equals(this.alto)))
 			//{
-				this.WindowSizeChange(this, new dgtk_WinResizeEventArgs(this.ancho, this.alto));
+				this.WindowSizeChange(this, new dgtk_ResizeEventArgs(this.ancho, this.alto));
 			//}
 		}
 

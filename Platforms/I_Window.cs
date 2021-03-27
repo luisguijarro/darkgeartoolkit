@@ -8,7 +8,7 @@ namespace dgtk.Platforms
         IntPtr Handle { get; }
 		bool IsRunning {get; set;}
         event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
-		event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
+		event EventHandler<dgtk_ResizeEventArgs> WindowSizeChange;
 		event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
 		event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed;
 		event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased;

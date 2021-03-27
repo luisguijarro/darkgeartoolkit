@@ -34,7 +34,7 @@ namespace dgtk.Platforms.Win32
 
 		#region AttributeEvents
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
-        public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange;
+        public event EventHandler<dgtk_ResizeEventArgs> WindowSizeChange;
 		public event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange;
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed;
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased;
@@ -418,7 +418,7 @@ namespace dgtk.Platforms.Win32
 					Imports.GetClientRect(this.ptr_handle, out this.rect);
 					int ancho = this.rect.right-this.rect.left;
 					int alto = this.rect.bottom-this.rect.top;	
-                    this.WindowSizeChange(this, new dgtk_WinResizeEventArgs(ancho, alto));
+                    this.WindowSizeChange(this, new dgtk_ResizeEventArgs(ancho, alto));
                     return new IntPtr(0);
             }
 			if ((msg == WindowMessage.CLOSE) && (wParam != new IntPtr(1)))

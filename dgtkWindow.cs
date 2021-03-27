@@ -23,7 +23,7 @@ namespace dgtk
 
         #region Attribute Events
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose; // Evento de cierre de Ventana
-        public event EventHandler<dgtk_WinResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
+        public event EventHandler<dgtk_ResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
 		public event EventHandler<dgtk_WinStateChangeEventArgs> WindowStateChange; // Evento de cambio de estado de una ventana
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyPulsed; // Evento que se da cuando se pulsa una tecla del teclado.
 		public event EventHandler<dgtk_KeyBoardKeysEventArgs> KeyReleased; // Evento que se da cuando se suelta una tecla del teclado.
@@ -122,7 +122,7 @@ namespace dgtk
                 this.WindowClose(this, e); //El cierre de la ventana nativa lanza evento.
             };
 
-            this.NativeWindow.WindowSizeChange += delegate (object sender, dgtk_WinResizeEventArgs e)
+            this.NativeWindow.WindowSizeChange += delegate (object sender, dgtk_ResizeEventArgs e)
             {
                 this.OnWindowSizeChange(this, e);
                 this.WindowSizeChange(this, e); //El cambio de tamaño de la ventana nativa lanza evento.
@@ -217,7 +217,7 @@ namespace dgtk
 
         }
 
-        protected virtual void OnWindowSizeChange(object sender, dgtk_WinResizeEventArgs e)
+        protected virtual void OnWindowSizeChange(object sender, dgtk_ResizeEventArgs e)
         {
 
         }
