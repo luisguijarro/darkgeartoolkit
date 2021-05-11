@@ -131,6 +131,7 @@ namespace dgtk.GameControlSystem.Linux
                                         {
                                             // AÑADIR A HATS
                                             GCD_Temp.Hats.Add((uint)value, 0);
+                                            GCD_Temp.gameControlState_state.d_hats_values.Add((uint)value, (HatPosition)8);
                                         }
                                         else //Si no es un HAT es un Eje.
                                         {
@@ -138,9 +139,10 @@ namespace dgtk.GameControlSystem.Linux
                                             int min = Imports.libevdev_get_abs_minimum(dev, (uint)value);
                                             int max = Imports.libevdev_get_abs_maximum(dev, (uint)value);
                                             GCD_Temp.Axis.Add((uint)value, new Axis((uint)value, max, min));
+                                            GCD_Temp.gameControlState_state.d_axis_values.Add((uint)value, 50);
                                         }
                                         #if DEBUG
-                                            Console.WriteLine(value.ToString());
+                                            //Console.WriteLine(value.ToString());
                                         #endif
                                     }
                                 }
@@ -152,9 +154,13 @@ namespace dgtk.GameControlSystem.Linux
                                     if (Imports.libevdev_has_event_code(dev, GameControlEventType.EV_KEY, (uint)value) == 1) //¿Soporta TECLAS o BOTONES?
                                     {
                                         // AÑADIR A BOTONES
-                                        if (!GCD_Temp.Btns.ContainsKey((uint)value)) {GCD_Temp.Btns.Add((uint)value, false);}
+                                        if (!GCD_Temp.Btns.ContainsKey((uint)value)) 
+                                        {
+                                            GCD_Temp.Btns.Add((uint)value, false);
+                                            GCD_Temp.gameControlState_state.d_Buttons.Add((uint)value, false);
+                                        }
                                         #if DEBUG
-                                            Console.WriteLine(value.ToString());
+                                            //Console.WriteLine(value.ToString());
                                         #endif
                                     }
                                 }

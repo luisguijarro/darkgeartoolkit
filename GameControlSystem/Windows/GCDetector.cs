@@ -98,7 +98,7 @@ namespace dgtk.GameControlSystem.Windows
                             return; // Cortamos ejecución del código.
                         }
 
-                        HIDP_VALUE_CAPS[] v_caps = new HIDP_VALUE_CAPS[HC.NumberInputValueCaps]; // Declaramos Array de Ejex y Hats.
+                        HIDP_VALUE_CAPS[] v_caps = new HIDP_VALUE_CAPS[HC.NumberInputValueCaps]; // Declaramos Array de Ejes y Hats.
                         if ((HIDResult = Imports.HidP_GetValueCaps(HIDP_REPORT_TYPE.HidP_Input, v_caps, ref HC.NumberInputValueCaps, PreparsedDeviceData)) != HIDResults.HIDP_STATUS_SUCCESS)
                         {
                             #if DEBUG
@@ -141,6 +141,7 @@ namespace dgtk.GameControlSystem.Windows
 
                                 GCD_Temp.Hats.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); // Añadimos Hat o D-PAD en posición Central.
                                 GCD_Temp.HatsValues.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
+                                GCD_Temp.gameControlState_state.d_hats_values.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
                             }
                             else
                             {
@@ -150,7 +151,8 @@ namespace dgtk.GameControlSystem.Windows
                                 #endif
 
                                 GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
-                                GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));                                  
+                                GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                                GCD_Temp.gameControlState_state.d_axis_values.Add((uint)v_caps[caps].notrange.Usage, (int)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
                             }
                         }
 
@@ -169,6 +171,7 @@ namespace dgtk.GameControlSystem.Windows
                             for (uint b=0;b<(b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1);b++)
                             {
                                 GCD_Temp.BtnsValues.Add(b, false);
+                                GCD_Temp.gameControlState_state.d_Buttons.Add(b, false);
                             }
                         //}
 
@@ -307,8 +310,7 @@ namespace dgtk.GameControlSystem.Windows
             {
                 long value = 0;
                 if (Imports.HidP_GetUsageValue(HIDP_REPORT_TYPE.HidP_Input, GCD_Event.Axis[key].UsagePage, 0, (HIDUsage)(GCD_Event.Axis[key].notrange.Usage), ref value, pre_data, new IntPtr((void*)&ri.Data.HID.Data), ri.Data.HID.Size) == HIDResults.HIDP_STATUS_SUCCESS)
-                {
-                    
+                {                    
                     // Ejes
                     long percent = (long)((100f/(GCD_Event.Axis[key].LogicalMax-GCD_Event.Axis[key].PhysicalMin))*value);
                     if (GCD_Event.AxisValues[key] != percent) // Solo lanzar evento si valor cambia.
