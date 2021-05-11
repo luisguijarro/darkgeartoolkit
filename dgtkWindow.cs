@@ -334,10 +334,10 @@ namespace dgtk
             while(this.NativeWindow.IsRunning) // Procesar mientras la ventana nativa exista y este funcionando.
             {
                 DateTime dt_ini = DateTime.Now;
-                lock(Core.lockObject) //this.NativeWindow.LockObject)
-                {
+                //lock(Core.lockObject) //this.NativeWindow.LockObject)
+                //{
                     this.UpdateFrame(this, new dgtk_OnUpdateEventArgs()); //Lanza evento de Actualización de datos.
-                }
+                //}
                 if (this.ui_ups > 0) 
                 {
                     TimeSpan retraso = DateTime.Now - dt_ini;
