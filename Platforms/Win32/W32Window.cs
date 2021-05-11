@@ -192,6 +192,8 @@ namespace dgtk.Platforms.Win32
 			#endregion
 
 			this.OpenAL_Cntx = new OpenAL.OAL_Context();
+
+			dgtk.GameControlsManager.DetectNewDevices();
 			
 			this.b_created = true;
             this.isRunning = true;
