@@ -112,5 +112,6 @@
     <Content Include="dgtkWFControl.cs" />
     <Content Include="dgtkWindow.cs" />
     <Content Include="dgtkWFControlGL.cs" />
+    <Content Include="GameControlSystem\GameControl_State.cs" />
   </ItemGroup>
 </Project>
