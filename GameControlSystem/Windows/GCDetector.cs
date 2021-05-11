@@ -316,7 +316,7 @@ namespace dgtk.GameControlSystem.Windows
                     if (GCD_Event.AxisValues[key] != percent) // Solo lanzar evento si valor cambia.
                     {
                         GCD_Event.AxisValues[key] = percent;
-                        GCD_Event.LanzarEventAxis(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputAxisEventArgs(ri.Header.hDevice.ToInt32(), (int)key, (int)percent));
+                        GCD_Event.LanzarEventAxis(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputAxisEventArgs(ri.Header.hDevice.ToInt32(), (int)key, (int)percent, GCD_Event.gameControlState_state));
                     }
                 }
             }
@@ -334,7 +334,7 @@ namespace dgtk.GameControlSystem.Windows
                     if (GCD_Event.HatsValues[key] != (HatPosition)value)
                     {
                         GCD_Event.HatsValues[key] = (HatPosition)value;
-                        GCD_Event.LanzarEventHats(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputHatsEventArgs(ri.Header.hDevice.ToInt32(), (int)key, GCD_Event.HatsValues[key]));
+                        GCD_Event.LanzarEventHats(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputHatsEventArgs(ri.Header.hDevice.ToInt32(), (int)key, GCD_Event.HatsValues[key], GCD_Event.gameControlState_state));
                     }
                 }
             }
@@ -365,7 +365,7 @@ namespace dgtk.GameControlSystem.Windows
                     {
                         GCD_Event.BtnsValues[(uint)b] = b_value;
                         // Lanzamos Evento.
-                        GCD_Event.LanzarEventBTNs(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputButtonsEventArgs(ri.Header.hDevice.ToInt32(), (int)b, GCD_Event.BtnsValues[(uint)b]));
+                        GCD_Event.LanzarEventBTNs(dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()], new dgtk_InputButtonsEventArgs(ri.Header.hDevice.ToInt32(), (int)b, GCD_Event.BtnsValues[(uint)b], GCD_Event.gameControlState_state));
                     }
                 }
             }

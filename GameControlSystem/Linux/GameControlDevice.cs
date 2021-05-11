@@ -118,7 +118,7 @@ namespace dgtk.GameControlSystem.Linux
                                     this.Hats[ev.code] = (int)ev.value;
                                     //Console.WriteLine((int)ev.value);
 
-                                    this.EventHats(this, new dgtk_InputHatsEventArgs(this.id, ev.code, hp));
+                                    this.EventHats(this, new dgtk_InputHatsEventArgs(this.id, ev.code, hp, this.gameControlState_state));
                                 }
                                 else // Es Eje.
                                 {
@@ -127,12 +127,12 @@ namespace dgtk.GameControlSystem.Linux
                                     {
                                         this.Axis[ev.code].VALUE = ax_value;
                                         //ax.VALUE = ax_value;
-                                        this.EventAxis(this, new dgtk_InputAxisEventArgs(this.id, ev.code, ax_value));
+                                        this.EventAxis(this, new dgtk_InputAxisEventArgs(this.id, ev.code, ax_value, this.gameControlState_state));
                                     }
                                 }
                                 break;
                             case GameControlEventType.EV_KEY:
-                                this.EventButtons(this, new dgtk_InputButtonsEventArgs(this.id, ev.code, ev.value> 0));
+                                this.EventButtons(this, new dgtk_InputButtonsEventArgs(this.id, ev.code, ev.value> 0, this.gameControlState_state));
                                 break;
                             default:
                                 // Ignorar el resto.
