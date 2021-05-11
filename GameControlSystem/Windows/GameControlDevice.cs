@@ -18,6 +18,8 @@ namespace dgtk.GameControlSystem.Windows
         internal Dictionary<uint, HatPosition> HatsValues;
         internal Dictionary<uint, bool> BtnsValues;
 
+        internal GameControlState gameControlState_state;
+
         public event EventHandler<dgtk_InputAxisEventArgs> EventAxis; // Evento de accionamiento de Eje.
         public event EventHandler<dgtk_InputHatsEventArgs> EventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
@@ -36,6 +38,13 @@ namespace dgtk.GameControlSystem.Windows
             this.HatsValues = new Dictionary<uint, HatPosition>();
             this.BtnsValues = new Dictionary<uint, bool>();
 
+            this.gameControlState_state = new GameControlState()
+            {
+                d_hats_values = new Dictionary<uint, HatPosition>(),
+                d_axis_values = new Dictionary<uint, int>(),
+                d_Buttons = new Dictionary<uint, bool>()
+            };
+            
             this.EventAxis += this.InputAxisEvent;
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
@@ -46,14 +55,17 @@ namespace dgtk.GameControlSystem.Windows
 
         internal void LanzarEventAxis(object sender, dgtk_InputAxisEventArgs e)
         {
+            this.gameControlState_state.d_axis_values[(uint)e.ID] = e.Value;
             this.EventAxis(sender, e);
         }
         internal void LanzarEventHats(object sender, dgtk_InputHatsEventArgs e)
         {
+            this.gameControlState_state.d_hats_values[(uint)e.ID] = e.Value;
             this.EventHats(sender, e);
         }
         internal void LanzarEventBTNs(object sender, dgtk_InputButtonsEventArgs e)
         {
+            this.gameControlState_state.d_Buttons[(uint)e.Button] = e.Pressed;
             this.EventButtons(sender, e);
         }
 
@@ -107,6 +119,11 @@ namespace dgtk.GameControlSystem.Windows
         public string Name
         {
             get { return this.s_name; }
+        }
+
+        public GameControlState State
+        {
+            get { return this.gameControlState_state; }
         }
     }
 }
