@@ -7,6 +7,7 @@ namespace dgtk.GameControlSystem
     {
         int ID {get;}
         string Name {get;}
+        GameControlState State {get;}
         event EventHandler<dgtk_InputAxisEventArgs> EventAxis;
         event EventHandler<dgtk_InputHatsEventArgs> EventHats;
         event EventHandler<dgtk_InputButtonsEventArgs> EventButtons;
