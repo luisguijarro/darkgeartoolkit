@@ -182,6 +182,8 @@ namespace dgtk.Platforms.X11
 			}
 			#endregion
 
+			dgtk.GameControlsManager.DetectNewDevices();
+
 			this.b_created = true;
 			this.isRunning = true; //Lo quitamos del método Run() 
         }
