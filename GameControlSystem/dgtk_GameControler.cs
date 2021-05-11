@@ -13,6 +13,7 @@ namespace dgtk
         internal dgtk_GameControler(I_GameControlDevice nativedev)
         {
             this.device = nativedev;
+
             this.EventAxis += delegate{};
             this.EventHats += delegate{};
             this.EventButtons += delegate{};
@@ -45,6 +46,10 @@ namespace dgtk
         public void Dispose()
         {
             device.Dispose();
+        }
+        public GameControlState State
+        {
+            get { return this.device.State; }
         }
     }
 }
