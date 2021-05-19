@@ -49,7 +49,6 @@ namespace dgtk.Graphics
 		
 		public bool Equals(Color4 other)
 		{
-			// add comparisions for all members here
 			return this.GetHashCode() == other.GetHashCode();
 		}
 		
@@ -108,6 +107,10 @@ namespace dgtk.Graphics
 		public static Color4 Pink
 		{
 			get {return new Color4(1f, 0f, 1f, 1f);}
+		}
+		public static Color4 Empty
+		{
+			get {return new Color4(-1f, -1f, -1f, -1f);}
 		}
 	}
 }
