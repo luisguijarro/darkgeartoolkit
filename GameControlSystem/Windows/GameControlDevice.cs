@@ -23,7 +23,7 @@ namespace dgtk.GameControlSystem.Windows
         public event EventHandler<dgtk_InputAxisEventArgs> EventAxis; // Evento de accionamiento de Eje.
         public event EventHandler<dgtk_InputHatsEventArgs> EventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
-        public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
+        //public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
 
         internal GameControlDevice(IntPtr ptr_dev, int in_id)
         {
@@ -48,7 +48,7 @@ namespace dgtk.GameControlSystem.Windows
             this.EventAxis += this.InputAxisEvent;
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
-            this.EventStatusChanged += this.StatusChangedEvent;
+            //this.EventStatusChanged += this.StatusChangedEvent;
         }
 
         #region Events:
@@ -92,7 +92,7 @@ namespace dgtk.GameControlSystem.Windows
                 win.LaunchEventBTNs(sender, e); // LLamar Lanzamiento de eventos en ventana.
             }
         }
-
+        /*
         private void StatusChangedEvent(object sender, dgtk_GameControllerStatusEventArgs e)
         {
             foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
@@ -100,7 +100,7 @@ namespace dgtk.GameControlSystem.Windows
                 win.LaunchGameControllerStatusChanged(sender, e); // LLamar Lanzamiento de eventos en ventana.
             }
         }
-
+        */
         #endregion
 
         public void Dispose()
@@ -108,7 +108,7 @@ namespace dgtk.GameControlSystem.Windows
             this.EventAxis -= this.InputAxisEvent;
             this.EventHats -= this.InputHatsEvent;
             this.EventButtons -= this.InputBTNsEvent;
-            this.EventStatusChanged -= this.StatusChangedEvent;
+            //this.EventStatusChanged -= this.StatusChangedEvent;
         }
 
         public int ID

@@ -21,7 +21,7 @@ namespace dgtk.GameControlSystem.Linux
         public event EventHandler<dgtk_InputAxisEventArgs> EventAxis; // Evento de accionamiento de Eje.
         public event EventHandler<dgtk_InputHatsEventArgs> EventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
-        public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
+        //public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
 
         internal GameControlDevice(IntPtr ptr_dev, int f) // CONSTRUCTOR
         {
@@ -42,7 +42,7 @@ namespace dgtk.GameControlSystem.Linux
             this.EventAxis += this.InputAxisEvent;
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
-            this.EventStatusChanged += this.StatusChangedEvent;
+            //this.EventStatusChanged += this.StatusChangedEvent;
 
             this.hilo = new Thread(new ThreadStart(this.ProcessEvents)); // Definir hilo procesador de eventos.
             this.hilo.Start(); // Iniciar hilo de procesamiento de eventos.            
@@ -76,7 +76,7 @@ namespace dgtk.GameControlSystem.Linux
                 win.LaunchEventBTNs(sender, e); // LLamar Lanzamiento de eventos en ventana.
             }
         }
-
+        /*
         private void StatusChangedEvent(object sender, dgtk_GameControllerStatusEventArgs e)
         {
             foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
@@ -84,7 +84,7 @@ namespace dgtk.GameControlSystem.Linux
                 win.LaunchGameControllerStatusChanged(sender, e); // LLamar Lanzamiento de eventos en ventana.
             }
         }
-
+        */
         #endregion
 
         private void ProcessEvents()
@@ -170,7 +170,7 @@ namespace dgtk.GameControlSystem.Linux
             this.EventAxis -= this.InputAxisEvent;
             this.EventHats -= this.InputHatsEvent;
             this.EventButtons -= this.InputBTNsEvent;
-            this.EventStatusChanged -= this.StatusChangedEvent;
+            //this.EventStatusChanged -= this.StatusChangedEvent;
 
             //Imports.libevdev_free(this.dev); // Liberar Recurso. // Casca la segunda vez
             Imports.close(this.file); // Cerrando Fichero

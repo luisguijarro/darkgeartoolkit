@@ -9,7 +9,7 @@ namespace dgtk
         public event EventHandler<dgtk_InputAxisEventArgs> EventAxis; // Evento de accionamiento de Eje.
         public event EventHandler<dgtk_InputHatsEventArgs> EventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
-        public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
+        //public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
         internal dgtk_GameControler(I_GameControlDevice nativedev)
         {
             this.device = nativedev;
@@ -17,7 +17,7 @@ namespace dgtk
             this.EventAxis += delegate{};
             this.EventHats += delegate{};
             this.EventButtons += delegate{};
-            this.EventStatusChanged += delegate{};
+            //this.EventStatusChanged += delegate{};
             device.EventAxis += delegate(object sender, dgtk_InputAxisEventArgs e)
             {
                 this.EventAxis(sender, e);
@@ -30,10 +30,10 @@ namespace dgtk
             {
                 this.EventButtons(sender, e);
             };
-            device.EventStatusChanged += delegate(object sender, dgtk_GameControllerStatusEventArgs e)
+            /*device.EventStatusChanged += delegate(object sender, dgtk_GameControllerStatusEventArgs e)
             {
                 this.EventStatusChanged(sender, e);
-            };
+            };*/
         }
         public int ID
         {

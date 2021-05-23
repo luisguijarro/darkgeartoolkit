@@ -39,7 +39,7 @@ namespace dgtk
         public event EventHandler<dgtk_InputAxisEventArgs> GameControlEventAxis; // Evento de accionamiento de Eje.
         public event EventHandler<dgtk_InputHatsEventArgs> GameControlEventHats; // Evento de accionamiento de Hat.
         public event EventHandler<dgtk_InputButtonsEventArgs> GameControlEventButtons; // Evento de accionamiento de Botones.
-        public event EventHandler<dgtk_GameControllerStatusEventArgs> GameControllerStatusChanged; // Evento que se lanza cuando salta algún evento.
+        //public event EventHandler<dgtk_GameControllerStatusEventArgs> GameControllerStatusChanged; // Evento que se lanza cuando salta algún evento.
         
         #endregion
 
@@ -106,7 +106,7 @@ namespace dgtk
             this.GameControlEventAxis += delegate {};
             this.GameControlEventHats += delegate {};
             this.GameControlEventButtons += delegate {};
-            this.GameControllerStatusChanged += delegate {};
+            //this.GameControllerStatusChanged += delegate {};
 
             #region Lanzamiento de eventos desde Clase Nativa.
             // Recogemos los eventos de la ventana nativa.
@@ -434,12 +434,12 @@ namespace dgtk
         {
             this.GameControlEventButtons(sender, e);
         }
-
+        /*
         internal void LaunchGameControllerStatusChanged(object sender, dgtk_GameControllerStatusEventArgs e)
         {
             this.GameControllerStatusChanged(sender, e);
         }
-
+        */
         #endregion
 
         #region PROPIEDADES:
