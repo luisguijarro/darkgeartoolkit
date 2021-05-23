@@ -27,6 +27,7 @@ namespace dgtk.GameControlSystem.Windows
 
         internal GameControlDevice(IntPtr ptr_dev, int in_id)
         {
+            this.s_name = "Windows Game Controller";
             this.dev = ptr_dev;
             this.id = in_id;
 
