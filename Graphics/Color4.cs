@@ -16,6 +16,12 @@ namespace dgtk.Graphics
 
 		#endregion
 
+
+		public Color4(float[] RGBA_array) : this(RGBA_array[0], RGBA_array[1], RGBA_array[2], RGBA_array[3])
+		{
+
+		}
+
 		public Color4(float Red, float Green, float Blue, float alpha) : this()
 		{
 			R = Red;
@@ -24,6 +30,11 @@ namespace dgtk.Graphics
 			A = alpha;
 		}
 		
+		public Color4(byte[] RGBA_array) : this(RGBA_array[0], RGBA_array[1], RGBA_array[2], RGBA_array[3])
+		{
+
+		}
+
 		public Color4(byte Red, byte Green, byte Blue, byte alpha) : this()
 		{
 			R = Red/255f;
