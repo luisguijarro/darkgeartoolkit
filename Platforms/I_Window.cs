@@ -26,6 +26,7 @@ namespace dgtk.Platforms
 		void SwapBuffers();
 		void Redraw();
 		dgtk.Math.Size Size {get; set;}
+		WindowState WindowState {get; set;}
 		void Close();
 		bool Created {get;}
 		void EnableVSync();

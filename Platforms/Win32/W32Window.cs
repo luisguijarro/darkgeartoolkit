@@ -470,6 +470,31 @@ namespace dgtk.Platforms.Win32
 				return new dgtk.Math.Size(this.rect.right-this.rect.left, this.rect.bottom-this.rect.top); 
 			}
 		}
+
+		public WindowState WindowState
+		{
+			get
+			{ 
+				return this.WinState;
+			}
+			set
+			{
+				switch(value)
+				{
+					case WindowState.Minimized:
+						Imports.ShowWindow(this.ptr_handle, 2);
+						break;
+					case WindowState.Maximized:
+						Imports.ShowWindow(this.ptr_handle, 3);
+						break;
+					case WindowState.Normal:
+						Imports.ShowWindow(this.ptr_handle, 1);
+						break;
+				}
+				this.WinState = value;
+			}
+		}
+
 		public bool Created {get{return b_created;}}
 		public bool IsRunning 
 		{

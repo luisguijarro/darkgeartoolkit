@@ -109,6 +109,9 @@ namespace dgtk.Platforms.Win32
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         internal static extern bool SetWindowText(IntPtr hwnd, String lpString);
 
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        internal static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern IntPtr RegisterDeviceNotification(IntPtr recipient, IntPtr notificationFilter, int flags);
 

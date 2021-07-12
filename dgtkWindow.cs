@@ -459,6 +459,11 @@ namespace dgtk
             get {return this.NativeWindow.Size.Height;}
             set {this.NativeWindow.Size = new Math.Size(this.NativeWindow.Size.Width, value);}
         }
+        public virtual WindowState WindowState
+        {
+            set { this.NativeWindow.WindowState = value; }
+            get { return this.NativeWindow.WindowState; }
+        }
         public uint CalculatedFPS
         {
             get { return this.ui_c_fps_show;}
