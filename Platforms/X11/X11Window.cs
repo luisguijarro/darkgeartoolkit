@@ -372,7 +372,7 @@ namespace dgtk.Platforms.X11
 							{
 								if ((ks != 65293) && (ks != 65288) && (ks != 65307) && (ks != 65535) && (ks != 65289)) // Discriminar Return, Backspace, ESC, Del, Tab.
 								{
-									Console.WriteLine("KS: "+ks);
+									//Console.WriteLine("KS: "+ks);
 									char character = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
 									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(character));//LANZAR EVENTO CHARACTER
 								}
