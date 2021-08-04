@@ -389,6 +389,11 @@ namespace dgtk
             // this.NativeWindow.IsRunning = true; // No deberia estar aquí, al menos in linux
         }
 
+        public virtual void Close()
+        {
+            this.NativeWindow.Close();
+        }
+
         public bool MakeCurrent()
         {
             return this.NativeWindow.MakeCurrent();
