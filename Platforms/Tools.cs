@@ -3,9 +3,9 @@ using System.Diagnostics;
 
 namespace dgtk.Platforms
 {
-    internal static class Tools
+    public static class Tools
     {
-        internal static Platform GetPlatform()
+        public static Platform GetPlatform()
         {
             switch(Environment.OSVersion.Platform)
             {
@@ -46,7 +46,7 @@ namespace dgtk.Platforms
         }
     }
 
-    internal enum Platform
+    public enum Platform
     {
         Windows, MacOS, Linux_X11, Linux_Wayland
     }
