@@ -47,6 +47,8 @@ namespace dgtk.Platforms.X11
         private WindowState WinState;
 		private int ancho;
 		private int alto;
+		private int X;
+		private int Y;
 
 		#region AttributeEvents
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose;
@@ -175,11 +177,31 @@ namespace dgtk.Platforms.X11
 				}				
 			}
 
+			this.ptr_XIC = IntPtr.Zero;
+			int XCreateIC_Count = 0;
+			while(this.ptr_XIC == IntPtr.Zero)
+			{
+				this.ptr_XIC = Imports.XCreateIC(this.ptr_XIM, "inputStyle", xim_style, "clientWindow", this.ptr_handle, "focusWindow", this.ptr_handle, IntPtr.Zero);
+				System.Threading.Thread.Sleep(1000);
+				XCreateIC_Count++;
+				
+				#if DEBUG
+					Console.WriteLine("XCreateIC try: "+XCreateIC_Count);
+				#endif
+
+				if (XCreateIC_Count >= 20)
+				{
+					throw new Exception("Error XCreateIC: FAIL.");
+				}
+			}
+
+			/*
 			this.ptr_XIC = Imports.XCreateIC(this.ptr_XIM, "inputStyle", xim_style, "clientWindow", this.ptr_handle, "focusWindow", this.ptr_handle, IntPtr.Zero);
 			if (ptr_XIC == IntPtr.Zero)
 			{
 				throw new Exception("Error XCreateIC: FAIL.");
 			}
+			*/
 			#endregion
 
 			dgtk.GameControlsManager.DetectNewDevices();
@@ -302,115 +324,117 @@ namespace dgtk.Platforms.X11
 					Imports.XCheckTypedWindowEvent(this.ptr_display, this.ptr_handle, XEventType.ClientMessage, ref xevento);
 					Imports.XUnlockDisplay(this.ptr_display);
 					KeyCode kc;
-					switch(xevento.type)
+					lock(Core.lockObject)
 					{
-						case XEventType.ButtonPress:
-							if (xevento.xbutton.button == 4)
-							{
-								//if Button4 or Button5 => WHEEL;
-								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, 1f));
-							}
-							else if (xevento.xbutton.button == 5)
-							{
-								//if Button4 or Button5 => WHEEL;
-								this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, -1f));
-							}
-							else
-							{
-								this.MouseDown(this, new dgtk_MouseButtonEventArgs(xevento.xbutton.x, xevento.xbutton.y, (MouseButtons)xevento.xbutton.button, PushRelease.Push));
-							}
-
-							break;
-
-						case XEventType.ButtonRelease:
-							if ((xevento.xbutton.button > 3) && (xevento.xbutton.button < 6))
-							{
-								//if Button4 or Button5 => WHEEL; (in release not make nothing)
-							}
-							else
-							{
-								this.MouseUp(this, new dgtk_MouseButtonEventArgs(xevento.xbutton.x, xevento.xbutton.y, (MouseButtons)xevento.xbutton.button, PushRelease.Release));
-							}
-							break;
-						
-						case XEventType.MotionNotify:
-							this.MouseMove(this, new dgtk_MouseMoveEventArgs(xevento.xmotion.x, xevento.xmotion.y, xevento.xmotion.x_root, xevento.xmotion.y_root));
-							break;		
-
-						case XEventType.EnterNotify:
-							this.MouseEnter(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Enter));
-							break;
-
-						case XEventType.LeaveNotify:
-							this.MouseLeave(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Leave));
-							break;
-
-						case XEventType.KeyPress:
-							kc = EventsTools.X11key(xevento.xkey.keycode);
-							this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
-														
-							ulong ks = 0;
-							int bsize = 8;
-							IntPtr ptr_chret = Marshal.AllocHGlobal(bsize);
-							int i_status=0;
-
-							int nmb = 0;
-							do
-							{
-								nmb  = Imports.XmbLookupString(this.ptr_XIC, ref xevento.xkey, ptr_chret, bsize -1 , ref ks, ref i_status);
-								if (i_status == -1)
+						switch(xevento.type)
+						{
+							case XEventType.ButtonPress:
+								if (xevento.xbutton.button == 4)
 								{
-									bsize = nmb + 1;
-									ptr_chret = Marshal.AllocHGlobal(bsize);
+									//if Button4 or Button5 => WHEEL;
+									this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, 1f));
 								}
-							}
-							while(i_status == -1);
-							
-							bool Filtered = Imports.XFilterEvent(ref xevento, this.ptr_handle);
-
-							if ((!Filtered) && (nmb>0))
-							{
-								if ((ks != 65293) && (ks != 65288) && (ks != 65307) && (ks != 65535) && (ks != 65289)) // Discriminar Return, Backspace, ESC, Del, Tab.
+								else if (xevento.xbutton.button == 5)
 								{
-									//Console.WriteLine("KS: "+ks);
-									char character = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
-									this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(character));//LANZAR EVENTO CHARACTER
+									//if Button4 or Button5 => WHEEL;
+									this.MouseWheel(this, new dgtk_MouseWheelEventArgs(xevento.xbutton.x, xevento.xbutton.y, -1f));
 								}
-							}
+								else
+								{
+									this.MouseDown(this, new dgtk_MouseButtonEventArgs(xevento.xbutton.x, xevento.xbutton.y, (MouseButtons)xevento.xbutton.button, PushRelease.Push));
+								}
 
-							break;							
+								break;
+
+							case XEventType.ButtonRelease:
+								if ((xevento.xbutton.button > 3) && (xevento.xbutton.button < 6))
+								{
+									//if Button4 or Button5 => WHEEL; (in release not make nothing)
+								}
+								else
+								{
+									this.MouseUp(this, new dgtk_MouseButtonEventArgs(xevento.xbutton.x, xevento.xbutton.y, (MouseButtons)xevento.xbutton.button, PushRelease.Release));
+								}
+								break;
 							
-						case XEventType.KeyRelease:
-							kc = EventsTools.X11key(xevento.xkey.keycode);
-							this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
-							break;
+							case XEventType.MotionNotify:
+								this.MouseMove(this, new dgtk_MouseMoveEventArgs(xevento.xmotion.x, xevento.xmotion.y, xevento.xmotion.x_root, xevento.xmotion.y_root));
+								break;		
 
-						case XEventType.ClientMessage:
-							if(xevento.xclient.puntero1 == this.WM_DELETE_WINDOW)
-							{
-								this.Close();
-							}
-							break;
+							case XEventType.EnterNotify:
+								this.MouseEnter(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Enter));
+								break;
 
-						case XEventType.PropertyNotify:		//WINDOW STATE					
-							if(xevento.xproperty.atom == this.WM_STATE)
-							{
-								this.GetState();
-							} 
-							break;
+							case XEventType.LeaveNotify:
+								this.MouseLeave(this, new dgtk_MouseEnterLeaveEventArgs(EnterLeave.Leave));
+								break;
 
-						case XEventType.ConfigureNotify:
-							this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
-							break;
+							case XEventType.KeyPress:
+								kc = EventsTools.X11key(xevento.xkey.keycode);
+								this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
+															
+								ulong ks = 0;
+								int bsize = 8;
+								IntPtr ptr_chret = Marshal.AllocHGlobal(bsize);
+								int i_status=0;
 
-						case XEventType.ConfigureRequest:
-							this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
-							break;
+								int nmb = 0;
+								do
+								{
+									nmb  = Imports.XmbLookupString(this.ptr_XIC, ref xevento.xkey, ptr_chret, bsize -1 , ref ks, ref i_status);
+									if (i_status == -1)
+									{
+										bsize = nmb + 1;
+										ptr_chret = Marshal.AllocHGlobal(bsize);
+									}
+								}
+								while(i_status == -1);
+								
+								bool Filtered = Imports.XFilterEvent(ref xevento, this.ptr_handle);
 
-						default:
-							break;
-					}
-					
+								if ((!Filtered) && (nmb>0))
+								{
+									if ((ks != 65293) && (ks != 65288) && (ks != 65307) && (ks != 65535) && (ks != 65289)) // Discriminar Return, Backspace, ESC, Del, Tab.
+									{
+										//Console.WriteLine("KS: "+ks);
+										char character = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
+										this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(character));//LANZAR EVENTO CHARACTER
+									}
+								}
+
+								break;							
+								
+							case XEventType.KeyRelease:
+								kc = EventsTools.X11key(xevento.xkey.keycode);
+								this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
+								break;
+
+							case XEventType.ClientMessage:
+								if(xevento.xclient.puntero1 == this.WM_DELETE_WINDOW)
+								{
+									this.Close();
+								}
+								break;
+
+							case XEventType.PropertyNotify:		//WINDOW STATE					
+								if(xevento.xproperty.atom == this.WM_STATE)
+								{
+									this.GetState();
+								} 
+								break;
+
+							case XEventType.ConfigureNotify:
+								this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
+								break;
+
+							case XEventType.ConfigureRequest:
+								this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
+								break;
+
+							default:
+								break;
+						}
+					}	
 				}
 				TimeSpan retraso = DateTime.Now - dt_ini;
                 if (retraso.TotalMilliseconds < (1f/(float)ups)*1000f)
@@ -468,9 +492,9 @@ namespace dgtk.Platforms.X11
 		private void GetSize()
 		{
 			IntPtr ventroottemp;
-			int bxp_temp, grosorborde, x, y;
+			int bxp_temp, grosorborde;//, x, y;
 			//dgtk.Math.Vector2 v2_s = new dgtk.Math.Vector2 (this.ancho, this.alto);
-			Imports.XGetGeometry(this.ptr_display, this.ptr_handle, out ventroottemp, out x, out y, out this.ancho, out this.alto, out grosorborde, out bxp_temp);
+			Imports.XGetGeometry(this.ptr_display, this.ptr_handle, out ventroottemp, out this.X, out this.Y, out this.ancho, out this.alto, out grosorborde, out bxp_temp);
 			//if ((v2_s.X.Equals(this.ancho)) || (v2_s.Y.Equals(this.alto)))
 			//{
 				this.WindowSizeChange(this, new dgtk_ResizeEventArgs(this.ancho, this.alto));
@@ -565,6 +589,12 @@ namespace dgtk.Platforms.X11
 		{
 			set { Imports.XResizeWindow (this.ptr_display, this.ptr_handle, (uint)value.Width, (uint)value.Height); /*this.ancho = (int)value.X; this.alto = (int)value.Y;*/}
 			get { return new dgtk.Math.Size(this.ancho, this.alto); }
+		}
+
+		public dgtk.Math.Point Position 
+		{
+			get{ return new dgtk.Math.Point(this.X, this.Y); } 
+			set{}
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
