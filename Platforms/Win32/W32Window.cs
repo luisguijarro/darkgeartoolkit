@@ -422,6 +422,10 @@ namespace dgtk.Platforms.Win32
 					int alto = this.rect.bottom-this.rect.top;	
                     this.WindowSizeChange(this, new dgtk_ResizeEventArgs(ancho, alto));
                     return new IntPtr(0);
+				
+                case WindowMessage.MOVE:
+					Imports.GetClientRect(this.ptr_handle, out this.rect);
+					return new IntPtr(0);
             }
 			if ((msg == WindowMessage.CLOSE) && (wParam != new IntPtr(1)))
             {
@@ -501,6 +505,13 @@ namespace dgtk.Platforms.Win32
 			get { bool ret; lock(Core.lockObject/*this.lockobject*/){ret = this.isRunning; }return ret; }
 			set { this.isRunning = value;}
 		}	
+
+		public dgtk.Math.Point Position 
+		{
+			get{ return new dgtk.Math.Point(this.rect.left, this.rect.top); } 
+			set{}
+		}
+
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
     }
 }
