@@ -454,6 +454,14 @@ namespace dgtk
             set { this.NativeWindow.Title = value;}
             get { return this.NativeWindow.Title; }
         }
+        public int X
+        {
+            get { return this.NativeWindow.Position.X; }
+        }
+        public int Y
+        {
+            get { return this.NativeWindow.Position.Y; }
+        }
         public virtual int Width
         {
             get {return this.NativeWindow.Size.Width;}
