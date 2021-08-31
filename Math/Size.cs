@@ -11,9 +11,9 @@ namespace dgtk.Math
 	public struct Size : IEquatable<Size>
 	{
 		private int X, Y;
-		public Size(int x, int y)
+		public Size(int width, int height)
 		{
-			this.X = x; this.Y = y;
+			this.X = width; this.Y = height;
 		}
 		public static readonly int SizeInBytes = Marshal.SizeOf(new Size());
 		
