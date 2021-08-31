@@ -52,11 +52,11 @@ namespace dgtk.Platforms.Win32
         {
 
         }
-        internal W32Window(uint width, uint height, string title) : this(0, 0, width, height, title)
+        internal W32Window(int width, int height, string title) : this(0, 0, width, height, title)
         {
 
         }
-        internal W32Window(int posX, int posY, uint width, uint height, string title)
+        internal W32Window(int posX, int posY, int width, int height, string title)
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
@@ -509,7 +509,19 @@ namespace dgtk.Platforms.Win32
 		public dgtk.Math.Point Position 
 		{
 			get{ return new dgtk.Math.Point(this.rect.left, this.rect.top); } 
-			set{}
+			set
+			{
+				lock(Core.lockObject) //this.lockobject)
+				{
+					this.rect.left = value.X;
+					this.rect.top = value.Y;
+					if (Imports.AdjustWindowRectEx(ref this.rect, this.baseStyle, true, this.ExtendStyle))
+					{
+						Console.WriteLine("Ajustado");
+					}
+					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0004 | 0x0002 | 0x0200));
+				}
+			}
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
