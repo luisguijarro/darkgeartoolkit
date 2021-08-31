@@ -48,14 +48,14 @@ namespace dgtk
             
         }
 
-        public dgtk_Window(uint Width, uint Height, string Title) //Constructor completo.
+        public dgtk_Window(int width, int height, string Title) //Constructor completo.
         {
             if (Core.lockObject == null) {Core.lockObject = new object(); }
             //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establecer afinidad del proceso inicial
             
             this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
             
-            this.th_window.Start(new th_params(Width, Height, Title)); // Iniciar Hilo con los parametros de la ventana.
+            this.th_window.Start(new th_params(width, height, Title)); // Iniciar Hilo con los parametros de la ventana.
             while(this.NativeWindow == null) //Esperamos hasta que la ventana esté creada y no sea null.
             {
                 Thread.Sleep(100);
