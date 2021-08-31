@@ -70,11 +70,11 @@ namespace dgtk.Platforms.X11
         {
 
 		}
-		internal X11Window(uint width, uint height, string title) : this(0, 0, width, height, title)
+		internal X11Window(int width, int height, string title) : this(0, 0, width, height, title)
         {
 			
 		}
-        internal X11Window(int posX, int posY, uint width, uint height, string title)
+        internal X11Window(int posX, int posY, int width, int height, string title)
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
@@ -347,9 +347,10 @@ namespace dgtk.Platforms.X11
 								break;
 
 							case XEventType.ButtonRelease:
-								if ((xevento.xbutton.button > 3) && (xevento.xbutton.button < 6))
+								if ((xevento.xbutton.button > 3) && (xevento.xbutton.button < 8))
 								{
-									//if Button4 or Button5 => WHEEL; (in release not make nothing)
+									//if Button4 or Button5 => VERTICAL WHEEL;
+									//if Button6 or Button7 => HORIZONTAL WHEEL;
 								}
 								else
 								{
@@ -594,7 +595,7 @@ namespace dgtk.Platforms.X11
 		public dgtk.Math.Point Position 
 		{
 			get{ return new dgtk.Math.Point(this.X, this.Y); } 
-			set{}
+			set{ Imports.XMoveWindow(this.ptr_display, this.ptr_handle, value.X, value.Y); }
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
