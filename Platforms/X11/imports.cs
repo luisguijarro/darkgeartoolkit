@@ -138,6 +138,10 @@ namespace dgtk.Platforms.X11
 		[DllImport("libX11", EntryPoint = "XResizeWindow")]
 		internal extern static void XResizeWindow(IntPtr Display, IntPtr ventana, uint width, uint height);
 
+
+		[DllImport("libX11", EntryPoint = "XMoveWindow")]
+		internal extern static void XMoveWindow(IntPtr display, IntPtr ventana, int x, int y);
+
         [DllImport("libX11", EntryPoint = "XSendEvent")]
         internal static unsafe extern int XSendEvent(IntPtr Display, IntPtr w, bool propagate, EventMask mask, ref XEvent @event);
 
