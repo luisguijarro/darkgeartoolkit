@@ -36,7 +36,7 @@ namespace dgtk.Platforms.X11
 					IntPtr* glFBConfigptr = glx.glXChooseFBConfig (ptr_display, ScreenId, VisualFBAttributes, out n_items);
 
 					int best_fbc = 0, best_num_samp = -1, buf_num_samp = -1;
-					int depth = 0, bits_R = 0, bits_G = 0, bits_B = 0, bits_A = 0, renderable = 0, ID=0;
+					//int depth = 0, bits_R = 0, bits_G = 0, bits_B = 0, bits_A = 0, renderable = 0, ID=0;
 					for (int i=0;i<n_items;i++)
 					{
 						IntPtr vi = glx.glXGetVisualFromFBConfig( ptr_display, glFBConfigptr[i] );
