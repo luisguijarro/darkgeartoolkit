@@ -27,7 +27,7 @@ namespace dgtk.Platforms.X11
 							(int)glxVisualAttributes.GLX_GREEN_SIZE, 8,
 							(int)glxVisualAttributes.GLX_BLUE_SIZE, 8,
 							(int)glxVisualAttributes.GLX_ALPHA_SIZE, 8,
-							(int)glxVisualAttributes.GLX_DEPTH_SIZE, 24,
+							(int)glxVisualAttributes.GLX_DEPTH_SIZE, 16,
 							(int)glxVisualAttributes.GLX_STENCIL_SIZE, 8,
 							(int)glxVisualFBAttributes.GLX_DOUBLEBUFFER, 1,
 							0
@@ -36,26 +36,34 @@ namespace dgtk.Platforms.X11
 					IntPtr* glFBConfigptr = glx.glXChooseFBConfig (ptr_display, ScreenId, VisualFBAttributes, out n_items);
 
 					int best_fbc = 0, best_num_samp = -1, buf_num_samp = -1;
+					int depth = 0, bits_R = 0, bits_G = 0, bits_B = 0, bits_A = 0, renderable = 0, ID=0;
 					for (int i=0;i<n_items;i++)
 					{
 						IntPtr vi = glx.glXGetVisualFromFBConfig( ptr_display, glFBConfigptr[i] );
+						
 						if (vi != IntPtr.Zero)
 						{
+							XVisualInfo tempvisual = (XVisualInfo)Marshal.PtrToStructure (vi, typeof(XVisualInfo));	
 							int samp_buf, samples; //, bits_R, bits_G, bits_B, bits_A, depth, rederable;
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLE_BUFFERS, out samp_buf );
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLES, out samples  );
-							/*glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_DEPTH_SIZE, out depth  );
+							/*
+							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_FBCONFIG_ID, out ID);
+							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_DEPTH_BUFFER_BIT, out depth  );
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_RED_SIZE, out bits_R  );
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_GREEN_SIZE, out bits_G  );
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_BLUE_SIZE, out bits_B  );
 							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_ALPHA_SIZE, out bits_A  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_X_RENDERABLE, out rederable  );*/
-
-							//Console.WriteLine("Index: "+i+" | SampleBuffers: "+samp_buf+" | Samples: "+samples+" | Depth: "+ depth +" | R: "+bits_R+" | G: "+bits_G+" | B: "+bits_B+" | A: "+bits_A+ " | RENDERABLE: " + (rederable==1 ? "true" : "false"));
+							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_X_RENDERABLE, out renderable  );
+							*/
+							//Console.WriteLine("Index: "+i+" | ID: "+ID+" | SampleBuffers: "+samp_buf+" | Samples: "+samples+" | Depth: "+ depth +" | R: "+bits_R+" | G: "+bits_G+" | B: "+bits_B+" | A: "+bits_A+ " | RENDERABLE: " + (renderable==1 ? "true" : "false"));
 							
-							if ((samp_buf >= buf_num_samp && samples >= best_num_samp ))
+							if (tempvisual.depth == 24)
 							{
-								best_fbc = i; best_num_samp = samples; buf_num_samp = samp_buf;
+								if ((samp_buf >= buf_num_samp && samples >= best_num_samp ))
+								{
+									best_fbc = i; best_num_samp = samples; buf_num_samp = samp_buf;
+								}
 							}
 							/*if ( worst_fbc < 0 || (samp_buf < worst_num_samp || samples < worst_num_samp ))
 							{
@@ -67,7 +75,7 @@ namespace dgtk.Platforms.X11
 						Imports.XFree( vi );
 					}
 
-					//Console.WriteLine("Best FBC: "+best_fbc);
+					Console.WriteLine("Best FBC: "+best_fbc);
 
 					FBConfig = glFBConfigptr[best_fbc];
 					Imports.XFree( glFBConfigptr );
