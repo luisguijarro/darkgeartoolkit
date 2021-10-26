@@ -337,7 +337,8 @@ namespace dgtk.Platforms.Win32
 					this.MouseUp(this, new dgtk_MouseButtonEventArgs((int)unchecked((short)(long)lParam), (int)unchecked((short)((long)lParam >> 16)), MouseButtons.Right, PushRelease.Release));
 					break;
 				case WindowMessage.MOUSEWHEEL:
-					if (wParam.ToInt64()>=0)
+					ushort wheelValue = (ushort)((((long)wParam.ToInt64()) >> 0x10) & 0xffff);
+					if (wheelValue<=120)
 					{
 						this.MouseWheel(this, new dgtk_MouseWheelEventArgs((int)unchecked((short)(long)lParam), (int)unchecked((short)((long)lParam >> 16)), 1f));
 					}
