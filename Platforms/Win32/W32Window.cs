@@ -191,7 +191,7 @@ namespace dgtk.Platforms.Win32
 
 			#endregion
 
-			this.OpenAL_Cntx = new OpenAL.OAL_Context();
+			//this.OpenAL_Cntx = new OpenAL.OAL_Context();
 
 			dgtk.GameControlsManager.DetectNewDevices();
 			
@@ -243,7 +243,7 @@ namespace dgtk.Platforms.Win32
 		public void Close()
 		{
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
-			this.OpenAL_Cntx.Dispose();
+			//this.OpenAL_Cntx.Dispose();
 			Imports.UnregisterDeviceNotification(this.notificationHandle);
 			this.isRunning = false;
 		}
@@ -377,7 +377,7 @@ namespace dgtk.Platforms.Win32
 					break;
 									
 				case WindowMessage.CHAR: //wParam es ASCII CODE
-					if ((wParam.ToInt32() != 8) && (wParam.ToInt32() != 13) &&(wParam.ToInt32() != 27)) // Discriminar Return, Backspace y ESC
+					if ((wParam.ToInt32() != 8) && (wParam.ToInt32() != 9) && (wParam.ToInt32() != 13) && (wParam.ToInt32() != 27)) // Discriminar Return, Tab, Backspace y ESC
 					{
 						this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs((char)wParam));
 					} 
