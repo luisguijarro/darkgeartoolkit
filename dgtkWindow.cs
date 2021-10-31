@@ -486,7 +486,7 @@ namespace dgtk
             get { return this.NativeWindow.OpenAlContext; }
         }
 
-        protected object LockObject
+        public object LockObject
         {
             get { return Core.lockObject; }
         }
