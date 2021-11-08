@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace dgtk
 {
@@ -387,6 +389,19 @@ namespace dgtk
             this.th_redraw = new Thread(this.Render_frame);
             this.th_redraw.Start();
             // this.NativeWindow.IsRunning = true; // No deberia estar aquí, al menos in linux
+        }
+
+        public void SetWindowIcon(string iconpath)
+        {
+            System.Drawing.Bitmap bmp = new Bitmap(iconpath);
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            byte[] bytes = new byte[bmp.Width*bmp.Height*4];
+
+            System.Runtime.InteropServices.Marshal.Copy(bd.Scan0, bytes, 0, bytes.Length);
+
+            this.NativeWindow.SetIcon(bmp.Width, bmp.Height, bytes);
+            bmp.UnlockBits(bd);
+            bmp.Dispose();
         }
 
         public virtual void Close()
