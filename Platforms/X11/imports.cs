@@ -19,6 +19,9 @@ namespace dgtk.Platforms.X11
 
         [DllImport("libX11", EntryPoint = "XLockDisplay")]
         internal extern static void XLockDisplay(IntPtr display);
+ 		
+		 [DllImport("libX11", EntryPoint = "XFlush")]
+        internal extern static int XFlush(IntPtr display);
 
         
 		[DllImport("libX11", EntryPoint = "XDefaultScreen")]
@@ -101,6 +104,9 @@ namespace dgtk.Platforms.X11
 
 		[DllImport("libX11", EntryPoint = "XInternAtom")]
 		internal extern static IntPtr XInternAtom(IntPtr display, string atom_name, bool only_if_exists);
+		
+		[DllImport("libX11", EntryPoint = "XInternAtom")]
+		internal extern static IntPtr XInternAtom(IntPtr display, string atom_name, int only_if_exists);
 
 		[DllImport("libX11", EntryPoint = "XSetWMProtocols")]
 		internal extern static int XSetWMProtocols(IntPtr display, IntPtr w, IntPtr[] protocols, int count);
@@ -116,6 +122,9 @@ namespace dgtk.Platforms.X11
 				
 		[DllImport("libX11", EntryPoint = "XGetWindowProperty")]
 		internal extern static int XGetWindowProperty(IntPtr display, IntPtr w, IntPtr atom, IntPtr offset, IntPtr longitud, bool delete, IntPtr tipo, out IntPtr TipoActual, out int formato_actual, out IntPtr n_items, out IntPtr bytes, ref IntPtr prop);
+
+		[DllImport("libX11", EntryPoint = "XChangeProperty")]
+		internal extern static int XChangeProperty(IntPtr display, IntPtr w, IntPtr atom, IntPtr type, int format, XPropsMode mode, IntPtr data, int nelements);
 
 		[DllImport("libX11", EntryPoint = "XFree")]
 		internal extern static void XFree(IntPtr data);
