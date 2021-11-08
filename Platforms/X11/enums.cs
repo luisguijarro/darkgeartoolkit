@@ -2,6 +2,12 @@ using System;
 
 namespace dgtk.Platforms.X11
 {
+	internal enum XPropsMode
+	{
+		PropModeReplace = 0,
+		PropModePrepend = 1,
+		PropModeAppend = 2
+	}
 	internal enum LinuxSwapControlExt
     {
         GLX_EXT_swap_control = 1, GLX_MESA_swap_control = 2, GLX_SGI_swap_control = 3, V_SyncNoSupported = 0
