@@ -25,6 +25,7 @@ namespace dgtk.Platforms
 		bool UnMakeCurrent();		
 		void SwapBuffers();
 		void Redraw();
+		void SetIcon(int width, int height, byte[] bytes);
 		dgtk.Math.Size Size {get; set;}
 		dgtk.Math.Point Position {get; set;}
 		WindowState WindowState {get; set;}
