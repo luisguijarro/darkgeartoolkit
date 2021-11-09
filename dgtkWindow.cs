@@ -418,6 +418,7 @@ namespace dgtk
                     
                     /*IntPtr */icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
                     System.Runtime.InteropServices.Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);
+                    bmp.UnlockBits(bd);
                     break;
 
                 case Platforms.Platform.Windows:
@@ -430,7 +431,7 @@ namespace dgtk
             }            
 
             this.NativeWindow.SetIcon(bmp.Width, bmp.Height, icon_ptr);
-            bmp.UnlockBits(bd);
+            
             bmp.Dispose();
         }
 
