@@ -247,6 +247,11 @@ namespace dgtk.Platforms.Win32
 			Imports.UnregisterDeviceNotification(this.notificationHandle);
 			this.isRunning = false;
 		}
+		public void SetIcon(int width, int height, IntPtr icon_ptr)
+		{
+			Imports.SendMessage(this.Handle, 0x0080, (IntPtr)0, icon_ptr);
+			Imports.SendMessage(this.Handle, 0x0080, (IntPtr)1, icon_ptr);
+		}
 		#endregion
 
 		public void ProcessEvent(ref uint ups)

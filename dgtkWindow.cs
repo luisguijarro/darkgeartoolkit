@@ -393,13 +393,43 @@ namespace dgtk
 
         public void SetWindowIcon(string iconpath)
         {
+            IntPtr icon_ptr = IntPtr.Zero;
             System.Drawing.Bitmap bmp = new Bitmap(iconpath);
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            byte[] bytes = new byte[bmp.Width*bmp.Height*4];
+            
+            switch (Platforms.Tools.GetPlatform()) // == Platforms.Platform.Linux_X11)
+            {
+                case Platforms.Platform.Linux_X11:
+                    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    byte[] bytes = new byte[bmp.Width*bmp.Height*4];
+                    System.Runtime.InteropServices.Marshal.Copy(bd.Scan0, bytes, 0, bytes.Length);
 
-            System.Runtime.InteropServices.Marshal.Copy(bd.Scan0, bytes, 0, bytes.Length);
+                    System.Collections.Generic.List<byte> l_SuperBytes = new System.Collections.Generic.List<byte>();
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Width));
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Height));
+                    
+                    for (int i=0;i<bytes.Length;i+=4)
+                    {
+                        l_SuperBytes.Add(bytes[i]);
+                        l_SuperBytes.Add(bytes[i+1]);
+                        l_SuperBytes.Add(bytes[i+2]);
+                        l_SuperBytes.Add(bytes[i+3]);
+                        l_SuperBytes.AddRange(new byte[]{0, 0, 0, 0}); // Rellenar long de 64 bits del hardware con... mierda. No necesario en compilacion de 32 Bits.
+                    }
+                    
+                    /*IntPtr */icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
+                    System.Runtime.InteropServices.Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);
+                    break;
 
-            this.NativeWindow.SetIcon(bmp.Width, bmp.Height, bytes);
+                case Platforms.Platform.Windows:
+                    icon_ptr = bmp.GetHicon();
+                    break;
+
+                default:
+                    //No hacer nada de momento.
+                    break;
+            }            
+
+            this.NativeWindow.SetIcon(bmp.Width, bmp.Height, icon_ptr);
             bmp.UnlockBits(bd);
             bmp.Dispose();
         }
