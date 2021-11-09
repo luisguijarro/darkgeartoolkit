@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
 using System.Drawing;
@@ -391,10 +392,29 @@ namespace dgtk
             // this.NativeWindow.IsRunning = true; // No deberia estar aquí, al menos in linux
         }
 
+        public void SetWindowIcon(string iconpath, Assembly As)
+        {
+            System.IO.Stream str = Core.LoadEmbeddedResource(iconpath, As);
+            if (str != null)
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(str);
+                SetWindowIcon(bmp);
+            }            
+        }
+
         public void SetWindowIcon(string iconpath)
         {
+            if (System.IO.File.Exists(iconpath))
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iconpath);
+                SetWindowIcon(bmp);
+            }
+        }
+
+        internal void SetWindowIcon(Bitmap bmp)
+        {
             IntPtr icon_ptr = IntPtr.Zero;
-            System.Drawing.Bitmap bmp = new Bitmap(iconpath);
+            //System.Drawing.Bitmap bmp = new Bitmap(iconpath);
             
             switch (Platforms.Tools.GetPlatform()) // == Platforms.Platform.Linux_X11)
             {
