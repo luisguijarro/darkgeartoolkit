@@ -1,10 +1,11 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace dgtk
 {
-    internal static class Core
+    public static class Core
     {
         internal static object lockObject;
         internal static List<dgtk_Window> windows;
@@ -29,5 +30,16 @@ namespace dgtk
                 GameControlsManager.devices.Clear();
             }
         }
+
+        public static System.IO.Stream LoadEmbeddedResource(string resource)
+        {
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
+        }
+
+        public static System.IO.Stream LoadEmbeddedResource(string resource, Assembly assembly)
+        {
+            return assembly.GetManifestResourceStream(resource);
+        }
+
     }
 }
