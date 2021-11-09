@@ -287,24 +287,8 @@ namespace dgtk.Platforms.X11
 			this.isRunning = false;
 		}
 
-		public void SetIcon(int width, int height, byte[] bytes)
+		public void SetIcon(int width, int height, IntPtr icon_ptr) //int width, int height, byte[] bytes)
 		{
-			System.Collections.Generic.List<byte> l_SuperBytes = new System.Collections.Generic.List<byte>();
-			l_SuperBytes.AddRange(BitConverter.GetBytes((long)width));
-			l_SuperBytes.AddRange(BitConverter.GetBytes((long)height));
-			
-			for (int i=0;i<bytes.Length;i+=4)
-			{
-				l_SuperBytes.Add(bytes[i]);
-				l_SuperBytes.Add(bytes[i+1]);
-				l_SuperBytes.Add(bytes[i+2]);
-				l_SuperBytes.Add(bytes[i+3]);
-				l_SuperBytes.AddRange(new byte[]{0, 0, 0, 0}); // Rellenar long de 64 bits del hardware con... mierda. No necesario en compilacion de 32 Bits.
-			}
-			
-			IntPtr icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
-			Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);
-
 			Imports.XChangeProperty(this.ptr_display, this.Handle, this.WM_ICON, this.CARDINAL, 32, XPropsMode.PropModeReplace, icon_ptr, (width*height)+2);
 			Imports.XFlush(this.ptr_display);
 		}
