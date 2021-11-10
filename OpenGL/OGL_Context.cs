@@ -6,7 +6,7 @@ using dgtk.Platforms.X11;
 
 namespace dgtk.OpenGL
 {
-    internal class OGL_Context : IDisposable
+    public class OGL_Context : IDisposable
     {
         internal IntPtr ptr_GLContext;
         internal IntPtr ptr_xglwin;
@@ -58,12 +58,24 @@ namespace dgtk.OpenGL
         //Internal Methods:
         internal bool X11MakeCurrent()
         {
-            return glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext);
+            if (glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
+            {
+                dgtk.Core.int_ActualOpenGLContext = this;
+                return true;
+            }
+            return false;
+            //return glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext);
         }
 
         internal bool Win32MakeCurrent()
         {
-            return wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext);
+            if (wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext))
+            {
+                dgtk.Core.int_ActualOpenGLContext = this;
+                return true;
+            }
+            return false;
+            //return wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext);
         }
 
         internal bool X11UnMakeCurrent()
@@ -85,6 +97,32 @@ namespace dgtk.OpenGL
         internal bool Win32SwapBuffers()
 		{
             return dgtk.Platforms.Win32.Imports.SwapBuffers(this.ptr_Display_Device);
+        }
+
+        public bool MakeCurrent()
+        {
+            switch(this.os)
+            {
+                case dgtk.Platforms.Platform.Linux_X11:
+                    return this.X11MakeCurrent();
+                
+                case dgtk.Platforms.Platform.Windows:
+                    return this.Win32MakeCurrent();
+            }
+            return false;
+        }
+
+        public bool UnMakeCurrent()
+        {
+            switch(this.os)
+            {
+                case dgtk.Platforms.Platform.Linux_X11:
+                    return this.X11UnMakeCurrent();
+                
+                case dgtk.Platforms.Platform.Windows:
+                    return this.Win32UnMakeCurrent();
+            }
+            return false;
         }
     }
 }
