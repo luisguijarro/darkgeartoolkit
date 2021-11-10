@@ -41,5 +41,11 @@ namespace dgtk
             return assembly.GetManifestResourceStream(resource);
         }
 
+        internal static OpenGL.OGL_Context int_ActualOpenGLContext;
+
+        public static OpenGL.OGL_Context ActualOpenGLContext
+        {
+           get { return int_ActualOpenGLContext; }
+        }
     }
 }
