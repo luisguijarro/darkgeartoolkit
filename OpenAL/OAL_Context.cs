@@ -35,7 +35,7 @@ namespace dgtk.OpenAL
 				#if DEBUG
 				if (this.ptr_OutPutDevice == IntPtr.Zero)
 				{
-					throw new Exception("alcOpenDevice Fail tu Open Device: "+this.s_actualOutPutDevice);
+					throw new Exception(DateTime.Now.ToLongTimeString()+": alcOpenDevice Fail tu Open Device: "+this.s_actualOutPutDevice);
 				}
 				#endif
 				
@@ -48,7 +48,7 @@ namespace dgtk.OpenAL
 				#if DEBUG
 				if (this.ptr_OpenALContext == IntPtr.Zero)
 				{
-					throw new Exception("alcCreateContext Fail tu Create Context to Device: "+this.s_actualOutPutDevice);
+					throw new Exception(DateTime.Now.ToLongTimeString()+": alcCreateContext Fail tu Create Context to Device: "+this.s_actualOutPutDevice);
 				}
 				#endif
 				
@@ -57,7 +57,7 @@ namespace dgtk.OpenAL
 				#if DEBUG
 				if (this.ptr_InPutdevice == IntPtr.Zero)
 				{
-					Console.WriteLine("alcCaptureOpenDevice Fail tu Open Record Device: "+this.s_actualInPutDevice);
+					Console.WriteLine(DateTime.Now.ToLongTimeString()+": alcCaptureOpenDevice Fail tu Open Record Device: "+this.s_actualInPutDevice);
 				}
 				#endif
 				
@@ -91,7 +91,7 @@ namespace dgtk.OpenAL
 			{
 				#if DEBUG
 				ALC_ERROR error = ALC.alcGetError(device_temp);
-				throw new Exception("Fail to Generate Temp Context "+ context_temp.ToString() + " or Device " + device_temp.ToString() + ": "+error.ToString());
+				throw new Exception(DateTime.Now.ToLongTimeString()+": Fail to Generate Temp Context "+ context_temp.ToString() + " or Device " + device_temp.ToString() + ": "+error.ToString());
 				#endif
 			}
 			
@@ -109,16 +109,16 @@ namespace dgtk.OpenAL
 				}
 
 				#if DEBUG
-				Console.WriteLine("PlayBackDevices: ");
+				Console.WriteLine(DateTime.Now.ToLongTimeString()+": PlayBackDevices: ");
 				for (int i=0;i<l_OutPutDevices.Count;i++)
 				{
 					if (defaultOutPutDevice == l_OutPutDevices[i])
 					{
-						Console.WriteLine("    - (Default) "+l_OutPutDevices[i]);
+						Console.WriteLine(DateTime.Now.ToLongTimeString()+":    - (Default) "+l_OutPutDevices[i]);
 					}
 					else
 					{
-						Console.WriteLine("    - "+l_OutPutDevices[i]);
+						Console.WriteLine(DateTime.Now.ToLongTimeString()+":    - "+l_OutPutDevices[i]);
 					}
 				}
 				#endif				
@@ -130,16 +130,16 @@ namespace dgtk.OpenAL
 				//ALCMethods.alcGetStringListUNI(IntPtr.Zero, ALC_GetStringParam.ALC_CAPTURE_DEVICE_SPECIFIER);
 				defaultInPutDevice = ALC.alcGetStringh(IntPtr.Zero, ALC_GetStringParam.ALC_CAPTURE_DEFAULT_DEVICE_SPECIFIER);
 				#if DEBUG
-				Console.WriteLine("RecordingDevices: ");
+				Console.WriteLine(DateTime.Now.ToLongTimeString()+": RecordingDevices: ");
 				for (int i=0;i<l_InPutDevices.Count;i++)
 				{
 					if (defaultInPutDevice == l_InPutDevices[i])
 					{
-						Console.WriteLine("    - (Default) "+l_InPutDevices[i]);
+						Console.WriteLine(DateTime.Now.ToLongTimeString()+":    - (Default) "+l_InPutDevices[i]);
 					}
 					else
 					{
-						Console.WriteLine("    - "+l_InPutDevices[i]);
+						Console.WriteLine(DateTime.Now.ToLongTimeString()+":    - "+l_InPutDevices[i]);
 					}
 				}
 				#endif		
