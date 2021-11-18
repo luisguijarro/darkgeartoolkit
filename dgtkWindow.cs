@@ -210,6 +210,7 @@ namespace dgtk
             this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
         }
 
+        #region PROTECTED EVENTS:
         protected virtual void OnRenderFrame(object sender, dgtk_OnRenderEventArgs e)
         {
             
@@ -274,7 +275,8 @@ namespace dgtk
         {
 
         }
-
+        #endregion
+        
         private void ProcessEvents()
         {
             //dgtk.GameControlSystem.Linux.System.RefreshDeviceList();
