@@ -23,10 +23,6 @@ namespace dgtk.Platforms.X11
 		 [DllImport("libX11", EntryPoint = "XFlush")]
         internal extern static int XFlush(IntPtr display);
 
- 		
-		[DllImport("libX11", EntryPoint = "XAutoRepeatOff")]
-		internal extern static void XAutoRepeatOff(IntPtr display);
- 		
 		[DllImport("libX11", EntryPoint = "XEventsQueued")]
 		internal extern static int XEventsQueued(IntPtr display, int mode);
         
