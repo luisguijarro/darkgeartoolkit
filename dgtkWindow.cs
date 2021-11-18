@@ -549,10 +549,6 @@ namespace dgtk
         {
             get { return this.ui_c_fps_show;}
         }
-        public OpenAL.OAL_Context OpenALContext
-        {
-            get { return this.NativeWindow.OpenAlContext; }
-        }
 
         public object LockObject
         {
