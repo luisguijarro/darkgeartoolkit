@@ -34,6 +34,6 @@ namespace dgtk.Platforms
 		void EnableVSync();
 		void DisableVSync();
 		bool VSyncEnabled {get;}
-		OpenAL.OAL_Context OpenAlContext { get; }
+		//OpenAL.OAL_Context OpenAlContext { get; }
     }
 }

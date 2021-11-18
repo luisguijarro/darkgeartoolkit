@@ -22,7 +22,7 @@ namespace dgtk.Platforms.X11
         private XSetWindowAttributes XWA;
 		private OpenGL.OGL_Context GL_Context;
 
-		private OpenAL.OAL_Context OpenAL_Cntx;
+		//private OpenAL.OAL_Context OpenAL_Cntx;
 
 		private LinuxSwapControlExt SwapControlSupported;
 
@@ -577,10 +577,12 @@ namespace dgtk.Platforms.X11
             get { return this.s_title;}
             set { this.s_title = value; Imports.XStoreName(this.ptr_display, this.ptr_handle, value);}
         }
+		/*
 		public OpenAL.OAL_Context OpenAlContext
 		{
 			get { return this.OpenAL_Cntx; }
 		}
+		*/
         public IntPtr Handle
         {
             get { return this.ptr_handle; }
