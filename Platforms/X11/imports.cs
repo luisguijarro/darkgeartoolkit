@@ -23,6 +23,12 @@ namespace dgtk.Platforms.X11
 		 [DllImport("libX11", EntryPoint = "XFlush")]
         internal extern static int XFlush(IntPtr display);
 
+ 		
+		[DllImport("libX11", EntryPoint = "XAutoRepeatOff")]
+		internal extern static void XAutoRepeatOff(IntPtr display);
+ 		
+		[DllImport("libX11", EntryPoint = "XEventsQueued")]
+		internal extern static int XEventsQueued(IntPtr display, int mode);
         
 		[DllImport("libX11", EntryPoint = "XDefaultScreen")]
 		internal extern static int XDefaultScreen(IntPtr ptr_display);
@@ -116,6 +122,10 @@ namespace dgtk.Platforms.X11
 
 		[DllImport("libX11", EntryPoint = "XCheckWindowEvent")]
 		internal extern static bool XCheckWindowEvent(IntPtr display, IntPtr w, EventMask mask, ref XEvent evento);
+
+		
+		[DllImport("libX11", EntryPoint = "XPeekEvent")]
+		internal extern static bool XPeekEvent(IntPtr display, ref XEvent evento);
 
 		[DllImport("libX11", EntryPoint = "XCheckTypedWindowEvent")]
 		internal extern static bool XCheckTypedWindowEvent(IntPtr display, IntPtr w, XEventType type, ref XEvent evento);
