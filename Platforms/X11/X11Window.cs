@@ -154,7 +154,7 @@ namespace dgtk.Platforms.X11
 			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 			this.GL_Context.X11UnMakeCurrent();
 
-			this.OpenAL_Cntx = new OpenAL.OAL_Context();
+			//this.OpenAL_Cntx = new OpenAL.OAL_Context();
 
 			#region XMB Events
 			this.ptr_XIM = Imports.XOpenIM(this.ptr_display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero); //Obtenemos entorno de eventos.
@@ -283,7 +283,7 @@ namespace dgtk.Platforms.X11
 		public void Close()
 		{
 			this.WindowClose(this, new dgtk_WinCloseEventArgs());
-			this.OpenAL_Cntx.Dispose();
+			//this.OpenAL_Cntx.Dispose();
 			this.isRunning = false;
 		}
 
@@ -319,10 +319,11 @@ namespace dgtk.Platforms.X11
 
 		public void ProcessEvent(ref uint ups)
 		{
+			System.Collections.Generic.List<uint> KeyCodesPulsed = new System.Collections.Generic.List<uint>();
 			while(this.isRunning)
 			{
 				DateTime dt_ini = DateTime.Now;
-				dgtk.GameControlsManager.DetectNewDevices();
+				dgtk.GameControlsManager.DetectNewDevices();				
                 
 				XEvent xevento = new XEvent();
 				
@@ -381,8 +382,16 @@ namespace dgtk.Platforms.X11
 
 							case XEventType.KeyPress:
 								kc = EventsTools.X11key(xevento.xkey.keycode);
-								this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
-															
+
+								if (!KeyCodesPulsed.Contains(xevento.xkey.keycode)) //Si no se ha pulsado o ya ha sido soltado.
+								{
+									if (kc != KeyCode.BackSpace && kc != KeyCode.Del)
+									{
+										KeyCodesPulsed.Add(xevento.xkey.keycode);
+										this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
+									}
+								}
+
 								ulong ks = 0;
 								int bsize = 8;
 								IntPtr ptr_chret = Marshal.AllocHGlobal(bsize);
@@ -415,8 +424,28 @@ namespace dgtk.Platforms.X11
 								break;							
 								
 							case XEventType.KeyRelease:
+								bool IsReallyReleased = true;
 								kc = EventsTools.X11key(xevento.xkey.keycode);
-								this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
+
+								if (Imports.XEventsQueued(this.ptr_display, 1) > 0)
+								{
+									XEvent tmp_event = new XEvent();
+									Imports.XPeekEvent(this.ptr_display, ref tmp_event);
+									
+									if (kc != KeyCode.BackSpace && kc != KeyCode.Del)
+									{
+										if (tmp_event.type == XEventType.KeyPress && tmp_event.xkey.time == xevento.xkey.time && tmp_event.xkey.keycode == xevento.xkey.keycode)
+										{
+											IsReallyReleased = false;
+										}
+									}
+								}
+								if (IsReallyReleased)
+								{
+									if (KeyCodesPulsed.Contains(xevento.xkey.keycode)) { KeyCodesPulsed.Remove(xevento.xkey.keycode); }
+									
+									this.KeyReleased(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Release)));
+								}		
 								break;
 
 							case XEventType.ClientMessage:
