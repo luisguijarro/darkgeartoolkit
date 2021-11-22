@@ -388,8 +388,9 @@ namespace dgtk.Platforms.X11
 									if (kc != KeyCode.BackSpace && kc != KeyCode.Del)
 									{
 										KeyCodesPulsed.Add(xevento.xkey.keycode);
-										this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
 									}
+									this.KeyPulsed(this, new dgtk_KeyBoardKeysEventArgs(new KeyBoard_Status(kc, PushRelease.Push)));
+									
 								}
 
 								ulong ks = 0;
@@ -426,14 +427,15 @@ namespace dgtk.Platforms.X11
 							case XEventType.KeyRelease:
 								bool IsReallyReleased = true;
 								kc = EventsTools.X11key(xevento.xkey.keycode);
-
-								if (Imports.XEventsQueued(this.ptr_display, 1) > 0)
+								
+								if (kc != KeyCode.BackSpace && kc != KeyCode.Del)
 								{
-									XEvent tmp_event = new XEvent();
-									Imports.XPeekEvent(this.ptr_display, ref tmp_event);
-									
-									if (kc != KeyCode.BackSpace && kc != KeyCode.Del)
+									if (Imports.XEventsQueued(this.ptr_display, 1) > 0)
 									{
+										XEvent tmp_event = new XEvent();
+										Imports.XPeekEvent(this.ptr_display, ref tmp_event);
+										
+										
 										if (tmp_event.type == XEventType.KeyPress && tmp_event.xkey.time == xevento.xkey.time && tmp_event.xkey.keycode == xevento.xkey.keycode)
 										{
 											IsReallyReleased = false;
