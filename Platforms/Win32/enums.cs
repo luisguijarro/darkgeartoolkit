@@ -122,7 +122,7 @@ namespace dgtk.Platforms.Win32
 	}
 
 	[Flags()]
-	internal enum dwFlags
+	internal enum dwFlags : uint
 	{
         DOUBLEBUFFER = 0x01,
         STEREO = 0x02,
