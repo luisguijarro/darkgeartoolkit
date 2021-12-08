@@ -84,32 +84,32 @@ namespace dgtk.Platforms.Win32
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct PIXELFORMATDESCRIPTOR 
 	{ // pfd
-	    internal uint   nSize; 			// size of this structure
-	    internal int   nVersion; 		// version	
+	    internal ushort   nSize; 			// size of this structure
+	    internal ushort   nVersion; 		// version	
 	    internal dwFlags  dwFlags; 		// properties of the pixel buffer
 	    internal PixelType  iPixelType; 		// specifies the type of pixel data
-	    internal int  cColorBits; 		// color depth of pixels
-	    internal int  cRedBits; 		// ...the following bytes we're not
-	    internal int  cRedShift; 		// interested in during initialization...
-	    internal int  cGreenBits; 
-	    internal int  cGreenShift; 
-	    internal int  cBlueBits; 
-	    internal int  cBlueShift; 
-	    internal int  cAlphaBits; 
-	    internal int  cAlphaShift; 
-	    internal int  cAccumBits; 
-	    internal int  cAccumRedBits; 
-	    internal int  cAccumGreenBits; 
-	    internal int  cAccumBlueBits; 
-	    internal int  cAccumAlphaBits; 
-	    internal int  cDepthBits; 		// size of depth buffer
-	    internal int  cStencilBits; 	// number of bits used for stencil buffer
-	    internal int  cAuxBuffers; 
-	    internal int  iLayerType; 
-	    internal int  bReserved; 
-	    internal short dwLayerMask; 
-	    internal short dwVisibleMask; 
-	    internal short dwDamageMask; 
+	    internal byte  cColorBits; 		// color depth of pixels
+	    internal byte  cRedBits; 		// ...the following bytes we're not
+	    internal byte  cRedShift; 		// interested in during initialization...
+	    internal byte  cGreenBits; 
+	    internal byte cGreenShift; 
+	    internal byte cBlueBits; 
+	    internal byte cBlueShift; 
+	    internal byte cAlphaBits; 
+	    internal byte cAlphaShift; 
+	    internal byte cAccumBits; 
+	    internal byte cAccumRedBits; 
+	    internal byte cAccumGreenBits; 
+	    internal byte cAccumBlueBits; 
+	    internal byte cAccumAlphaBits; 
+	    internal byte cDepthBits; 		// size of depth buffer
+	    internal byte cStencilBits; 	// number of bits used for stencil buffer
+	    internal byte cAuxBuffers; 
+	    internal byte iLayerType; 
+	    internal byte bReserved; 
+	    internal uint dwLayerMask; 
+	    internal uint dwVisibleMask; 
+	    internal uint dwDamageMask; 
         public static uint SizeInBytes = (uint)Marshal.SizeOf(default(PIXELFORMATDESCRIPTOR));
 	}
     
