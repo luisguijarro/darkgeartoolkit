@@ -12,12 +12,12 @@ namespace dgtk.Platforms.Win32
 			int error;
 
             PIXELFORMATDESCRIPTOR pfd = new PIXELFORMATDESCRIPTOR();
-			pfd.nSize = PIXELFORMATDESCRIPTOR.SizeInBytes;
+			pfd.nSize = (ushort)PIXELFORMATDESCRIPTOR.SizeInBytes;
 			pfd.nVersion = 1;
 			pfd.dwFlags = (Win32.dwFlags.DRAW_TO_WINDOW | Win32.dwFlags.SUPPORT_OPENGL| Win32.dwFlags.DOUBLEBUFFER | Win32.dwFlags.SUPPORT_GDI | Win32.dwFlags.GENERIC_ACCELERATED | Win32.dwFlags.SUPPORT_COMPOSITION);
 			pfd.iPixelType = Win32.PixelType.PFD_TYPE_RGBA;
 			pfd.cColorBits = (byte)ColorBits;
-			pfd.cDepthBits = DepthBits;
+			pfd.cDepthBits = (byte)DepthBits;
             pfd.cStencilBits = 8;
 
             DeviceC = Win32.Imports.GetDC(SurfaceHandle);
@@ -79,16 +79,22 @@ namespace dgtk.Platforms.Win32
 				
             int pixelFormat;
 			uint numFormats;
-            if (!wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pixelFormat, out numFormats))
+            if (wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pixelFormat, out numFormats) <= 0)
             {
 				#if DEBUG
 				
-				Console.WriteLine("wglChoosePixelFormatARB FAIL!!!");
+				//Console.WriteLine("wglChoosePixelFormatARB FAIL!!!");
 				// Comentamos por que en algunos equipos siempre devuelve false;
-				//error = Marshal.GetLastWin32Error();
-                //throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
+				error = Marshal.GetLastWin32Error();
+                throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
 
 				#endif
+			}
+
+			if (!Win32.Imports.SetPixelFormat(DeviceC, pxlfrmt, ref pfd))
+			{
+				error = Marshal.GetLastWin32Error();
+				throw new Exception("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
         }
 
@@ -126,7 +132,7 @@ namespace dgtk.Platforms.Win32
 		[DllImport("opengl32.dll", EntryPoint = "glGetIntegerv", SetLastError = true)]
 		private static extern void glGetInteger(uint name, out int major);
 
-        public unsafe delegate bool wglChoosePixelFormatARBdelegate(IntPtr hdc, ref int[] piAttribIList, IntPtr pfAttribFList, UInt32 nMaxFormats, out int piFormats, out UInt32 nNumFormats);
+        public unsafe delegate int wglChoosePixelFormatARBdelegate(IntPtr hdc, ref int[] piAttribIList, IntPtr pfAttribFList, UInt32 nMaxFormats, out int piFormats, out UInt32 nNumFormats);
 		public static wglChoosePixelFormatARBdelegate wglChoosePixelFormatARB;
 
         public unsafe delegate IntPtr wglCreateContextAttribsARBdelegate(IntPtr hDC, IntPtr hShareContext, int* attribList);
