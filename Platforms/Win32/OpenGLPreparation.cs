@@ -77,24 +77,22 @@ namespace dgtk.Platforms.Win32
 
             wglChoosePixelFormatARB = (wglChoosePixelFormatARBdelegate)Marshal.GetDelegateForFunctionPointer(wgl.wglGetProcAddress("wglChoosePixelFormatARB"), typeof(wglChoosePixelFormatARBdelegate));
 				
-            int pixelFormat;
+            //int pixelFormat;
 			uint numFormats;
-            if (wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pixelFormat, out numFormats) <= 0)
+            if (wglChoosePixelFormatARB(DeviceC, ref attribList, IntPtr.Zero, 1, out pxlfrmt, out numFormats) < 1)
             {
-				#if DEBUG
-				
-				//Console.WriteLine("wglChoosePixelFormatARB FAIL!!!");
-				// Comentamos por que en algunos equipos siempre devuelve false;
-				error = Marshal.GetLastWin32Error();
-                throw new Exception("wglChoosePixelFormatARB FAIL!!! -> " + new Win32Exception(error).Message);
-
-				#endif
+				pxlfrmt = Win32.Imports.ChoosePixelFormat(DeviceC, ref pfd);
+				if (pxlfrmt < 1)
+				{
+					error = Marshal.GetLastWin32Error();
+					throw new Exception("Error ChoosePixelFormat & wglChoosePixelFormatARB FAIL!!! "+error.ToString()+": " + new Win32Exception(error).Message);
+				}
 			}
 
 			if (!Win32.Imports.SetPixelFormat(DeviceC, pxlfrmt, ref pfd))
 			{
 				error = Marshal.GetLastWin32Error();
-				throw new Exception("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
+				/*throw new Exception*/Console.WriteLine("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
         }
 
