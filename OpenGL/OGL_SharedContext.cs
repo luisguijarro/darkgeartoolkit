@@ -84,10 +84,10 @@ namespace dgtk.OpenGL
 					
 				//	return CreateWin32Context(WinDummy.Handle, 32, 24);//
             dgtk.Platforms.Win32.PIXELFORMATDESCRIPTOR pfd = new dgtk.Platforms.Win32.PIXELFORMATDESCRIPTOR();
-			pfd.nSize = dgtk.Platforms.Win32.PIXELFORMATDESCRIPTOR.SizeInBytes;
+			pfd.nSize = (ushort)dgtk.Platforms.Win32.PIXELFORMATDESCRIPTOR.SizeInBytes;
 			pfd.nVersion = 1;
 
-            pfd.dwFlags = (dgtk.Platforms.Win32.dwFlags.DRAW_TO_BITMAP | dgtk.Platforms.Win32.dwFlags.SUPPORT_OPENGL | dgtk.Platforms.Win32.dwFlags.GENERIC_ACCELERATED);
+            pfd.dwFlags = (dgtk.Platforms.Win32.dwFlags.DRAW_TO_BITMAP | dgtk.Platforms.Win32.dwFlags.DRAW_TO_WINDOW | dgtk.Platforms.Win32.dwFlags.DOUBLEBUFFER | dgtk.Platforms.Win32.dwFlags.SUPPORT_OPENGL | dgtk.Platforms.Win32.dwFlags.GENERIC_ACCELERATED);
 
             pfd.iPixelType = dgtk.Platforms.Win32.PixelType.PFD_TYPE_RGBA;
 			pfd.cColorBits = (byte)32;
