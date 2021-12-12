@@ -126,7 +126,7 @@ namespace dgtk.OpenAL
 			None = 0, Windows, Linux, MacOS, NotSuported
 		}
 
-		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetProcAddress", ExactSpelling = true)]
+		[DllImport("soft_oal.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetProcAddress", ExactSpelling = true)]
         public static extern IntPtr Win_alcGetProcAddress( IntPtr device, string funcname );
 
 		[DllImport("libopenal.so.1", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcGetProcAddress", ExactSpelling = true)]
@@ -137,7 +137,7 @@ namespace dgtk.OpenAL
 
 
 
-		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetProcAddress", ExactSpelling = true)]
+		[DllImport("soft_oal.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetProcAddress", ExactSpelling = true)]
         public static extern IntPtr Win_alGetProcAddress( string funcname );
 
 		[DllImport("libopenal.so.1", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alGetProcAddress", ExactSpelling = true)]
@@ -148,7 +148,7 @@ namespace dgtk.OpenAL
 
 
 
-		[DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcOpenDevice", ExactSpelling = true)]
+		[DllImport("soft_oal.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcOpenDevice", ExactSpelling = true)]
         public static extern IntPtr Win_alcOpenDevice( string device );
 
 		[DllImport("libopenal.so.1", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "alcOpenDevice", ExactSpelling = true)]
