@@ -24,6 +24,9 @@ namespace dgtk
         private uint ui_c_fps; // Fotogramas por Segundo (CALCULADOS).
         private uint ui_c_fps_show; // Fotogramas por Segundo (CALCULADOS).
 
+        private int i_minWidth;
+        private int i_minHeight;
+
         #region Attribute Events
 		public event EventHandler<dgtk_WinCloseEventArgs> WindowClose; // Evento de cierre de Ventana
         public event EventHandler<dgtk_ResizeEventArgs> WindowSizeChange; // Evento de cambio de tamaño de Ventana
@@ -533,12 +536,42 @@ namespace dgtk
         public virtual int Width
         {
             get {return this.NativeWindow.Size.Width;}
-            set {this.NativeWindow.Size = new Math.Size(value, this.NativeWindow.Size.Height);}
+            set 
+            {
+                if (value>this.i_minWidth)
+                {
+                    this.NativeWindow.Size = new Math.Size(value, this.NativeWindow.Size.Height);
+                }
+                else
+                {
+                    this.NativeWindow.Size = new Math.Size(this.i_minWidth, this.NativeWindow.Size.Height);
+                }                
+            }
         }
         public virtual int Height
         {
             get {return this.NativeWindow.Size.Height;}
-            set {this.NativeWindow.Size = new Math.Size(this.NativeWindow.Size.Width, value);}
+            set 
+            {
+                if (value>this.i_minHeight)
+                {
+                    this.NativeWindow.Size = new Math.Size(this.NativeWindow.Size.Width, value);
+                }
+                else
+                {
+                    this.NativeWindow.Size = new Math.Size(this.i_minHeight, this.NativeWindow.Size.Height);
+                }     
+            }
+        }
+        public int MinWidth
+        {
+            set { this.i_minWidth = value; }
+            get { return this.i_minWidth; }
+        }
+        public int MinHeight
+        {
+            set { this.i_minHeight = value; }
+            get { return this.i_minHeight; }
         }
         public virtual WindowState WindowState
         {
@@ -553,6 +586,12 @@ namespace dgtk
         public object LockObject
         {
             get { return Core.lockObject; }
+        }
+
+        public bool FullScreen
+        {
+            set { this.NativeWindow.FullScreen = value; }
+            get { return this.NativeWindow.FullScreen; }
         }
 
         #endregion
