@@ -32,6 +32,9 @@ namespace dgtk.Platforms.Win32
 
 		[DllImport("user32.dll", CharSet=CharSet.Auto, SetLastError = true)]
 		internal static extern bool SetWindowPos(IntPtr ventana, IntPtr InsertAfter, int X, int Y, int Ancho, int Alto, uint FlagsAttribute);
+
+		[DllImport("user32.dll", CharSet=CharSet.Auto, SetLastError = true)]
+        internal static extern int SetWindowLong ( IntPtr hWnd, int nIndex, uint dwNewLong );
 		
 		[DllImport("user32.dll", CharSet=CharSet.Auto, SetLastError = true)]
 		internal static extern bool GetCursorPos(out Point punto);

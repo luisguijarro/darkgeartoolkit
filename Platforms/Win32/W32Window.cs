@@ -27,9 +27,12 @@ namespace dgtk.Platforms.Win32
 
         private string s_title;
         private WindowState WinState;
+		private bool IsInFullScreen;
 		private Win32Rect rect;
+		private Win32Rect pre_rect;
 		private WindowStyle baseStyle;
 		private ExWindowStyle ExtendStyle;
+		private WindowStyle FullScreenStyle;
 		private bool mouseinwindow;
 
 		#region AttributeEvents
@@ -81,8 +84,9 @@ namespace dgtk.Platforms.Win32
             string s_guid = Guid.NewGuid().ToString();
             IntPtr mClassName = Marshal.StringToHGlobalAuto(s_guid);
             IntPtr mInstancia = Marshal.GetHINSTANCE(typeof(W32Window).Module);
-            this.baseStyle = ( WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings | WindowStyle.Border);
+            this.baseStyle = ( WindowStyle.Visible | WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings | WindowStyle.Border);
             this.ExtendStyle = (ExWindowStyle.WS_EX_APPWINDOW | ExWindowStyle.WS_EX_WINDOWEDGE);
+			this.FullScreenStyle = WindowStyle.ClipSiblings | WindowStyle.Visible;
 
 			this.rect = new Win32Rect();
 			this.rect.left = posX; 
@@ -441,6 +445,30 @@ namespace dgtk.Platforms.Win32
             return  Imports.DefWindowProcW(handle, msg, wParam, lParam);
         }
 
+		private void SetFullScreen(bool WhantFullScreen)
+		{
+			if (WhantFullScreen)
+			{
+				//Console.WriteLine("width: "+(this.rect.right-this.rect.left).ToString());
+				//Console.WriteLine("height: "+(this.rect.bottom-this.rect.top).ToString());
+				this.pre_rect = this.rect;
+				Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.FullScreenStyle);
+				Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
+				Imports.ShowWindow(this.ptr_handle, 3); //Maximize
+			}
+			else
+			{
+				Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.baseStyle);
+				//Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
+				this.WindowState = this.WindowState; //Restore Preview State
+				this.Size = new Math.Size(this.pre_rect.right-this.pre_rect.left, this.pre_rect.bottom-this.pre_rect.top);
+				this.Position = new Math.Point(this.pre_rect.left, this.pre_rect.top);
+				//Console.WriteLine("width: "+(this.rect.right-this.rect.left).ToString());
+				//Console.WriteLine("height: "+(this.rect.bottom-this.rect.top).ToString());
+			}
+			this.IsInFullScreen = WhantFullScreen;
+		}
+
         public string Title
         {
             get { return this.s_title;}
@@ -470,9 +498,9 @@ namespace dgtk.Platforms.Win32
 				{
 					this.rect.right = this.rect.left+value.Width;
 					this.rect.bottom = this.rect.top+value.Height;
-					if (Imports.AdjustWindowRectEx(ref this.rect, this.baseStyle, true, this.ExtendStyle))
+					if (Imports.AdjustWindowRectEx(ref this.rect, this.baseStyle, false, this.ExtendStyle))
 					{
-						Console.WriteLine("Ajustado");
+						//Console.WriteLine("Ajustado");
 					}
 					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0004 | 0x0002 | 0x0200));
 				}
@@ -504,6 +532,18 @@ namespace dgtk.Platforms.Win32
 						break;
 				}
 				this.WinState = value;
+			}
+		}
+
+		public bool FullScreen
+		{
+			set 
+			{
+				this.SetFullScreen(value);
+			}
+			get
+			{
+				return this.IsInFullScreen;
 			}
 		}
 

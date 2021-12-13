@@ -36,6 +36,7 @@ namespace dgtk.Platforms.X11
 		IntPtr WM_STATE_TOGGLE;
 		IntPtr WM_STATE_HIDDEN;
 		IntPtr WM_STATE_MINIMIZED;
+		IntPtr WM_STATE_FULLSCREEN;
 		IntPtr WM_STATE_MAXIMIZED_HOR;
 		IntPtr WM_STATE_MAXIMIZED_VER;
 		IntPtr WM_ALLOWED_ACTION;
@@ -46,6 +47,7 @@ namespace dgtk.Platforms.X11
 
         private string s_title;
         private WindowState WinState;
+		private bool IsInFullScreen;
 		private int ancho;
 		private int alto;
 		private int X;
@@ -303,6 +305,7 @@ namespace dgtk.Platforms.X11
 			this.WM_STATE = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE", false);
 			this.WM_STATE_HIDDEN = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_HIDDEN", false);
 			this.WM_STATE_MINIMIZED = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_MINIMIZED", false);
+			this.WM_STATE_FULLSCREEN = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_FULLSCREEN", false);
 			this.WM_STATE_MAXIMIZED_HOR = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_MAXIMIZED_HORZ", false);
 			this.WM_STATE_MAXIMIZED_VER = Imports.XInternAtom(this.ptr_display, "_NET_WM_STATE_MAXIMIZED_VERT", false);
 			this.WM_ACTION_RESIZE = Imports.XInternAtom(this.ptr_display, "_NET_WM_ACTION_RESIZE", false);
@@ -557,6 +560,37 @@ namespace dgtk.Platforms.X11
 			Imports.XSendEvent(this.ptr_display, this.ptr_rootwin, false, (EventMask.SubstructureRedirectMask | EventMask.SubstructureNotifyMask), ref xev);
 		}
 
+		private void SetFullScreen(bool WhantFullScreen)
+		{
+			if (WhantFullScreen)
+			{
+				XEvent xev = new XEvent();
+				xev.type = XEventType.ClientMessage;
+				xev.xclient.type = XEventType.ClientMessage;
+				xev.xclient.window = this.ptr_handle;
+				xev.xclient.message_type = this.WM_STATE;
+				xev.xclient.format = 32;
+				xev.xclient.send_event = true;
+				xev.xclient.puntero1 = this.WM_STATE_TOGGLE;
+				xev.xclient.puntero2 = this.WM_STATE_FULLSCREEN;
+				Imports.XSendEvent(this.ptr_display, this.ptr_rootwin, false, (EventMask.SubstructureRedirectMask | EventMask.SubstructureNotifyMask), ref xev);
+			}
+			else
+			{
+				XEvent xev = new XEvent();
+				xev.type = XEventType.ClientMessage;
+				xev.xclient.type = XEventType.ClientMessage;
+				xev.xclient.window = this.ptr_handle;
+				xev.xclient.message_type = this.WM_STATE;
+				xev.xclient.format = 32;
+				xev.xclient.send_event = true;
+				xev.xclient.puntero1 = this.WM_STATE_REMOVE;
+				xev.xclient.puntero2 = this.WM_STATE_FULLSCREEN;
+				Imports.XSendEvent(this.ptr_display, this.ptr_rootwin, false, (EventMask.SubstructureRedirectMask | EventMask.SubstructureNotifyMask), ref xev);
+			}
+			this.IsInFullScreen = WhantFullScreen;
+		}
+
 		private void Des_Maximizar()
 		{
 			XEvent xev = new XEvent();
@@ -620,6 +654,19 @@ namespace dgtk.Platforms.X11
 				this.WinState = value;
 			}
 		}
+
+		public bool FullScreen
+		{
+			set 
+			{
+				this.SetFullScreen(value);
+			}
+			get
+			{
+				return this.IsInFullScreen;
+			}
+		}
+		
 		public bool Created {get{return b_created;}}
 	
 		public bool IsRunning 

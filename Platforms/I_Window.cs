@@ -35,5 +35,6 @@ namespace dgtk.Platforms
 		void DisableVSync();
 		bool VSyncEnabled {get;}
 		//OpenAL.OAL_Context OpenAlContext { get; }
+		bool FullScreen {get; set;}
     }
 }
