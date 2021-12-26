@@ -56,12 +56,12 @@ namespace dgtk.GameControlSystem.Windows
 
         internal void LanzarEventAxis(object sender, dgtk_InputAxisEventArgs e)
         {
-            this.gameControlState_state.d_axis_values[(uint)e.ID] = e.Value;
+            this.gameControlState_state.d_axis_values[(uint)e.Axis] = e.Value;
             this.EventAxis(sender, e);
         }
         internal void LanzarEventHats(object sender, dgtk_InputHatsEventArgs e)
         {
-            this.gameControlState_state.d_hats_values[(uint)e.ID] = e.Value;
+            this.gameControlState_state.d_hats_values[(uint)e.Hat] = e.Value;
             this.EventHats(sender, e);
         }
         internal void LanzarEventBTNs(object sender, dgtk_InputButtonsEventArgs e)
