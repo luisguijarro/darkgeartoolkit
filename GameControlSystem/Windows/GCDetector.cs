@@ -310,9 +310,17 @@ namespace dgtk.GameControlSystem.Windows
             {
                 long value = 0;
                 if (Imports.HidP_GetUsageValue(HIDP_REPORT_TYPE.HidP_Input, GCD_Event.Axis[key].UsagePage, 0, (HIDUsage)(GCD_Event.Axis[key].notrange.Usage), ref value, pre_data, new IntPtr((void*)&ri.Data.HID.Data), ri.Data.HID.Size) == HIDResults.HIDP_STATUS_SUCCESS)
-                {                    
+                {
                     // Ejes
-                    long percent = (long)((100f/(GCD_Event.Axis[key].LogicalMax-GCD_Event.Axis[key].PhysicalMin))*value);
+                    long percent = 0;
+                    if(GCD_Event.Axis[key].BitSize == 8)
+                    {
+                        percent = (long)((100f/(GCD_Event.Axis[key].LogicalMax-GCD_Event.Axis[key].PhysicalMin))*value);
+                    }
+                    else
+                    {
+                        percent = (long)((100f/ushort.MaxValue)*(value+short.MaxValue));
+                    }
                     if (GCD_Event.AxisValues[key] != percent) // Solo lanzar evento si valor cambia.
                     {
                         GCD_Event.AxisValues[key] = percent;
