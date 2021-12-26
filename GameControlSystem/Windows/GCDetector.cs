@@ -319,7 +319,7 @@ namespace dgtk.GameControlSystem.Windows
                     }
                     else
                     {
-                        percent = (long)((100f/ushort.MaxValue)*(value+short.MaxValue));
+                        percent = (long)((100f/ushort.MaxValue)*(value));
                     }
                     if (GCD_Event.AxisValues[key] != percent) // Solo lanzar evento si valor cambia.
                     {
