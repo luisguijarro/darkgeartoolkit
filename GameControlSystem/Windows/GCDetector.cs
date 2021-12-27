@@ -318,7 +318,8 @@ namespace dgtk.GameControlSystem.Windows
                     long percent = 0;
                     if(GCD_Event.Axis[key].BitSize == 8)
                     {
-                        percent = (long)((100f/(GCD_Event.Axis[key].LogicalMax-GCD_Event.Axis[key].PhysicalMin))*value);
+                        long rev_min = GCD_Event.Axis[key].PhysicalMin > GCD_Event.Axis[key].LogicalMax ? 0 : GCD_Event.Axis[key].PhysicalMin;
+                        percent = (long)((100f/(GCD_Event.Axis[key].LogicalMax-rev_min))*value);
                     }
                     else
                     {
