@@ -150,9 +150,12 @@ namespace dgtk.GameControlSystem.Windows
                                 Axis++;
                                 #endif
 
-                                GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
-                                GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
-                                GCD_Temp.gameControlState_state.d_axis_values.Add((uint)v_caps[caps].notrange.Usage, (int)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                                if (!GCD_Temp.Axis.ContainsKey((uint)v_caps[caps].notrange.Usage))
+                                {
+                                    GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
+                                    GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                                    GCD_Temp.gameControlState_state.d_axis_values.Add((uint)v_caps[caps].notrange.Usage, (int)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                                }
                             }
                         }
 
