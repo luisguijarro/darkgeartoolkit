@@ -9,7 +9,7 @@ namespace dgtk.GameControlSystem.Windows
     {
         internal IntPtr dev;
         internal string s_name;  
-        internal int id;        
+        internal uint id;        
         internal Dictionary<uint, HIDP_VALUE_CAPS> Axis; // Ejes <id, value>
         internal Dictionary<uint, HIDP_VALUE_CAPS> Hats; // Hats <id, value>
         internal Dictionary<uint, HIDP_BUTTON_CAPS> Btns; // Botones <id, value>
@@ -25,7 +25,7 @@ namespace dgtk.GameControlSystem.Windows
         public event EventHandler<dgtk_InputButtonsEventArgs> EventButtons; // Evento de accionamiento de Botones.
         //public event EventHandler<dgtk_GameControllerStatusEventArgs> EventStatusChanged; // Evento que se lanza cuando salta algún evento.
 
-        internal GameControlDevice(IntPtr ptr_dev, int in_id)
+        internal GameControlDevice(IntPtr ptr_dev, uint in_id)
         {
             this.s_name = "Windows Game Controller";
             this.dev = ptr_dev;
@@ -112,7 +112,7 @@ namespace dgtk.GameControlSystem.Windows
             //this.EventStatusChanged -= this.StatusChangedEvent;
         }
 
-        public int ID
+        public uint ID
         {
             get { return this.id; }
         }
