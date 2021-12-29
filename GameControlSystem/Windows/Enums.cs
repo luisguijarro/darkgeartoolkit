@@ -234,9 +234,10 @@ namespace dgtk.GameControlSystem.Windows
     
 	#region XInput
 
-	internal enum XInputResult
+	internal enum XInputResult : uint
 	{
-		SUCCESS, ERROR_DEVICE_NOT_CONNECTED
+		SUCCESS = 0, 
+		ERROR_DEVICE_NOT_CONNECTED = 1
 	}
 
 	internal enum DefinedDeadZones : ushort
