@@ -48,5 +48,18 @@ namespace dgtk.GameControlSystem.Windows
 		[DllImport("hid.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		internal static extern bool HidD_GetProductString([In] IntPtr HidDeviceObject, [Out] IntPtr Buffer, [In] int BufferLength);
 
+		#region XInput
+		
+		[DllImport("Xinput1_4.dll")]
+		internal static extern uint XInputGetCapabilities(uint dwUserIndex, uint dwFlags, out XINPUT_CAPABILITIES pCapabilities);
+
+		[DllImport("Xinput1_4.dll")]
+		internal static extern void XInputEnable( bool enable);
+
+		[DllImport("Xinput1_4.dll")]
+		internal static extern uint XInputGetState(uint dwUserIndex, out XINPUT_STATE pState);
+
+		#endregion
+
     }
 }
