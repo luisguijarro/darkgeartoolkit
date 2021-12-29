@@ -28,6 +28,18 @@ namespace dgtk.GameControlSystem.Windows
             this.XI_GAMEPAD = XIcap.Gamepad;
             this.XI_VIBRATION = XIcap.Vibration;
 
+            this.gameControlState_state.d_axis_values = new Dictionary<uint, int>();
+            for (uint i=0;i<6;i++)
+            {
+                this.gameControlState_state.d_axis_values.Add(i, 0);
+            }            
+            this.gameControlState_state.d_Buttons = new Dictionary<uint, bool>();
+            foreach(ushort btn in Enum.GetValues(typeof(wButtons)))
+            {
+                this.gameControlState_state.d_Buttons.Add(btn, false);
+            }
+            
+
             this.EventAxis += this.InputAxisEvent;
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
