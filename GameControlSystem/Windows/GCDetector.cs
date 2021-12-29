@@ -7,9 +7,74 @@ namespace dgtk.GameControlSystem.Windows
 {
     internal static class GMSystem
     {
-        internal static Dictionary<int, IntPtr> devicesKeys;
+        //internal static Dictionary<int, IntPtr> devicesKeys;
+        internal static Dictionary<uint, XINPUT_CAPABILITIES> devicesKeys;
+
+
         internal static unsafe void RefreshDeviceList()
         {
+            Console.WriteLine("Obteniendo Dispositivos de Windows:");
+            if (devicesKeys == null) { devicesKeys = new Dictionary<uint, XINPUT_CAPABILITIES>(); }
+
+            for (uint i=0;i<11;i++) // Ids 4+ Direct Input.
+            {
+                XINPUT_CAPABILITIES XIcap = new XINPUT_CAPABILITIES();
+                if (Imports.XInputGetCapabilities(i, 1, ref XIcap) == XInputResult.SUCCESS)
+                {
+                    if (!devicesKeys.ContainsKey(i))
+                    {
+                        //devicesKeys.Add(i, XIcap);
+                        AddXInputDevice(i, XIcap);
+                        Console.WriteLine("Detectado dispositivo número: "+i);
+                    }
+                }
+                else
+                {
+                    if (devicesKeys.ContainsKey(i))
+                    {
+                        devicesKeys.Remove(i);
+                        RemXInputDevice(i);
+                        Console.WriteLine("Desconectado dispositivo número: "+i);
+                    }
+                }
+            }
+        }
+
+        internal static void AddInputDevice(uint id, XINPUT_CAPABILITIES XIcap)
+        {
+            if (id < 4) // Si es menor que 4 es XInput
+            {
+                #if DEBUG
+                    Console.WriteLine("  -Es XInput: true");
+                    Console.WriteLine("  -Es DirectInput: false");
+                #endif
+            }
+            else // En casos contrario es DirectInput
+            {
+                #if DEBUG
+                    Console.WriteLine("  -Es XInput: false");
+                    Console.WriteLine("  -Es DirectInput: true");
+                #endif
+            }
+        }
+
+        internal static void AddXInputDevice(uint id, XINPUT_CAPABILITIES XIcap)
+        {
+            devicesKeys.Add(id, XIcap);
+            dgtk.GameControlsManager.devices.Add(id, new dgtk_GameControler(new XGameControlDevice(id, XIcap))); // Añadimos GameControl a la lista.
+        }
+
+        internal static void RemXInputDevice(uint id)
+        {
+            devicesKeys.Remove(id);
+            dgtk.GameControlsManager.devices[id].Dispose();
+            dgtk.GameControlsManager.devices.Remove(id);
+        }
+
+        /*
+        internal static unsafe void RefreshDeviceList()
+        {
+            
             Console.WriteLine("Obteniendo Dispositivos de Windows:");
             if (devicesKeys == null) { devicesKeys = new Dictionary<int, IntPtr>(); }
 
@@ -55,8 +120,11 @@ namespace dgtk.GameControlSystem.Windows
                     AddInputDevice(ridl[i].hDevice);
                 }            
             }
+            
         }
+        */
 
+        /*
         internal static void AddInputDevice(IntPtr dev)
         {
             GetDeviceName(dev);
@@ -86,104 +154,126 @@ namespace dgtk.GameControlSystem.Windows
                     #endif
                     if (!devicesKeys.ContainsKey(dev.ToInt32())) // si el dispositivo no existia antes, lo añadimos.
                     {
-                        byte[] PreparsedDeviceData = GetPreparsedData(dev); // Obtenemos Dytes de Datos del Dispositivo.
-                        HIDP_CAPS HC = new HIDP_CAPS(); // Declaramos nueva Structura con las capacidades del dispositivo.
-                        HIDResults HIDResult;
-                        if ((HIDResult = Imports.HidP_GetCaps(PreparsedDeviceData, ref HC)) != HIDResults.HIDP_STATUS_SUCCESS)
+                        if (AddXInputDevice(dev)) //Si no es XInput lo añadimos como RAW HID
                         {
-                            #if DEBUG
-                                Console.WriteLine("    Error al obtener Capacidades del dispositivo "+dev.ToInt32());
-                                Console.WriteLine("        Result: "+HIDResult.ToString());
-                            #endif
-                            return; // Cortamos ejecución del código.
-                        }
-
-                        HIDP_VALUE_CAPS[] v_caps = new HIDP_VALUE_CAPS[HC.NumberInputValueCaps]; // Declaramos Array de Ejes y Hats.
-                        if ((HIDResult = Imports.HidP_GetValueCaps(HIDP_REPORT_TYPE.HidP_Input, v_caps, ref HC.NumberInputValueCaps, PreparsedDeviceData)) != HIDResults.HIDP_STATUS_SUCCESS)
-                        {
-                            #if DEBUG
-                                Console.WriteLine("    Error al obtener Ejes y Hats del dispositivo "+dev.ToString());
-                                Console.WriteLine("        Result: "+HIDResult.ToString());
-                            #endif
-                            return; // Cortamos ejecución del código.
-                        }
-                        #if DEBUG
-                            Console.WriteLine("    Obtenidos " + v_caps.Length + " Ejes o Hats en el dispositivo " +dev.ToString());
-                        #endif
-
-                        HIDP_BUTTON_CAPS[] b_caps = new HIDP_BUTTON_CAPS[HC.NumberInputButtonCaps]; // Declaramos Arra de Botones del dispositivo.
-                        if ((HIDResult = Imports.HidP_GetButtonCaps(HIDP_REPORT_TYPE.HidP_Input, b_caps, ref HC.NumberInputButtonCaps, PreparsedDeviceData)) != HIDResults.HIDP_STATUS_SUCCESS)
-                        {
-                            #if DEBUG
-                                Console.WriteLine("    Error al obtener Botones del dispositivo "+dev.ToString());
-                            #endif
-                            return; // Cortamos ejecución del código.
-                        }
-                        #if DEBUG
-                            Console.WriteLine("    Obtenidos " + (b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1) + " Botones en el dispositivo " +dev.ToString());
-                        #endif
-
-                        GameControlDevice GCD_Temp = new GameControlDevice(dev, dev.ToInt32());
-
-                        #if DEBUG
-                        uint hats = 0;
-                        uint Axis = 0;
-                        #endif
-
-                        for (int caps=0;caps<v_caps.Length;caps++)
-                        {
-                            if (v_caps[caps].notrange.Usage == HIDUsage.HatSwitch)
-                            {
-                                // Es un HAT.
-                                #if DEBUG
-                                hats++;
-                                #endif
-
-                                GCD_Temp.Hats.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); // Añadimos Hat o D-PAD en posición Central.
-                                GCD_Temp.HatsValues.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
-                                GCD_Temp.gameControlState_state.d_hats_values.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
-                            }
-                            else
-                            {
-                                // ¿Es un Eje?
-                                #if DEBUG
-                                Axis++;
-                                #endif
-
-                                if (!GCD_Temp.Axis.ContainsKey((uint)v_caps[caps].notrange.Usage))
-                                {
-                                    GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
-                                    GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
-                                    GCD_Temp.gameControlState_state.d_axis_values.Add((uint)v_caps[caps].notrange.Usage, (int)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
-                                }
-                            }
-                        }
-
-                        #if DEBUG
-                            Console.WriteLine("Se han detectado " + Axis + "Ejes.");
-                            Console.WriteLine("Se han detectado " + hats + "Hats.");
-                        #endif
-
-                        // Añadir Botones
-                        //for (uint btns=0;btns<(b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1);btns++)
-                        //{
-                            #if DEBUG
-                                //Console.WriteLine("Añadiendo Botón " + btns);
-                            #endif
-                            GCD_Temp.Btns.Add(0, b_caps[0]); // Añadimos botones
-                            for (uint b=0;b<(b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1);b++)
-                            {
-                                GCD_Temp.BtnsValues.Add(b, false);
-                                GCD_Temp.gameControlState_state.d_Buttons.Add(b, false);
-                            }
-                        //}
-
-                        devicesKeys.Add(GCD_Temp.dev.ToInt32(), GCD_Temp.dev);
-                        dgtk.GameControlsManager.devices.Add(GCD_Temp.dev.ToInt32(), new dgtk_GameControler(GCD_Temp)); // Añadimos GameControl a la lista.
+                            AddRawInputDevice(dev); //Si es un RAW HID.
+                        }                        
                     }
                 }
             }
         }
+
+        */
+
+        /*
+
+        internal static bool AddXInputDevice(IntPtr dev)
+        {
+            
+            return false;
+        }
+
+        internal static void AddRawInputDevice(IntPtr dev)
+        {
+            byte[] PreparsedDeviceData = GetPreparsedData(dev); // Obtenemos Dytes de Datos del Dispositivo.
+            HIDP_CAPS HC = new HIDP_CAPS(); // Declaramos nueva Structura con las capacidades del dispositivo.
+            HIDResults HIDResult;
+            if ((HIDResult = Imports.HidP_GetCaps(PreparsedDeviceData, ref HC)) != HIDResults.HIDP_STATUS_SUCCESS)
+            {
+                #if DEBUG
+                    Console.WriteLine("    Error al obtener Capacidades del dispositivo "+dev.ToInt32());
+                    Console.WriteLine("        Result: "+HIDResult.ToString());
+                #endif
+                return; // Cortamos ejecución del código.
+            }
+
+            HIDP_VALUE_CAPS[] v_caps = new HIDP_VALUE_CAPS[HC.NumberInputValueCaps]; // Declaramos Array de Ejes y Hats.
+            if ((HIDResult = Imports.HidP_GetValueCaps(HIDP_REPORT_TYPE.HidP_Input, v_caps, ref HC.NumberInputValueCaps, PreparsedDeviceData)) != HIDResults.HIDP_STATUS_SUCCESS)
+            {
+                #if DEBUG
+                    Console.WriteLine("    Error al obtener Ejes y Hats del dispositivo "+dev.ToString());
+                    Console.WriteLine("        Result: "+HIDResult.ToString());
+                #endif
+                return; // Cortamos ejecución del código.
+            }
+            #if DEBUG
+                Console.WriteLine("    Obtenidos " + v_caps.Length + " Ejes o Hats en el dispositivo " +dev.ToString());
+            #endif
+
+            HIDP_BUTTON_CAPS[] b_caps = new HIDP_BUTTON_CAPS[HC.NumberInputButtonCaps]; // Declaramos Arra de Botones del dispositivo.
+            if ((HIDResult = Imports.HidP_GetButtonCaps(HIDP_REPORT_TYPE.HidP_Input, b_caps, ref HC.NumberInputButtonCaps, PreparsedDeviceData)) != HIDResults.HIDP_STATUS_SUCCESS)
+            {
+                #if DEBUG
+                    Console.WriteLine("    Error al obtener Botones del dispositivo "+dev.ToString());
+                #endif
+                return; // Cortamos ejecución del código.
+            }
+            #if DEBUG
+                Console.WriteLine("    Obtenidos " + (b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1) + " Botones en el dispositivo " +dev.ToString());
+            #endif
+
+            GameControlDevice GCD_Temp = new GameControlDevice(dev, dev.ToInt32());
+
+            #if DEBUG
+            uint hats = 0;
+            uint Axis = 0;
+            #endif
+
+            for (int caps=0;caps<v_caps.Length;caps++)
+            {
+                if (v_caps[caps].notrange.Usage == HIDUsage.HatSwitch)
+                {
+                    // Es un HAT.
+                    #if DEBUG
+                    hats++;
+                    #endif
+
+                    GCD_Temp.Hats.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); // Añadimos Hat o D-PAD en posición Central.
+                    GCD_Temp.HatsValues.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
+                    GCD_Temp.gameControlState_state.d_hats_values.Add((uint)v_caps[caps].notrange.Usage, (HatPosition) 8);
+                }
+                else
+                {
+                    // ¿Es un Eje?
+                    #if DEBUG
+                    Axis++;
+                    #endif
+
+                    if (!GCD_Temp.Axis.ContainsKey((uint)v_caps[caps].notrange.Usage))
+                    {
+                        GCD_Temp.Axis.Add((uint)v_caps[caps].notrange.Usage, v_caps[caps]); //Añadimos Eje.
+                        GCD_Temp.AxisValues.Add((uint)v_caps[caps].notrange.Usage, (long)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                        GCD_Temp.gameControlState_state.d_axis_values.Add((uint)v_caps[caps].notrange.Usage, (int)((100f/(float)(v_caps[caps].LogicalMax-v_caps[caps].PhysicalMin))*50));
+                    }
+                }
+            }
+
+            #if DEBUG
+                Console.WriteLine("Se han detectado " + Axis + "Ejes.");
+                Console.WriteLine("Se han detectado " + hats + "Hats.");
+            #endif
+
+            // Añadir Botones
+            //for (uint btns=0;btns<(b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1);btns++)
+            //{
+                #if DEBUG
+                    //Console.WriteLine("Añadiendo Botón " + btns);
+                #endif
+                GCD_Temp.Btns.Add(0, b_caps[0]); // Añadimos botones
+                for (uint b=0;b<(b_caps[0].range.UsageMax - b_caps[0].range.UsageMin +1);b++)
+                {
+                    GCD_Temp.BtnsValues.Add(b, false);
+                    GCD_Temp.gameControlState_state.d_Buttons.Add(b, false);
+                }
+            //}
+
+            devicesKeys.Add(GCD_Temp.dev.ToInt32(), GCD_Temp.dev);
+            dgtk.GameControlsManager.devices.Add(GCD_Temp.dev.ToInt32(), new dgtk_GameControler(GCD_Temp)); // Añadimos GameControl a la lista.
+        }
+
+        */
+
+        /*
 
         internal static unsafe string GetDeviceName(IntPtr dev)
         {
@@ -194,24 +284,19 @@ namespace dgtk.GameControlSystem.Windows
                 ptr = Marshal.AllocHGlobal(((int)n_size)*2);
                 if (Imports.GetRawInputDeviceInfo(dev, RawInputDeviceInfo_Command.RIDI_DEVICENAME, ptr, ref n_size) > 0) // ¿Obtenemos info de dispositivo?
                 {
-                    Console.WriteLine(Marshal.PtrToStringAuto(ptr));
+                    Console.WriteLine("DeviceName: {0}", Marshal.PtrToStringAuto(ptr));
                     return Marshal.PtrToStringAuto((ptr));
                 }
                 #if DEBUG
                     //Console.WriteLine("Nombre: "+new string(nombre));
                 #endif                        
             }
-            /*
-            ulong tam = 0;
-            //Imports.HidD_GetProductString(dev, null, tam);
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            IntPtr ptr_name = Marshal.AllocHGlobal(sizeof(bytes)*127);
-            if (Imports.HidD_GetProductString(dev, ptr_name, 126))
-            {
-                Console.WriteLine("NAME: "+Marshal.PtrToStringBSTR(ptr_name));
-            }*/
             return "";
         }
+
+        */
+
+        /*
 
         internal static void RemovedInputDeviceList()
         {
@@ -248,6 +333,10 @@ namespace dgtk.GameControlSystem.Windows
             }
         }
 
+        */
+
+        /*
+
         internal static void RemoveInputDevice(IntPtr dev)
         {
             if (dgtk.GameControlsManager.devices.ContainsKey(dev.ToInt32()))
@@ -256,6 +345,10 @@ namespace dgtk.GameControlSystem.Windows
                 dgtk.GameControlsManager.devices.Remove(dev.ToInt32());
             }
         }
+
+        */
+
+        /*
 
         internal static byte[] GetPreparsedData(IntPtr device) // Obtenemos Dytes de Datos del Dispositivo.
         {
@@ -296,15 +389,15 @@ namespace dgtk.GameControlSystem.Windows
                 return null;
             }
         }
+
+        */
+
+        /*
     
         internal static unsafe void SetGameControlDevice_Status(dgtk.Platforms.Win32.RawInput ri)
         {
             GameControlDevice GCD_Event = (GameControlDevice)dgtk.GameControlsManager.devices[ri.Header.hDevice.ToInt32()].device;
 
-            /*if (Imports.HidP_GetUsageValue(HIDP_REPORT_TYPE.HidP_Input, joystick.v_caps[i].UsagePage, 0, (HIDUsage)(joystick.v_caps[i].notrange.Usage), ref value, pre_data, new IntPtr((void*)&ri.Data.HID.Data), ri.Data.HID.Size) != HIDResults.HIDP_STATUS_SUCCESS)
-            {
-
-            }*/
             byte[] pre_data = GetPreparsedData(ri.Header.hDevice);
             
             #region Ejes:
@@ -390,5 +483,6 @@ namespace dgtk.GameControlSystem.Windows
 
             // AL FINAL LANZAR STATUS.
         }
+        */
     }
 }
