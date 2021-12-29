@@ -173,6 +173,11 @@ namespace dgtk.GameControlSystem.Linux
                             {
                                 // En obras!!!
                             }
+                            #if DEBUG
+                                Console.WriteLine("  -Hats: "+GCD_Temp.Hats.Count);
+                                Console.WriteLine("  -Ejes: "+GCD_Temp.Axis.Count);
+                                Console.WriteLine("  -Botones: "+GCD_Temp.Btns.Count);
+                            #endif
                             dgtk.GameControlsManager.devices.Add(GCD_Temp.id, new dgtk_GameControler(GCD_Temp));
                             devicesKeys.Add(eventFiles[d], GCD_Temp.id);
                         //}
