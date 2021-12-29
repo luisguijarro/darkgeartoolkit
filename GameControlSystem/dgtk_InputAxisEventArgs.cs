@@ -4,18 +4,18 @@ namespace dgtk
 {
     public class dgtk_InputAxisEventArgs : EventArgs
     {
-        int i_id;
+        uint i_id;
         int i_axis;
         int i_value;
         GameControlState gcs;
-        public dgtk_InputAxisEventArgs(int id, int axis, int value, GameControlState state)
+        public dgtk_InputAxisEventArgs(uint id, int axis, int value, GameControlState state)
         {
             this.i_id = id;
             this.i_axis = axis;
             this.i_value = value;
             this.gcs = state;
         }
-        public int ID
+        public uint ID
         {
             get { return this.i_id; }
         }

@@ -5,7 +5,7 @@ namespace dgtk.GameControlSystem
 {
     internal interface I_GameControlDevice : IDisposable
     {
-        int ID {get;}
+        uint ID {get;}
         string Name {get;}
         GameControlState State {get;}
         event EventHandler<dgtk_InputAxisEventArgs> EventAxis;

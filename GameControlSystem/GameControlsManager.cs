@@ -6,13 +6,13 @@ namespace dgtk
 {
     public static class GameControlsManager
     {
-        internal static Dictionary<int, dgtk_GameControler> devices;
+        internal static Dictionary<uint, dgtk_GameControler> devices;
 
         internal static void DetectNewDevices()
         {
             if (devices == null)
             {
-                devices = new Dictionary<int, dgtk_GameControler>();
+                devices = new Dictionary<uint, dgtk_GameControler>();
             }
             switch(dgtk.Platforms.Tools.GetPlatform())
             {
@@ -27,15 +27,15 @@ namespace dgtk
                     break;
             }
         }
-        public static dgtk_GameControler GetInputDevice(int key)
+        public static dgtk_GameControler GetInputDevice(uint key)
         {
             return devices[key];
         }
-        public static int[] DevicesIds
+        public static uint[] DevicesIds
         {
             get
             {
-                int[] ret = new int[devices.Count];
+                uint[] ret = new uint[devices.Count];
                 devices.Keys.CopyTo(ret, 0);
                 return ret;
             }            

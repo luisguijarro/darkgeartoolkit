@@ -4,11 +4,11 @@ namespace dgtk
 {
     public class dgtk_InputHatsEventArgs : EventArgs
     {
-        int i_id;
+        uint i_id;
         int i_hat;
         HatPosition hp_value;
         GameControlState gcs;
-        public dgtk_InputHatsEventArgs(int id, int hat, HatPosition value, GameControlState state)
+        public dgtk_InputHatsEventArgs(uint id, int hat, HatPosition value, GameControlState state)
         {
             this.i_id = id;
             this.i_hat = hat;
@@ -16,7 +16,7 @@ namespace dgtk
             this.gcs = state;
         }
 
-        public int ID
+        public uint ID
         {
             get { return this.i_id; }
         }

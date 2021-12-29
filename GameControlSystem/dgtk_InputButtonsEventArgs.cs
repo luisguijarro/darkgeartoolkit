@@ -4,11 +4,11 @@ namespace dgtk
 {
     public class dgtk_InputButtonsEventArgs : EventArgs
     {
-        int i_id;
+        uint i_id;
         int i_button;
         bool b_pressed;
         GameControlState gcs;
-        public dgtk_InputButtonsEventArgs(int id, int button, bool pressed, GameControlState state)
+        public dgtk_InputButtonsEventArgs(uint id, int button, bool pressed, GameControlState state)
         {
             this.i_id = id;
             this.i_button = button;
@@ -16,7 +16,7 @@ namespace dgtk
             this.gcs = state;
         }
 
-        public int ID
+        public uint ID
         {
             get { return this.i_id; }
         }

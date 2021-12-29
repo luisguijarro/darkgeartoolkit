@@ -35,7 +35,7 @@ namespace dgtk
                 this.EventStatusChanged(sender, e);
             };*/
         }
-        public int ID
+        public uint ID
         {
             get { return this.device.ID; }
         }
