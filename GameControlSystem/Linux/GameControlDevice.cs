@@ -117,6 +117,9 @@ namespace dgtk.GameControlSystem.Linux
                                     }
                                     this.Hats[ev.code] = (int)ev.value;
                                     //Console.WriteLine((int)ev.value);
+                                    #if DEBUG
+                                        Console.WriteLine("Game Control "+this.id+" | Hat: "+((GameControlABS_EventCode)ev.code).ToString()+ " -> Value: "+(ev.value == 1).ToString());
+                                    #endif
 
                                     this.EventHats(this, new dgtk_InputHatsEventArgs(this.id, ev.code, hp, this.gameControlState_state));
                                 }
@@ -127,11 +130,19 @@ namespace dgtk.GameControlSystem.Linux
                                     {
                                         this.Axis[ev.code].VALUE = ax_value;
                                         //ax.VALUE = ax_value;
+                                        #if DEBUG
+                                            Console.WriteLine("Game Control "+this.id+" | Axis: "+((GameControlABS_EventCode)ev.code).ToString()+ " -> Value: "+ax_value);
+                                        #endif
+
                                         this.EventAxis(this, new dgtk_InputAxisEventArgs(this.id, ev.code, ax_value, this.gameControlState_state));
                                     }
                                 }
                                 break;
                             case GameControlEventType.EV_KEY:
+                                #if DEBUG
+                                    Console.WriteLine("Game Control "+this.id+" | Button: "+((GameControlBTN_EventCode)ev.code).ToString()+ " -> Value: "+(ev.value == 1).ToString());
+                                #endif
+
                                 this.EventButtons(this, new dgtk_InputButtonsEventArgs(this.id, ev.code, ev.value> 0, this.gameControlState_state));
                                 break;
                             default:
