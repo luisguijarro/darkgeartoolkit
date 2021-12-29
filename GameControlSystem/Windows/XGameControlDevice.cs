@@ -8,8 +8,8 @@ namespace dgtk.GameControlSystem.Windows
     internal class XGameControlDevice : dgtk.GameControlSystem.I_GameControlDevice
     {
         internal uint id;   
-        internal string s_name;  
-        internal GameControlState gameControlState_state; 
+        internal readonly string s_name;  
+        internal readonly GameControlState gameControlState_state;
         private uint dwPacketNumber;
 
         internal Thread hilo;
@@ -24,12 +24,15 @@ namespace dgtk.GameControlSystem.Windows
         public XGameControlDevice(uint in_id, XINPUT_CAPABILITIES XIcap)
         {
             this.id = in_id;
+            this.s_name = "Game Pad "+in_id.ToString();
             this.XI_GAMEPAD = XIcap.Gamepad;
             this.XI_VIBRATION = XIcap.Vibration;
 
             this.EventAxis += this.InputAxisEvent;
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
+
+            this.gameControlState_state = new GameControlState();
 
             this.hilo = new Thread(new ThreadStart(this.ProcessEvents)); // Definir hilo procesador de eventos.
             this.hilo.Start(); // Iniciar hilo de procesamiento de eventos.
@@ -92,6 +95,7 @@ namespace dgtk.GameControlSystem.Windows
                         XI_GAMEPAD = XI_STATE.Gamepad;
                     }
                 }
+                this.dwPacketNumber = XI_STATE.dwPacketNumber;
 
                 Thread.Sleep(100);  // Descargamos carga de CPU.
             }            
