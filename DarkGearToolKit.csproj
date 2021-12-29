@@ -6,7 +6,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>dgtk</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='debug'">
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>false</Optimize>
     <DefineDebug>true</DefineDebug>
@@ -14,7 +18,11 @@
     <DebugType>Portable</DebugType>
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='release'">
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>true</Optimize>
     <DefineDebug>false</DefineDebug>
@@ -114,5 +122,6 @@
     <Content Include="dgtkWindow.cs" />
     <Content Include="dgtkWFControlGL.cs" />
     <Content Include="GameControlSystem\GameControl_State.cs" />
+    <Content Include="GameControlSystem\Windows\XGameControlDevice.cs" />
   </ItemGroup>
 </Project>
