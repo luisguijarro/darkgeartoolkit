@@ -6,10 +6,10 @@ namespace dgtk.GameControlSystem.Linux
 {
     internal static class GMSystem
     {
-        internal static Dictionary<string, int> devicesKeys;
+        internal static Dictionary<string, uint> devicesKeys;
         public static unsafe void RefreshDeviceList()
         {
-            if (devicesKeys == null) { devicesKeys = new Dictionary<string, int>(); } //Iniciamos diccionario
+            if (devicesKeys == null) { devicesKeys = new Dictionary<string, uint>(); } //Iniciamos diccionario
             string[] eventFiles = Directory.GetFiles("/dev/input/by-id", "*-event-joystick"); //Recojemos todos los ficheros de eventos de joysticks.
             
             #region UNPLUG:
@@ -67,7 +67,7 @@ namespace dgtk.GameControlSystem.Linux
                             //id = eventFiles[d]; // Por si no existe identificador único, cosa que parece lo más probable.
                         }
 
-                        GCD_Temp.id = DevidefileId; // Empleamos el identificador del fichero como ID de dispositivo.
+                        GCD_Temp.id = (uint)DevidefileId; // Empleamos el identificador del fichero como ID de dispositivo.
                         //GCD_Temp.id = id;
 
                         //if (!dgtk.GameControlsManager.devices.ContainsKey(id)) //Si el dispositivo no ha sido detectado antes.

@@ -12,7 +12,7 @@ namespace dgtk.GameControlSystem.Linux
         internal int file;
         internal IntPtr dev; // Puntero de dispositivo de libevdev.
         internal string s_name; // Nombre del dispositivo.
-        internal int id;
+        internal uint id;
         internal Thread hilo;
         internal Dictionary<uint, Axis> Axis; // Ejes <id, value>
         internal Dictionary<uint, int> Hats; // Hats <id, value>
@@ -187,7 +187,7 @@ namespace dgtk.GameControlSystem.Linux
             Imports.close(this.file); // Cerrando Fichero
         }
 
-        public int ID
+        public uint ID
         {
             get { return this.id; }
         }
