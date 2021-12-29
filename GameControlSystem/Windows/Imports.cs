@@ -51,13 +51,13 @@ namespace dgtk.GameControlSystem.Windows
 		#region XInput
 		
 		[DllImport("Xinput1_4.dll")]
-		internal static extern uint XInputGetCapabilities(uint dwUserIndex, uint dwFlags, out XINPUT_CAPABILITIES pCapabilities);
+		internal static extern XInputResult XInputGetCapabilities(uint dwUserIndex, uint dwFlags, ref XINPUT_CAPABILITIES pCapabilities);
 
 		[DllImport("Xinput1_4.dll")]
 		internal static extern void XInputEnable( bool enable);
 
 		[DllImport("Xinput1_4.dll")]
-		internal static extern uint XInputGetState(uint dwUserIndex, out XINPUT_STATE pState);
+		internal static extern XInputResult XInputGetState(uint dwUserIndex, ref XINPUT_STATE pState);
 
 		#endregion
 
