@@ -37,7 +37,8 @@ namespace dgtk.GameControlSystem.Windows
             foreach(ushort btn in Enum.GetValues(typeof(wButtons)))
             {
                 this.gameControlState_state.d_Buttons.Add(btn, false);
-            }
+            }           
+            this.gameControlState_state.d_hats_values = new Dictionary<uint, HatPosition>();
             
 
             this.EventAxis += this.InputAxisEvent;
