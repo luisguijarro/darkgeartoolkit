@@ -291,29 +291,37 @@ namespace dgtk.Platforms.Win32
 			KeyCode kc;
             switch(msg)
 			{
+				case WindowMessage.ACTIVATEAPP:
+					dgtk.GameControlSystem.Windows.Imports.XInputEnable((long)wParam.ToInt64() == 1); // Controlamos si establecemos o apagamos los dispositivos de juego.
+					#if DEBUG
+						Console.WriteLine("Enable XInput: {0}", ((long)wParam.ToInt64() == 1).ToString());
+					#endif
+					break;
             	case WindowMessage.NCACTIVATE:
             		return new IntPtr(0); // Evitar crashes.
 				case WindowMessage.ERASEBKGND:
 					return new IntPtr(1);
 				case WindowMessage.INPUT_DEVICE_CHANGE:
-				    if (wParam.ToInt64() == 1)
+				    if (wParam.ToInt64() == 1) // Conexión
                     {
 						#if DEBUG
                     		Console.WriteLine("Plug HID Handle: "+lParam.ToInt64());
 						#endif
-                    	dgtk.GameControlSystem.Windows.GMSystem.AddInputDevice(lParam);
+                    	//dgtk.GameControlSystem.Windows.GMSystem.AddInputDevice(lParam);
+                    	dgtk.GameControlSystem.Windows.GMSystem.RefreshDeviceList();
                     }
-                    if (wParam.ToInt64() == 2)
+                    if (wParam.ToInt64() == 2) // Desconexión
                     {
 						#if DEBUG
                     		Console.WriteLine("UnPlug HID Handle: "+lParam.ToInt64());
 						#endif
-                    	dgtk.GameControlSystem.Windows.GMSystem.RemoveInputDevice(lParam);
+                    	//dgtk.GameControlSystem.Windows.GMSystem.RemoveInputDevice(lParam);
+                    	dgtk.GameControlSystem.Windows.GMSystem.RefreshDeviceList();
                     }
                     break;
 
 				case WindowMessage.INPUT:
-					uint pcbsize=0;
+					/*uint pcbsize=0;
 					int result;
                     if ((result = Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, IntPtr.Zero, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader)))) < 0)
                     { 
@@ -323,8 +331,8 @@ namespace dgtk.Platforms.Win32
 					if (Imports.GetRawInputData(lParam, GetRawInputData_Command.RID_INPUT, out ri, ref pcbsize, Marshal.SizeOf(typeof(RawInputHeader))) < 0)
 					{
 						break;
-					}
-					dgtk.GameControlSystem.Windows.GMSystem.SetGameControlDevice_Status(ri);
+					}*/
+					//dgtk.GameControlSystem.Windows.GMSystem.SetGameControlDevice_Status(ri);
 					break;
 
 				case WindowMessage.LBUTTONDOWN:				
