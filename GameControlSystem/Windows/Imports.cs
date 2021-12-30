@@ -59,6 +59,9 @@ namespace dgtk.GameControlSystem.Windows
 		[DllImport("Xinput1_4.dll")]
 		internal static extern XInputResult XInputGetState(uint dwUserIndex, ref XINPUT_STATE pState);
 
+		[DllImport("Xinput1_4.dll")]
+		internal static extern XInputResult XInputSetState(uint dwUserIndex, ref XINPUT_VIBRATION pState);
+
 		#endregion
 
     }
