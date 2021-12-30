@@ -292,12 +292,12 @@ namespace dgtk.Platforms.Win32
             switch(msg)
 			{
 				case WindowMessage.ACTIVATEAPP:
+					break;
+            	case WindowMessage.NCACTIVATE:
 					dgtk.GameControlSystem.Windows.Imports.XInputEnable((long)wParam.ToInt64() == 1); // Controlamos si establecemos o apagamos los dispositivos de juego.
 					#if DEBUG
 						Console.WriteLine("Enable XInput: {0}", ((long)wParam.ToInt64() == 1).ToString());
 					#endif
-					break;
-            	case WindowMessage.NCACTIVATE:
             		return new IntPtr(0); // Evitar crashes.
 				case WindowMessage.ERASEBKGND:
 					return new IntPtr(1);
