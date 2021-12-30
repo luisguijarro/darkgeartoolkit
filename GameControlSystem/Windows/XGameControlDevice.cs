@@ -28,6 +28,7 @@ namespace dgtk.GameControlSystem.Windows
             this.XI_GAMEPAD = XIcap.Gamepad;
             this.XI_VIBRATION = XIcap.Vibration;
 
+            this.gameControlState_state = new GameControlState();
             this.gameControlState_state.d_axis_values = new Dictionary<uint, int>();
             for (uint i=0;i<6;i++)
             {
@@ -45,71 +46,146 @@ namespace dgtk.GameControlSystem.Windows
             this.EventHats += this.InputHatsEvent;
             this.EventButtons += this.InputBTNsEvent;
 
-            this.gameControlState_state = new GameControlState();
-
             this.hilo = new Thread(new ThreadStart(this.ProcessEvents)); // Definir hilo procesador de eventos.
             this.hilo.Start(); // Iniciar hilo de procesamiento de eventos.
         }
 
-        private void ProcessEvents()
+        internal void ProcessEvents()
         {
+            XINPUT_STATE XI_STATE = new XINPUT_STATE();
             while(!disposed)
             {
-                XINPUT_STATE XI_STATE = new XINPUT_STATE();
-                Imports.XInputGetState(this.id, ref XI_STATE);
-                if (this.dwPacketNumber != XI_STATE.dwPacketNumber) // Si es diferente hay cambio de estado y por tanto evento.
-                {
-                    //EJES:
-                    if (XI_STATE.Gamepad.sThumbLX != XI_GAMEPAD.sThumbLX)
+                
+                if (Imports.XInputGetState(this.id, ref XI_STATE) == XInputResult.SUCCESS)
+                {                   
+                    if (this.dwPacketNumber != XI_STATE.dwPacketNumber) // Si es diferente hay cambio de estado y por tanto evento. Cambia aun si que pase nada.
                     {
-                        int val = (int)((100f/short.MaxValue)*XI_STATE.Gamepad.sThumbLX);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 0, val, this.gameControlState_state));
-                    }
-                    if (XI_STATE.Gamepad.sThumbLY != XI_GAMEPAD.sThumbLY)
-                    {
-                        int val = (int)((100f/short.MaxValue)*XI_STATE.Gamepad.sThumbLY);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 1, val, this.gameControlState_state));
-                    }
+                        this.dwPacketNumber = XI_STATE.dwPacketNumber;
+                        //Console.WriteLine( XI_STATE.dwPacketNumber); // Cambia aun si que pase nada.
 
-                    if (XI_STATE.Gamepad.sThumbRX != XI_GAMEPAD.sThumbRX)
-                    {
-                        int val = (int)((100f/short.MaxValue)*XI_STATE.Gamepad.sThumbRX);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 2, val, this.gameControlState_state));
-                    }
-                    if (XI_STATE.Gamepad.sThumbRY != XI_GAMEPAD.sThumbRY)
-                    {
-                        int val = (int)((100f/short.MaxValue)*XI_STATE.Gamepad.sThumbRY);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 3, val, this.gameControlState_state));
-                    }
-
-                    if (XI_STATE.Gamepad.bLeftTrigger != XI_GAMEPAD.bLeftTrigger)
-                    {
-                        int val = (int)((100f/255f)*XI_STATE.Gamepad.bLeftTrigger);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 4, val, this.gameControlState_state));
-                    }
-                    if (XI_STATE.Gamepad.bRightTrigger != XI_GAMEPAD.bRightTrigger)
-                    {
-                        int val = (int)((100f/255f)*XI_STATE.Gamepad.bRightTrigger);
-                        LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 5, val, this.gameControlState_state));
-                    }
-
-                    //BOTONES:
-                    if (XI_STATE.Gamepad.wButtons != XI_GAMEPAD.wButtons) // hay cambios en los botones?
-                    {
-                        foreach(ushort btn in Enum.GetValues(typeof(wButtons)))
+                        //EJES:
+                        if(XI_STATE.Gamepad.sThumbLX != XI_GAMEPAD.sThumbLX)
                         {
-                            bool btn_before = ((((ushort)XI_GAMEPAD.wButtons) & btn) == btn);
-                            bool btn_now = ((((ushort)XI_STATE.Gamepad.wButtons) & btn) == btn);
-                            if (btn_before != btn_now)
+                            int val = 50;
+                            if (XI_STATE.Gamepad.sThumbLX > (int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
                             {
-                                LanzarEventBTNs(this, new dgtk_InputButtonsEventArgs(this.id, (int)btn, btn_now, this.gameControlState_state));
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbLX-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
+                            }
+                            if (XI_STATE.Gamepad.sThumbLX < 0-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+XI_STATE.Gamepad.sThumbLX));
+                            }
+                            
+                            #if DEBUG
+                                Console.WriteLine("sThumbLX: "+XI_STATE.Gamepad.sThumbLX);
+                                Console.WriteLine("  -LX: "+val);
+                                Console.WriteLine("  -Another: "+((XI_STATE.Gamepad.sThumbLX+0.5f)/32767.5f).ToString());
+                            #endif
+
+                            this.gameControlState_state.d_axis_values[0] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 0, val, this.gameControlState_state));
+                        }
+                        if (XI_STATE.Gamepad.sThumbLY != XI_GAMEPAD.sThumbLY)
+                        {
+                            int val = 50;
+                            if (XI_STATE.Gamepad.sThumbLY > (int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbLY-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
+                            }
+                            if (XI_STATE.Gamepad.sThumbLY < 0-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbLY));
+                            }
+                            
+                            #if DEBUG
+                                Console.WriteLine("sThumbLY: "+XI_STATE.Gamepad.sThumbLY);
+                                Console.WriteLine("  -LY: "+val);
+                            #endif
+
+                            this.gameControlState_state.d_axis_values[1] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 1, val, this.gameControlState_state));
+                        }
+
+                        if (XI_STATE.Gamepad.sThumbRX != XI_GAMEPAD.sThumbRX)
+                        {
+                            int val = 50;
+                            if (XI_STATE.Gamepad.sThumbRX > (int)DefinedDeadZones.XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbRX-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
+                            }
+                            if (XI_STATE.Gamepad.sThumbRX < 0-(int)DefinedDeadZones.XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbRX));
+                            }
+
+                            #if DEBUG
+                                Console.WriteLine("sThumbRX: "+XI_STATE.Gamepad.sThumbRX);
+                                Console.WriteLine("  -RX: "+val);
+                            #endif
+
+                            this.gameControlState_state.d_axis_values[2] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 2, val, this.gameControlState_state));
+                        }
+                        if (XI_STATE.Gamepad.sThumbRY != XI_GAMEPAD.sThumbRY)
+                        {
+                            int val = 50;
+                            if (XI_STATE.Gamepad.sThumbRY > (int)DefinedDeadZones.XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbRY-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
+                            }
+                            if (XI_STATE.Gamepad.sThumbRY < 0-(int)DefinedDeadZones.XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                            {
+                                val = (int)((100f/(ushort.MaxValue-(int)DefinedDeadZones.XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))*(short.MaxValue+1+XI_STATE.Gamepad.sThumbRY));
+                            }
+                            
+                            #if DEBUG
+                                Console.WriteLine("sThumbRY: "+XI_STATE.Gamepad.sThumbRY);
+                                Console.WriteLine("  -RY: "+val);
+                            #endif
+                            this.gameControlState_state.d_axis_values[3] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 3, val, this.gameControlState_state));
+                        }
+
+                        float maxValueT = 255-(int)DefinedDeadZones.XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+
+                        if (XI_STATE.Gamepad.bLeftTrigger != XI_GAMEPAD.bLeftTrigger)
+                        {
+                            int val = (int)((100f/maxValueT)*XI_STATE.Gamepad.bLeftTrigger<30 ? 0 : XI_STATE.Gamepad.bLeftTrigger + 30);
+                            #if DEBUG
+                                Console.WriteLine("bLeftTrigger: "+XI_STATE.Gamepad.bLeftTrigger);
+                                Console.WriteLine("  -LT: "+val);
+                            #endif
+                            this.gameControlState_state.d_axis_values[4] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 4, val, this.gameControlState_state));
+                        }
+                        if (XI_STATE.Gamepad.bRightTrigger != XI_GAMEPAD.bRightTrigger)
+                        {
+                            int val = (int)((100f/maxValueT)*(XI_STATE.Gamepad.bRightTrigger<30 ? 0 : XI_STATE.Gamepad.bRightTrigger + 30));
+                            #if DEBUG
+                                Console.WriteLine("bRightTrigger: "+XI_STATE.Gamepad.bRightTrigger);
+                                Console.WriteLine("  -RT: "+val);
+                            #endif
+                            this.gameControlState_state.d_axis_values[5] = val;
+                            LanzarEventAxis(this, new dgtk_InputAxisEventArgs(this.id, 5, val, this.gameControlState_state));
+                        }
+
+                        //BOTONES:
+                        if (XI_STATE.Gamepad.wButtons != XI_GAMEPAD.wButtons) // hay cambios en los botones?
+                        {
+                            foreach(ushort btn in Enum.GetValues(typeof(wButtons)))
+                            {
+                                bool btn_before = ((((ushort)XI_GAMEPAD.wButtons) & btn) == btn);
+                                bool btn_now = ((((ushort)XI_STATE.Gamepad.wButtons) & btn) == btn);
+                                if (btn_before != btn_now)
+                                {
+                                    LanzarEventBTNs(this, new dgtk_InputButtonsEventArgs(this.id, (int)btn, btn_now, this.gameControlState_state));
+                                }
                             }
                         }
-                        XI_GAMEPAD = XI_STATE.Gamepad;
+                        XI_GAMEPAD = XI_STATE.Gamepad; // Actualizamos Estado del GamePad.
                     }
+                    
                 }
-                this.dwPacketNumber = XI_STATE.dwPacketNumber;
-
                 Thread.Sleep(100);  // Descargamos carga de CPU.
             }            
         }
@@ -126,7 +202,6 @@ namespace dgtk.GameControlSystem.Windows
 
         internal void LanzarEventAxis(object sender, dgtk_InputAxisEventArgs e)
         {
-            this.gameControlState_state.d_axis_values[(uint)e.Axis] = e.Value;
             this.EventAxis(sender, e);
         }
         internal void LanzarEventHats(object sender, dgtk_InputHatsEventArgs e)
@@ -142,25 +217,34 @@ namespace dgtk.GameControlSystem.Windows
 
         private void InputAxisEvent(object sender, dgtk_InputAxisEventArgs e)
         {
-            foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+            if ( Core.windows != null)
             {
-                win.LaunchEventAxis(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+                {
+                    win.LaunchEventAxis(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                }
             }
         }
 
         private void InputHatsEvent(object sender, dgtk_InputHatsEventArgs e)
         {
-            foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+            if ( Core.windows != null)
             {
-                win.LaunchEventHats(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+                {
+                    win.LaunchEventHats(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                }
             }
         }
 
         private void InputBTNsEvent(object sender, dgtk_InputButtonsEventArgs e)
         {
-            foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+            if ( Core.windows != null)
             {
-                win.LaunchEventBTNs(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                foreach(dgtk_Window win in Core.windows) // Recorremos todas las ventanas abiertas para lanzarles los eventos
+                {
+                    win.LaunchEventBTNs(sender, e); // LLamar Lanzamiento de eventos en ventana.
+                }
             }
         }
 
