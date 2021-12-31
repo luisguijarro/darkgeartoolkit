@@ -9,7 +9,8 @@ namespace dgtk.GameControlSystem.Windows
     {
         internal IntPtr dev;
         internal string s_name;  
-        internal uint id;        
+        internal uint id;   
+        internal bool IsXInput;       
         internal Dictionary<uint, HIDP_VALUE_CAPS> Axis; // Ejes <id, value>
         internal Dictionary<uint, HIDP_VALUE_CAPS> Hats; // Hats <id, value>
         internal Dictionary<uint, HIDP_BUTTON_CAPS> Btns; // Botones <id, value>
