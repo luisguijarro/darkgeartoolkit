@@ -1,4 +1,5 @@
-    using System;
+/*
+using System;
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
@@ -267,3 +268,4 @@ namespace dgtk.GameControlSystem.Windows
 
     }
 }
+*/

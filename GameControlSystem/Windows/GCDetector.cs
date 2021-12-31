@@ -8,7 +8,7 @@ namespace dgtk.GameControlSystem.Windows
     internal static class GMSystem
     {
         #region XInput ________________________________________________________________________________
-
+        /*
         internal static Dictionary<uint, XINPUT_CAPABILITIES> XdevicesKeys;
 
 
@@ -48,25 +48,7 @@ namespace dgtk.GameControlSystem.Windows
                 }
             }
         }
-/*
-        internal static void AddXInputDevice(uint id, XINPUT_CAPABILITIES XIcap)
-        {
-            if (id < 4) // Si es menor que 4 es XInput
-            {
-                #if DEBUG
-                    Console.WriteLine("  -Es XInput: true");
-                    Console.WriteLine("  -Es DirectInput: false");
-                #endif
-            }
-            else // En casos contrario es DirectInput
-            {
-                #if DEBUG
-                    Console.WriteLine("  -Es XInput: false");
-                    Console.WriteLine("  -Es DirectInput: true");
-                #endif
-            }
-        }
-*/
+        
         internal static void AddXInputDevice(uint id, XINPUT_CAPABILITIES XIcap)
         {
             XdevicesKeys.Add(id, XIcap);
@@ -87,6 +69,7 @@ namespace dgtk.GameControlSystem.Windows
                 ((XGameControlDevice)gc.device).ProcessEvents();
             }
         }
+        */
 
         #endregion
 
