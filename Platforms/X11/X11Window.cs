@@ -10,6 +10,7 @@ namespace dgtk.Platforms.X11
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
+		private bool b_HaveFocus;
 		//private object lockobject;
         private IntPtr ptr_display;
 		private IntPtr ptr_XIM; // Entorno Para eventos.
@@ -475,6 +476,14 @@ namespace dgtk.Platforms.X11
 								this.GetSize(); //IF SIZE IS DIFFERENT, LAUNCH EVENT ONRESIZE | If POSITION IS DIFFERENT, LAUNCH ONPOSITIONED
 								break;
 
+							case XEventType.FocusIn:
+								this.b_HaveFocus = true;
+								break;
+
+							case XEventType.FocusOut:
+								this.b_HaveFocus = false;
+								break;
+
 							default:
 								break;
 						}
@@ -688,6 +697,11 @@ namespace dgtk.Platforms.X11
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
+
+		public bool HaveFocus
+		{
+			get { return this.b_HaveFocus; }
+		}
 
 		#endregion
     }

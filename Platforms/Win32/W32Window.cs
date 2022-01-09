@@ -15,6 +15,7 @@ namespace dgtk.Platforms.Win32
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
+		private bool b_HaveFocus;
 		//private object lockobject;
         private bool registered;
 		private OpenGL.OGL_Context GL_Context;
@@ -436,6 +437,12 @@ namespace dgtk.Platforms.Win32
                 case WindowMessage.MOVE:
 					Imports.GetClientRect(this.ptr_handle, out this.rect);
 					return new IntPtr(0);
+				case WindowMessage.KILLFOCUS:
+					this.b_HaveFocus = false;
+					break;
+				case WindowMessage.SETFOCUS:
+					this.b_HaveFocus = true;
+					break;
             }
 			if ((msg == WindowMessage.CLOSE) && (wParam != new IntPtr(1)))
             {
@@ -573,5 +580,11 @@ namespace dgtk.Platforms.Win32
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
+
+		public bool HaveFocus
+		{
+			get { return this.b_HaveFocus; }
+		}
+
     }
 }
