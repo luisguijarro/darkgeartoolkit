@@ -498,17 +498,26 @@ namespace dgtk
 
         internal void LaunchEventAxis(object sender, dgtk_InputAxisEventArgs e)
         {
-            this.GameControlEventAxis(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventAxis(sender, e);
+            }
         }
 
         internal void LaunchEventHats(object sender, dgtk_InputHatsEventArgs e)
         {
-            this.GameControlEventHats(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventHats(sender, e);
+            }
         }
 
         internal void LaunchEventBTNs(object sender, dgtk_InputButtonsEventArgs e)
         {
-            this.GameControlEventButtons(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventButtons(sender, e);
+            }
         }
         /*
         internal void LaunchGameControllerStatusChanged(object sender, dgtk_GameControllerStatusEventArgs e)
