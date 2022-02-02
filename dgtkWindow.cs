@@ -429,22 +429,18 @@ namespace dgtk
             IntPtr icon_ptr = IntPtr.Zero;
             SkiaSharp.SKBitmap skbmp;
             skbmp = SkiaSharp.SKBitmap.Decode(stream);
-            //System.Drawing.Bitmap bmp = new Bitmap(iconpath);
             
             switch (Platforms.Tools.GetPlatform()) // == Platforms.Platform.Linux_X11)
             {
                 case Platforms.Platform.Linux_X11:
-                    //skbmp = SkiaSharp.SKBitmap.Decode(stream);
-                    icon_ptr = skbmp.GetPixels();
-
-                    /*BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    byte[] bytes = new byte[bmp.Width*bmp.Height*4];
-                    System.Runtime.InteropServices.Marshal.Copy(bd.Scan0, bytes, 0, bytes.Length);
+                    IntPtr icon_ptr_sk = skbmp.GetPixels();
+                    byte[] bytes = new byte[skbmp.Width*skbmp.Height*4];
+                    System.Runtime.InteropServices.Marshal.Copy(icon_ptr_sk, bytes, 0, bytes.Length);
 
                     System.Collections.Generic.List<byte> l_SuperBytes = new System.Collections.Generic.List<byte>();
-                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Width));
-                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Height));
-                    
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)skbmp.Width));
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)skbmp.Height));
+
                     for (int i=0;i<bytes.Length;i+=4)
                     {
                         l_SuperBytes.Add(bytes[i]);
@@ -455,12 +451,12 @@ namespace dgtk
                     }
                     
                     icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
-                    System.Runtime.InteropServices.Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);*/
-                    //bmp.UnlockBits(bd);
+                    System.Runtime.InteropServices.Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);
+
                     break;
 
                 case Platforms.Platform.Windows:
-                    icon_ptr = icon_ptr = skbmp.GetPixels(); //bmp.GetHicon();
+                    icon_ptr = icon_ptr = skbmp.GetPixels(); //Sin Probar.
                     break;
 
                 default:
@@ -470,7 +466,6 @@ namespace dgtk
 
             this.NativeWindow.SetIcon(skbmp.Width, skbmp.Height, icon_ptr); 
             skbmp.Dispose();
-            //bmp.Dispose();
         }
 
         public virtual void Close()
