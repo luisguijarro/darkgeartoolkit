@@ -86,6 +86,11 @@ namespace dgtk.Graphics
             uint argb = (uint)(A * 255) << 24 | (uint)(R * 255) << 16 | (uint)(G * 255) << 8 | (uint)(B * 255);
             return unchecked((int)argb);
         }
+
+		public float[] ToRgbaFloatArray()
+		{
+			return new float[] {this.R, this.G, this.B, this.A};
+		}
 		
 		public static Color4 Transparent
 		{
