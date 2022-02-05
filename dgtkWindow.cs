@@ -428,6 +428,9 @@ namespace dgtk
         {
             IntPtr icon_ptr = IntPtr.Zero;
             SkiaSharp.SKBitmap skbmp;
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            stream.CopyTo(ms);
+            stream.Position = 0;
             skbmp = SkiaSharp.SKBitmap.Decode(stream);
             
             switch (Platforms.Tools.GetPlatform()) // == Platforms.Platform.Linux_X11)
@@ -456,7 +459,7 @@ namespace dgtk
                     break;
 
                 case Platforms.Platform.Windows:
-                    icon_ptr = icon_ptr = skbmp.GetPixels(); //Sin Probar.
+                    icon_ptr = new System.Drawing.Bitmap(ms).GetHicon(); // Sin equivalencias en skia
                     break;
 
                 default:
@@ -466,6 +469,7 @@ namespace dgtk
 
             this.NativeWindow.SetIcon(skbmp.Width, skbmp.Height, icon_ptr); 
             skbmp.Dispose();
+            ms.Dispose();
         }
 
         public virtual void Close()
