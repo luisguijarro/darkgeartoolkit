@@ -87,7 +87,7 @@ namespace dgtk.Platforms.Win32
             IntPtr mInstancia = Marshal.GetHINSTANCE(typeof(W32Window).Module);
             this.baseStyle = ( WindowStyle.Visible | WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings | WindowStyle.Border);
             this.ExtendStyle = (ExWindowStyle.WS_EX_APPWINDOW | ExWindowStyle.WS_EX_WINDOWEDGE);
-			this.FullScreenStyle = WindowStyle.ClipSiblings | WindowStyle.Visible;
+			this.FullScreenStyle = WindowStyle.ClipSiblings | WindowStyle.Visible | WindowStyle.Overlapped;
 
 			this.rect = new Win32Rect();
 			this.rect.left = posX; 
@@ -460,7 +460,7 @@ namespace dgtk.Platforms.Win32
 				//Console.WriteLine("height: "+(this.rect.bottom-this.rect.top).ToString());
 				this.pre_rect = this.rect;
 				Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.FullScreenStyle);
-				Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
+				Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, /*this.rect.left*/0, /*this.rect.top*/0, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
 				Imports.ShowWindow(this.ptr_handle, 3); //Maximize
 			}
 			else
