@@ -465,6 +465,7 @@ namespace dgtk.Platforms.Win32
 		{
 			if (WhantFullScreen != this.IsInFullScreen)
 			{
+
 				if (WhantFullScreen)
 				{
 					Imports.GetWindowRect(this.Handle, out this.winrect);  // Obtenemos tamaño de la Ventana con marcos y todo

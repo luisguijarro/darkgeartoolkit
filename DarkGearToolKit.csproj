@@ -125,5 +125,7 @@
     <Content Include="dgtkWFControlGL.cs" />
     <Content Include="GameControlSystem\GameControl_State.cs" />
     <Content Include="GameControlSystem\Windows\XGameControlDevice.cs" />
+    <Content Include="Math\Size3.cs" />
+    <Content Include="Math\Size3f.cs" />
   </ItemGroup>
 </Project>

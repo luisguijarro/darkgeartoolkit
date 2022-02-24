@@ -154,6 +154,10 @@ namespace dgtk.Math
 			get { return this.f_W;}
 			set { this.f_W = value;}
 		}
+		public Vector3 xyz
+		{
+			get { return new Vector3(this.f_X, this.f_Y, this.f_Z); }
+		}
 		#endregion
 	}
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using dgtk.Math;
+
 namespace dgtk.OpenAL
 {
     public static partial class ALC
@@ -354,6 +356,24 @@ namespace dgtk.OpenAL
 			}
 			return ret;
 		}
+
+        public static void alListener3f( AL_Listener3vParam param, Vector3 value )
+        {
+            alListener3f( param, value.X, value.Y, value.Z );
+        }
+
+
+        public static void alListenerfv( AL_Listener3vParam param, Vector3 values )
+        {
+            alListenerfv( param, values.ToArray() );
+        } 
+
+        public static void alListenerOrientation(Vector3 orientation, Vector3 Vector_UP )
+        {
+			float[] f_values = new float[] { orientation.X, orientation.Y, orientation.Z, Vector_UP.X, Vector_UP.Y, Vector_UP.Z };
+            alListenerfv( AL_Listener3vParam.AL_ORIENTATION, f_values );
+        } 
+
 
 		#endregion
 
