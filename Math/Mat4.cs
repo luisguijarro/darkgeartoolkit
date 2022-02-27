@@ -22,7 +22,7 @@ namespace dgtk.Math
 			this.v_Row1 = Row1;
 			this.v_Row2 = Row2;
 			this.v_Row3 = Row3;
-			this.FloatMatrix = new float[]
+			this.FloatMatrix = new float[] //El Float[] se ordena por columnas, no por lineas.
 			{
 				v_Row0.X, v_Row1.X, v_Row2.X, v_Row3.X, 
 				v_Row0.Y, v_Row1.Y, v_Row2.Y, v_Row3.Y, 
