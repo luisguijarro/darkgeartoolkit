@@ -1412,6 +1412,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glExtractComponentEXT glExtractComponentEXT;
 
+		internal static delegatesGL.glExtrapolateTex2DQCOM glExtrapolateTex2DQCOM;
+
 		internal static delegatesGL.glExtTexObjectStateOverrideiQCOM glExtTexObjectStateOverrideiQCOM;
 
 		#endregion
@@ -5259,6 +5261,10 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glTexStorage3DMultisample glTexStorage3DMultisample;
 
 		internal static delegatesGL.glTexStorage3DMultisampleOES glTexStorage3DMultisampleOES;
+
+		internal static delegatesGL.glTexStorageAttribs2DEXT glTexStorageAttribs2DEXT;
+
+		internal static delegatesGL.glTexStorageAttribs3DEXT glTexStorageAttribs3DEXT;
 
 		internal static delegatesGL.glTexStorageMem1DEXT glTexStorageMem1DEXT;
 

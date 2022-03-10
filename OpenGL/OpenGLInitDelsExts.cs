@@ -1902,6 +1902,10 @@ namespace dgtk.OpenGL
 			{
 				dgtk.OpenGL.internalGL.glExtractComponentEXT = (dgtk.OpenGL.delegatesGL.glExtractComponentEXT) InternalTool.GetGLMethodAdress("glExtractComponentEXT", typeof(dgtk.OpenGL.delegatesGL.glExtractComponentEXT));
 			}
+			if (SuportedExt.Contains("glExtrapolateTex2DQCOM"))
+			{
+				dgtk.OpenGL.internalGL.glExtrapolateTex2DQCOM = (dgtk.OpenGL.delegatesGL.glExtrapolateTex2DQCOM) InternalTool.GetGLMethodAdress("glExtrapolateTex2DQCOM", typeof(dgtk.OpenGL.delegatesGL.glExtrapolateTex2DQCOM));
+			}
 			if (SuportedExt.Contains("glExtTexObjectStateOverrideiQCOM"))
 			{
 				dgtk.OpenGL.internalGL.glExtTexObjectStateOverrideiQCOM = (dgtk.OpenGL.delegatesGL.glExtTexObjectStateOverrideiQCOM) InternalTool.GetGLMethodAdress("glExtTexObjectStateOverrideiQCOM", typeof(dgtk.OpenGL.delegatesGL.glExtTexObjectStateOverrideiQCOM));
@@ -7173,6 +7177,14 @@ namespace dgtk.OpenGL
 			if (SuportedExt.Contains("glTexStorage3DMultisampleOES"))
 			{
 				dgtk.OpenGL.internalGL.glTexStorage3DMultisampleOES = (dgtk.OpenGL.delegatesGL.glTexStorage3DMultisampleOES) InternalTool.GetGLMethodAdress("glTexStorage3DMultisampleOES", typeof(dgtk.OpenGL.delegatesGL.glTexStorage3DMultisampleOES));
+			}
+			if (SuportedExt.Contains("glTexStorageAttribs2DEXT"))
+			{
+				dgtk.OpenGL.internalGL.glTexStorageAttribs2DEXT = (dgtk.OpenGL.delegatesGL.glTexStorageAttribs2DEXT) InternalTool.GetGLMethodAdress("glTexStorageAttribs2DEXT", typeof(dgtk.OpenGL.delegatesGL.glTexStorageAttribs2DEXT));
+			}
+			if (SuportedExt.Contains("glTexStorageAttribs3DEXT"))
+			{
+				dgtk.OpenGL.internalGL.glTexStorageAttribs3DEXT = (dgtk.OpenGL.delegatesGL.glTexStorageAttribs3DEXT) InternalTool.GetGLMethodAdress("glTexStorageAttribs3DEXT", typeof(dgtk.OpenGL.delegatesGL.glTexStorageAttribs3DEXT));
 			}
 			if (SuportedExt.Contains("glTexStorageMem1DEXT"))
 			{

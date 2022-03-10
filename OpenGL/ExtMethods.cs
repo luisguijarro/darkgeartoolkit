@@ -220,12 +220,12 @@ namespace dgtk.OpenGL
 				internalGL.glTessellationModeAMD(mode);
 			}
 
-			public static void glTexStorageSparseAMD(TextureTarget target, InternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
+			public static void glTexStorageSparseAMD(TextureTarget target, SizedInternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
 			{
 				internalGL.glTexStorageSparseAMD(target, internalFormat, width, height, depth, layers, flags);
 			}
 
-			public static void glTextureStorageSparseAMD(uint texture, uint target, InternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
+			public static void glTextureStorageSparseAMD(uint texture, uint target, SizedInternalFormat internalFormat, int width, int height, int depth, int layers, TextureStorageMaskAMD flags)
 			{
 				internalGL.glTextureStorageSparseAMD(texture, target, internalFormat, width, height, depth, layers, flags);
 			}
@@ -561,17 +561,17 @@ namespace dgtk.OpenGL
 				internalGL.glCompressedTexImage3DARB(target, level, internalformat, width, height, depth, border, imageSize, data);
 			}
 
-			public static void glCompressedTexSubImage1DARB(TextureTarget target, int level, int xoffset, int width, PixelFormat format, int imageSize, IntPtr data)
+			public static void glCompressedTexSubImage1DARB(TextureTarget target, int level, int xoffset, int width, InternalFormat format, int imageSize, IntPtr data)
 			{
 				internalGL.glCompressedTexSubImage1DARB(target, level, xoffset, width, format, imageSize, data);
 			}
 
-			public static void glCompressedTexSubImage2DARB(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, int imageSize, IntPtr data)
+			public static void glCompressedTexSubImage2DARB(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, InternalFormat format, int imageSize, IntPtr data)
 			{
 				internalGL.glCompressedTexSubImage2DARB(target, level, xoffset, yoffset, width, height, format, imageSize, data);
 			}
 
-			public static void glCompressedTexSubImage3DARB(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, PixelFormat format, int imageSize, IntPtr data)
+			public static void glCompressedTexSubImage3DARB(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, InternalFormat format, int imageSize, IntPtr data)
 			{
 				internalGL.glCompressedTexSubImage3DARB(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 			}
@@ -826,7 +826,7 @@ namespace dgtk.OpenGL
 				internalGL.glLoadTransposeMatrixfARB(m);
 			}
 
-			public static IntPtr glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
+			public static unsafe IntPtr* glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
 			{
 				return internalGL.glMapBufferARB(target, access);
 			}
@@ -2597,6 +2597,16 @@ namespace dgtk.OpenGL
 				internalGL.glGetVariantPointervEXT(id, value, data);
 			}
 
+			public static unsafe void glGetVertexAttribIivEXT(uint index, VertexAttribEnum pname, int* @params)
+			{
+				internalGL.glGetVertexAttribIivEXT(index, pname, @params);
+			}
+
+			public static unsafe void glGetVertexAttribIuivEXT(uint index, VertexAttribEnum pname, uint* @params)
+			{
+				internalGL.glGetVertexAttribIuivEXT(index, pname, @params);
+			}
+
 			public static unsafe void glGetVertexAttribLdvEXT(uint index, VertexAttribEnum pname, double* @params)
 			{
 				internalGL.glGetVertexAttribLdvEXT(index, pname, @params);
@@ -2947,7 +2957,7 @@ namespace dgtk.OpenGL
 				internalGL.glTangentPointerEXT(type, stride, pointer);
 			}
 
-			public static void glTexBufferEXT(TextureTarget target, InternalFormat internalformat, uint buffer)
+			public static void glTexBufferEXT(TextureTarget target, SizedInternalFormat internalformat, uint buffer)
 			{
 				internalGL.glTexBufferEXT(target, internalformat, buffer);
 			}
@@ -3100,6 +3110,111 @@ namespace dgtk.OpenGL
 			public static unsafe void glVariantusvEXT(uint id, ushort* addr)
 			{
 				internalGL.glVariantusvEXT(id, addr);
+			}
+
+			public static void glVertexAttribI1iEXT(uint index, int x)
+			{
+				internalGL.glVertexAttribI1iEXT(index, x);
+			}
+
+			public static unsafe void glVertexAttribI1ivEXT(uint index, int* v)
+			{
+				internalGL.glVertexAttribI1ivEXT(index, v);
+			}
+
+			public static void glVertexAttribI1uiEXT(uint index, uint x)
+			{
+				internalGL.glVertexAttribI1uiEXT(index, x);
+			}
+
+			public static unsafe void glVertexAttribI1uivEXT(uint index, uint* v)
+			{
+				internalGL.glVertexAttribI1uivEXT(index, v);
+			}
+
+			public static void glVertexAttribI2iEXT(uint index, int x, int y)
+			{
+				internalGL.glVertexAttribI2iEXT(index, x, y);
+			}
+
+			public static unsafe void glVertexAttribI2ivEXT(uint index, int* v)
+			{
+				internalGL.glVertexAttribI2ivEXT(index, v);
+			}
+
+			public static void glVertexAttribI2uiEXT(uint index, uint x, uint y)
+			{
+				internalGL.glVertexAttribI2uiEXT(index, x, y);
+			}
+
+			public static unsafe void glVertexAttribI2uivEXT(uint index, uint* v)
+			{
+				internalGL.glVertexAttribI2uivEXT(index, v);
+			}
+
+			public static void glVertexAttribI3iEXT(uint index, int x, int y, int z)
+			{
+				internalGL.glVertexAttribI3iEXT(index, x, y, z);
+			}
+
+			public static unsafe void glVertexAttribI3ivEXT(uint index, int* v)
+			{
+				internalGL.glVertexAttribI3ivEXT(index, v);
+			}
+
+			public static void glVertexAttribI3uiEXT(uint index, uint x, uint y, uint z)
+			{
+				internalGL.glVertexAttribI3uiEXT(index, x, y, z);
+			}
+
+			public static unsafe void glVertexAttribI3uivEXT(uint index, uint* v)
+			{
+				internalGL.glVertexAttribI3uivEXT(index, v);
+			}
+
+			public static unsafe void glVertexAttribI4bvEXT(uint index, sbyte* v)
+			{
+				internalGL.glVertexAttribI4bvEXT(index, v);
+			}
+
+			public static void glVertexAttribI4iEXT(uint index, int x, int y, int z, int w)
+			{
+				internalGL.glVertexAttribI4iEXT(index, x, y, z, w);
+			}
+
+			public static unsafe void glVertexAttribI4ivEXT(uint index, int* v)
+			{
+				internalGL.glVertexAttribI4ivEXT(index, v);
+			}
+
+			public static unsafe void glVertexAttribI4svEXT(uint index, short* v)
+			{
+				internalGL.glVertexAttribI4svEXT(index, v);
+			}
+
+			public static unsafe void glVertexAttribI4ubvEXT(uint index, byte* v)
+			{
+				internalGL.glVertexAttribI4ubvEXT(index, v);
+			}
+
+			public static void glVertexAttribI4uiEXT(uint index, uint x, uint y, uint z, uint w)
+			{
+				internalGL.glVertexAttribI4uiEXT(index, x, y, z, w);
+			}
+
+			public static unsafe void glVertexAttribI4uivEXT(uint index, uint* v)
+			{
+				internalGL.glVertexAttribI4uivEXT(index, v);
+			}
+
+			public static unsafe void glVertexAttribI4usvEXT(uint index, ushort* v)
+			{
+				internalGL.glVertexAttribI4usvEXT(index, v);
+			}
+
+			public static void glVertexAttribIPointerEXT(uint index, int size, VertexAttribIType type, int stride, IntPtr pointer)
+			{
+				internalGL.glVertexAttribIPointerEXT(index, size, type, stride, pointer);
 			}
 
 			public static void glVertexAttribL1dEXT(uint index, double x)
@@ -4308,12 +4423,12 @@ namespace dgtk.OpenGL
 				internalGL.glTexCoord4hvNV(v);
 			}
 
-			public static void glTexImage2DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
+			public static void glTexImage2DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, InternalFormat internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTexImage2DMultisampleCoverageNV(target, coverageSamples, colorSamples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTexImage3DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
+			public static void glTexImage3DMultisampleCoverageNV(TextureTarget target, int coverageSamples, int colorSamples, InternalFormat internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTexImage3DMultisampleCoverageNV(target, coverageSamples, colorSamples, internalFormat, width, height, depth, fixedSampleLocations);
 			}
@@ -4323,22 +4438,22 @@ namespace dgtk.OpenGL
 				internalGL.glTexRenderbufferNV(target, renderbuffer);
 			}
 
-			public static void glTextureImage2DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
+			public static void glTextureImage2DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, InternalFormat internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage2DMultisampleCoverageNV(texture, target, coverageSamples, colorSamples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTextureImage2DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, Boolean fixedSampleLocations)
+			public static void glTextureImage2DMultisampleNV(uint texture, TextureTarget target, int samples, InternalFormat internalFormat, int width, int height, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage2DMultisampleNV(texture, target, samples, internalFormat, width, height, fixedSampleLocations);
 			}
 
-			public static void glTextureImage3DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
+			public static void glTextureImage3DMultisampleCoverageNV(uint texture, TextureTarget target, int coverageSamples, int colorSamples, InternalFormat internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage3DMultisampleCoverageNV(texture, target, coverageSamples, colorSamples, internalFormat, width, height, depth, fixedSampleLocations);
 			}
 
-			public static void glTextureImage3DMultisampleNV(uint texture, TextureTarget target, int samples, int internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
+			public static void glTextureImage3DMultisampleNV(uint texture, TextureTarget target, int samples, InternalFormat internalFormat, int width, int height, int depth, Boolean fixedSampleLocations)
 			{
 				internalGL.glTextureImage3DMultisampleNV(texture, target, samples, internalFormat, width, height, depth, fixedSampleLocations);
 			}

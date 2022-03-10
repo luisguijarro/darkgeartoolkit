@@ -357,7 +357,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glClearBufferData(BufferStorageTarget target, InternalFormat internalformat, PixelFormat format, PixelType type, IntPtr data)
+		public static void glClearBufferData(BufferStorageTarget target, SizedInternalFormat internalformat, PixelFormat format, PixelType type, IntPtr data)
 		{
 			internalGL.glClearBufferData(target, internalformat, format, type, data);
 		}
@@ -381,7 +381,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glClearBufferSubData(BufferTargetARB target, InternalFormat internalformat, IntPtr offset, int size, PixelFormat format, PixelType type, IntPtr data)
+		public static void glClearBufferSubData(BufferTargetARB target, SizedInternalFormat internalformat, IntPtr offset, int size, PixelFormat format, PixelType type, IntPtr data)
 		{
 			internalGL.glClearBufferSubData(target, internalformat, offset, size, format, type, data);
 		}
@@ -417,13 +417,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glClearNamedBufferData(uint buffer, InternalFormat internalformat, PixelFormat format, PixelType type, IntPtr data)
+		public static void glClearNamedBufferData(uint buffer, SizedInternalFormat internalformat, PixelFormat format, PixelType type, IntPtr data)
 		{
 			internalGL.glClearNamedBufferData(buffer, internalformat, format, type, data);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glClearNamedBufferSubData(uint buffer, InternalFormat internalformat, IntPtr offset, int size, PixelFormat format, PixelType type, IntPtr data)
+		public static void glClearNamedBufferSubData(uint buffer, SizedInternalFormat internalformat, IntPtr offset, int size, PixelFormat format, PixelType type, IntPtr data)
 		{
 			internalGL.glClearNamedBufferSubData(buffer, internalformat, offset, size, format, type, data);
 		}
@@ -759,37 +759,37 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 1.3</sumary>
-		public static void glCompressedTexSubImage1D(TextureTarget target, int level, int xoffset, int width, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTexSubImage1D(TextureTarget target, int level, int xoffset, int width, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, data);
 		}
 
 		///<sumary> Available from OpenGL version 1.3</sumary>
-		public static void glCompressedTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
 		}
 
 		///<sumary> Available from OpenGL version 1.3</sumary>
-		public static void glCompressedTexSubImage3D(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTexSubImage3D(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glCompressedTextureSubImage1D(uint texture, int level, int xoffset, int width, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTextureSubImage1D(uint texture, int level, int xoffset, int width, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTextureSubImage1D(texture, level, xoffset, width, format, imageSize, data);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glCompressedTextureSubImage2D(uint texture, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTextureSubImage2D(uint texture, int level, int xoffset, int yoffset, int width, int height, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, imageSize, data);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glCompressedTextureSubImage3D(uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, PixelFormat format, int imageSize, IntPtr data)
+		public static void glCompressedTextureSubImage3D(uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, InternalFormat format, int imageSize, IntPtr data)
 		{
 			internalGL.glCompressedTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 		}
@@ -2957,13 +2957,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 1.5</sumary>
-		public static IntPtr glMapBuffer(BufferTargetARB target, BufferAccessARB access)
+		public static unsafe IntPtr* glMapBuffer(BufferTargetARB target, BufferAccessARB access)
 		{
 			return internalGL.glMapBuffer(target, access);
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static IntPtr glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access)
+		public static unsafe IntPtr* glMapBufferRange(BufferTargetARB target, IntPtr offset, int length, MapBufferAccessMask access)
 		{
 			return internalGL.glMapBufferRange(target, offset, length, access);
 		}
@@ -4605,13 +4605,13 @@ namespace dgtk.OpenGL
 		#region T:
 
 		///<sumary> Available from OpenGL version 3.1</sumary>
-		public static void glTexBuffer(TextureTarget target, InternalFormat internalformat, uint buffer)
+		public static void glTexBuffer(TextureTarget target, SizedInternalFormat internalformat, uint buffer)
 		{
 			internalGL.glTexBuffer(target, internalformat, buffer);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glTexBufferRange(TextureTarget target, InternalFormat internalformat, uint buffer, IntPtr offset, int size)
+		public static void glTexBufferRange(TextureTarget target, SizedInternalFormat internalformat, uint buffer, IntPtr offset, int size)
 		{
 			internalGL.glTexBufferRange(target, internalformat, buffer, offset, size);
 		}
@@ -4989,31 +4989,31 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.2</sumary>
-		public static void glTexStorage1D(TextureTarget target, int levels, InternalFormat internalformat, int width)
+		public static void glTexStorage1D(TextureTarget target, int levels, SizedInternalFormat internalformat, int width)
 		{
 			internalGL.glTexStorage1D(target, levels, internalformat, width);
 		}
 
 		///<sumary> Available from OpenGL version 4.2</sumary>
-		public static void glTexStorage2D(TextureTarget target, int levels, InternalFormat internalformat, int width, int height)
+		public static void glTexStorage2D(TextureTarget target, int levels, SizedInternalFormat internalformat, int width, int height)
 		{
 			internalGL.glTexStorage2D(target, levels, internalformat, width, height);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glTexStorage2DMultisample(TextureTarget target, int samples, InternalFormat internalformat, int width, int height, Boolean fixedsamplelocations)
+		public static void glTexStorage2DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, Boolean fixedsamplelocations)
 		{
 			internalGL.glTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 		}
 
 		///<sumary> Available from OpenGL version 4.2</sumary>
-		public static void glTexStorage3D(TextureTarget target, int levels, InternalFormat internalformat, int width, int height, int depth)
+		public static void glTexStorage3D(TextureTarget target, int levels, SizedInternalFormat internalformat, int width, int height, int depth)
 		{
 			internalGL.glTexStorage3D(target, levels, internalformat, width, height, depth);
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glTexStorage3DMultisample(TextureTarget target, int samples, InternalFormat internalformat, int width, int height, int depth, Boolean fixedsamplelocations)
+		public static void glTexStorage3DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, int depth, Boolean fixedsamplelocations)
 		{
 			internalGL.glTexStorage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
 		}
@@ -5043,13 +5043,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureBuffer(uint texture, InternalFormat internalformat, uint buffer)
+		public static void glTextureBuffer(uint texture, SizedInternalFormat internalformat, uint buffer)
 		{
 			internalGL.glTextureBuffer(texture, internalformat, buffer);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureBufferRange(uint texture, InternalFormat internalformat, uint buffer, IntPtr offset, int size)
+		public static void glTextureBufferRange(uint texture, SizedInternalFormat internalformat, uint buffer, IntPtr offset, int size)
 		{
 			internalGL.glTextureBufferRange(texture, internalformat, buffer, offset, size);
 		}
@@ -5091,31 +5091,31 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureStorage1D(uint texture, int levels, InternalFormat internalformat, int width)
+		public static void glTextureStorage1D(uint texture, int levels, SizedInternalFormat internalformat, int width)
 		{
 			internalGL.glTextureStorage1D(texture, levels, internalformat, width);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureStorage2D(uint texture, int levels, InternalFormat internalformat, int width, int height)
+		public static void glTextureStorage2D(uint texture, int levels, SizedInternalFormat internalformat, int width, int height)
 		{
 			internalGL.glTextureStorage2D(texture, levels, internalformat, width, height);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureStorage2DMultisample(uint texture, int samples, InternalFormat internalformat, int width, int height, Boolean fixedsamplelocations)
+		public static void glTextureStorage2DMultisample(uint texture, int samples, SizedInternalFormat internalformat, int width, int height, Boolean fixedsamplelocations)
 		{
 			internalGL.glTextureStorage2DMultisample(texture, samples, internalformat, width, height, fixedsamplelocations);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureStorage3D(uint texture, int levels, InternalFormat internalformat, int width, int height, int depth)
+		public static void glTextureStorage3D(uint texture, int levels, SizedInternalFormat internalformat, int width, int height, int depth)
 		{
 			internalGL.glTextureStorage3D(texture, levels, internalformat, width, height, depth);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
-		public static void glTextureStorage3DMultisample(uint texture, int samples, InternalFormat internalformat, int width, int height, int depth, Boolean fixedsamplelocations)
+		public static void glTextureStorage3DMultisample(uint texture, int samples, SizedInternalFormat internalformat, int width, int height, int depth, Boolean fixedsamplelocations)
 		{
 			internalGL.glTextureStorage3DMultisample(texture, samples, internalformat, width, height, depth, fixedsamplelocations);
 		}
@@ -5139,7 +5139,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 4.3</sumary>
-		public static void glTextureView(uint texture, TextureTarget target, uint origtexture, InternalFormat internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers)
+		public static void glTextureView(uint texture, TextureTarget target, uint origtexture, SizedInternalFormat internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers)
 		{
 			internalGL.glTextureView(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
 		}
