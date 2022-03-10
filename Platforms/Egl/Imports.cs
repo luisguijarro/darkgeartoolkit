@@ -28,19 +28,19 @@ namespace dgtk.Platforms.EGL
         internal static extern bool eglCopyBuffers (IntPtr dpy, IntPtr surface, IntPtr target);
 
         [DllImport(LibEgl, EntryPoint = "eglCreateContext")]
-        internal static unsafe extern IntPtr eglCreateContext (IntPtr dpy, IntPtr config, IntPtr share_context, /*const*/ref int attrib_list);
+        internal static unsafe extern IntPtr eglCreateContext (IntPtr dpy, IntPtr config, IntPtr share_context, /*const*/ref int[] attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreateImage")]
         internal static unsafe extern IntPtr eglCreateImage (IntPtr dpy, IntPtr ctx, EGL_ENUM target, IntPtr buffer, /*const*/ref IntPtr attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreatePbufferFromClientBuffer")]
-        internal static unsafe extern IntPtr eglCreatePbufferFromClientBuffer (IntPtr dpy, EGL_ENUM buftype, IntPtr buffer, IntPtr config, /*const*/ref int attrib_list);
+        internal static unsafe extern IntPtr eglCreatePbufferFromClientBuffer (IntPtr dpy, EGL_ENUM buftype, IntPtr buffer, IntPtr config, /*const*/ref int[] attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreatePbufferSurface")]
-        internal static unsafe extern IntPtr eglCreatePbufferSurface (IntPtr dpy, IntPtr config, /*const*/ref int attrib_list);
+        internal static unsafe extern IntPtr eglCreatePbufferSurface (IntPtr dpy, IntPtr config, /*const*/ref int[] attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreatePixmapSurface")]
-        internal static unsafe extern IntPtr eglCreatePixmapSurface (IntPtr dpy, IntPtr config, IntPtr pixmap, /*const*/ref int attrib_list);
+        internal static unsafe extern IntPtr eglCreatePixmapSurface (IntPtr dpy, IntPtr config, IntPtr pixmap, /*const*/ref int[] attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreatePlatformPixmapSurface")]
         internal static unsafe extern IntPtr eglCreatePlatformPixmapSurface (IntPtr dpy, IntPtr config, IntPtr native_pixmap, /*const*/ref IntPtr attrib_list);
@@ -52,7 +52,7 @@ namespace dgtk.Platforms.EGL
         internal static unsafe extern IntPtr eglCreateSync (IntPtr dpy, EGL_ENUM type, /*const*/ref IntPtr attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglCreateWindowSurface")]
-        internal static unsafe extern IntPtr eglCreateWindowSurface (IntPtr dpy, IntPtr config, IntPtr win, /*const*/ref int attrib_list);
+        internal static unsafe extern IntPtr eglCreateWindowSurface (IntPtr dpy, IntPtr config, IntPtr win, /*const*/ref int[] attrib_list);
 
         [DllImport(LibEgl, EntryPoint = "eglDestroyContext")]
         internal static extern bool eglDestroyContext (IntPtr dpy, IntPtr ctx);
