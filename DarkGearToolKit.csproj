@@ -123,5 +123,15 @@
     <Content Include="dgtkWFControlGL.cs" />
     <Content Include="GameControlSystem\GameControl_State.cs" />
     <Content Include="GameControlSystem\Windows\XGameControlDevice.cs" />
+    <Content Include="OpenGL\gles\GLesMethods.cs" />
+    <Content Include="OpenGL\gles\GLesDelegates.cs" />
+    <Content Include="OpenGL\gles\GlesExtMethods.cs" />
+    <Content Include="OpenGL\gles\GLesInternals.cs" />
+    <Content Include="OpenGL\gles\GLInternalGLesTool.cs" />
+    <Content Include="OpenGL\gles\OpenGLesInitDels.cs" />
+    <Content Include="OpenGL\gles\OpenGLesInitDelsExts.cs" />
+    <Content Include="Platforms\Egl\EGLPreparation.cs" />
+    <Content Include="Platforms\Egl\Imports.cs" />
+    <Content Include="Platforms\Egl\Enums.cs" />
   </ItemGroup>
 </Project>
