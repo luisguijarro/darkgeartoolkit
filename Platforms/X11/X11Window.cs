@@ -12,6 +12,7 @@ namespace dgtk.Platforms.X11
 		private bool b_created;
 		//private object lockobject;
         private IntPtr ptr_display;
+        private IntPtr ptr_egldisplay;
 		private IntPtr ptr_XIM; // Entorno Para eventos.
 		private IntPtr ptr_XIC; // Contexto Para eventos.
         private int ScreenId;
@@ -21,6 +22,7 @@ namespace dgtk.Platforms.X11
         private XVisualInfo Visual;
         private XSetWindowAttributes XWA;
 		private OpenGL.OGL_Context GL_Context;
+		private bool IsEGL;
 
 		//private OpenAL.OAL_Context OpenAL_Cntx;
 
@@ -69,15 +71,15 @@ namespace dgtk.Platforms.X11
 		public event EventHandler<dgtk_OnRenderEventArgs> RenderFrame;
 		#endregion
 
-		internal X11Window() : this(0, 0, 800, 450, "dgtk Window")
+		internal X11Window() : this(0, 0, 800, 450, "dgtk Window", false)
         {
 
 		}
-		internal X11Window(int width, int height, string title) : this(0, 0, width, height, title)
+		internal X11Window(int width, int height, string title, bool IsEGL) : this(0, 0, width, height, title, IsEGL)
         {
 			
 		}
-        internal X11Window(int posX, int posY, int width, int height, string title)
+        internal X11Window(int posX, int posY, int width, int height, string title, bool IsEGL)
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
@@ -111,18 +113,45 @@ namespace dgtk.Platforms.X11
 			this.SwapControlSupported = VSync.SupportedVSync(this.ptr_display, this.ScreenId);
 
 			IntPtr FBConfig = IntPtr.Zero;
-			OGLPreparation.PreparationOGLContext(this.ptr_display, this.ScreenId, ref FBConfig, out this.Visual, out this.ptr_Visual);
+			bool TrynoEGL = true;
+
+			if (IsEGL)
+			{
+				if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
+				{
+					if (dgtk.OpenGL.OGL_SharedContext.InitSharedEGLContext())
+					{
+						this.ptr_egldisplay = dgtk.OpenGL.OGL_SharedContext.eglDisplay;
+					}
+				}
+				if (dgtk.Platforms.EGL.EGLPreparation.PreparationEGLContext(/*this.ptr_display, */this.ptr_egldisplay, out FBConfig))
+				{
+					TrynoEGL = false;
+					this.IsEGL = true;
+					this.ptr_rootwin = Imports.XDefaultRootWindow(this.ptr_display);
+				}
+			}
+
+			if (TrynoEGL)
+			{
+				OGLPreparation.PreparationOGLContext(this.ptr_display, this.ScreenId, ref FBConfig, out this.Visual, out this.ptr_Visual);
+				this.ptr_rootwin = Imports.XRootWindow(this.ptr_display, this.Visual.screen);
+			}
 
             this.eventMask = (EventMask.ExposureMask | EventMask.EnterWindowMask | EventMask.LeaveWindowMask | EventMask.KeyPressMask | EventMask.KeyReleaseMask | 
 				EventMask.StructureNotifyMask | EventMask.FocusChangeMask | EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | 
 				EventMask.PropertyChangeMask | EventMask.PointerMotionMask | EventMask.SubstructureRedirectMask);
 
-			this.ptr_rootwin = Imports.XRootWindow(this.ptr_display, this.Visual.screen);
+			//this.ptr_rootwin = Imports.XRootWindow(this.ptr_display, this.Visual.screen);
 			
 			this.XWA = new XSetWindowAttributes();
-			XWA.colormap = Imports.XCreateColormap(this.ptr_display, this.ptr_rootwin, this.Visual.Visual, 0);
-			XWA.background_pixel  = Imports.XBlackPixel(this.ptr_display, this.Visual.screen);
-			XWA.border_pixel = Imports.XWhitePixel(this.ptr_display, this.Visual.screen);
+			if (TrynoEGL)
+			{
+				XWA.colormap = Imports.XCreateColormap(this.ptr_display, this.ptr_rootwin, this.Visual.Visual, 0);
+				XWA.background_pixel  = Imports.XBlackPixel(this.ptr_display, this.Visual.screen);
+				XWA.border_pixel = Imports.XWhitePixel(this.ptr_display, this.Visual.screen);
+			}
+			XWA.override_redirect = false;
 			XWA.event_mask = (IntPtr)this.eventMask;
             
 			WinValueMask wvm = (WinValueMask.BackPixmap | WinValueMask.BorderPixmap | WinValueMask.BorderPixel | WinValueMask.ColorMap | WinValueMask.EventMask | WinValueMask.BackPixel);
@@ -133,7 +162,14 @@ namespace dgtk.Platforms.X11
 			//Console.WriteLine("ColorMapSize: "+this.Visual.ColorMapSize);
 			
 			Imports.XLockDisplay(this.ptr_display);
-			this.ptr_handle = Imports.XCreateWindow(this.ptr_display, this.ptr_rootwin, 0, 0, (uint)width, (uint)height, 0, (int)this.Visual.depth, CreateWindowClass.InputOutput, this.Visual.Visual, wvm, this.XWA);
+			if (TrynoEGL)
+			{
+				this.ptr_handle = Imports.XCreateWindow(this.ptr_display, this.ptr_rootwin, 0, 0, (uint)width, (uint)height, 0, (int)this.Visual.depth, CreateWindowClass.InputOutput, this.Visual.Visual, wvm, this.XWA);
+			}
+			else
+			{
+				this.ptr_handle = Imports.XCreateWindow(this.ptr_display, this.ptr_rootwin, 0, 0, (uint)width, (uint)height, 0, 0, CreateWindowClass.InputOutput, new IntPtr(0), wvm, this.XWA);
+			}
 			
 			Imports.XStoreName(this.ptr_display, this.ptr_handle, this.s_title);
 			//Imports.XUnlockDisplay(this.ptr_display);
@@ -146,14 +182,28 @@ namespace dgtk.Platforms.X11
 			
 			this.GetSize();
 
-			IntPtr xglwin = OGLPreparation.Getglxwin(this.ptr_display, FBConfig, this.ptr_handle);
+			IntPtr xglwin = TrynoEGL ? OGLPreparation.Getglxwin(this.ptr_display, FBConfig, this.ptr_handle) : dgtk.Platforms.EGL.EGLPreparation.GetEGLSurface(this.ptr_egldisplay, FBConfig, this.ptr_handle);
 
 			if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
 			{
-				dgtk.OpenGL.OGL_SharedContext.InitSharedContext();
+				if (TrynoEGL)
+				{
+					dgtk.OpenGL.OGL_SharedContext.InitSharedContext();
+				}
+				else
+				{
+					//dgtk.OpenGL.OGL_SharedContext.InitSharedEGLContext();
+				}
 			}
 
-			this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
+			if (TrynoEGL)
+			{
+				this.GL_Context = OGLPreparation.GenerateOGL_Context(this.ptr_display, xglwin, ref this.Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
+			}
+			else
+			{
+				this.GL_Context = dgtk.Platforms.EGL.EGLPreparation.GenerateEGLContext(this.ptr_egldisplay, xglwin, FBConfig, dgtk.OpenGL.OGL_SharedContext.p_SharedContext);
+			}
 			this.GL_Context.X11UnMakeCurrent();
 
 			//this.OpenAL_Cntx = new OpenAL.OAL_Context();
@@ -246,40 +296,56 @@ namespace dgtk.Platforms.X11
 
 		public void EnableVSync()
 		{
-			switch(this.SwapControlSupported)
-			{
-				case LinuxSwapControlExt.GLX_EXT_swap_control:
-					glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 1);
-					this.vSyncEnabled = true;
-					break;
-				case LinuxSwapControlExt.GLX_MESA_swap_control:
-					glx.glXSwapIntervalMESA(1);
-					this.vSyncEnabled = true;
-					break;
-				case LinuxSwapControlExt.GLX_SGI_swap_control:
-					glx.glXSwapIntervalSGI(1);
-					this.vSyncEnabled = true;
-					break;
-			}
 			this.vSyncEnabled = false;
+			if (this.IsEGL)
+			{
+				this.vSyncEnabled = Platforms.EGL.Imports.eglSwapInterval(this.ptr_display, 1);
+				this.vSyncEnabled = true;
+			}
+			else
+			{
+				switch(this.SwapControlSupported)
+				{
+					case LinuxSwapControlExt.GLX_EXT_swap_control:
+						glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 1);
+						this.vSyncEnabled = true;
+						break;
+					case LinuxSwapControlExt.GLX_MESA_swap_control:
+						glx.glXSwapIntervalMESA(1);
+						this.vSyncEnabled = true;
+						break;
+					case LinuxSwapControlExt.GLX_SGI_swap_control:
+						glx.glXSwapIntervalSGI(1);
+						this.vSyncEnabled = true;
+						break;
+				}
+			}
 		}
 
 		public void DisableVSync()
 		{
-			switch(this.SwapControlSupported)
+			if (this.IsEGL)
 			{
-				case LinuxSwapControlExt.GLX_EXT_swap_control:
-					glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 0);
-					this.vSyncEnabled = false;
-					break;
-				case LinuxSwapControlExt.GLX_MESA_swap_control:
-					glx.glXSwapIntervalMESA(0);
-					this.vSyncEnabled = false;
-					break;
-				case LinuxSwapControlExt.GLX_SGI_swap_control:
-					//glx.glXSwapIntervalSGI(0); //No soportado GLX_BAD_VALUE
-					break;
+				this.vSyncEnabled = Platforms.EGL.Imports.eglSwapInterval(this.ptr_display, 0);
 			}
+			else
+			{
+				switch(this.SwapControlSupported)
+				{
+					case LinuxSwapControlExt.GLX_EXT_swap_control:
+						glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 0);
+						this.vSyncEnabled = false;
+						break;
+					case LinuxSwapControlExt.GLX_MESA_swap_control:
+						glx.glXSwapIntervalMESA(0);
+						this.vSyncEnabled = false;
+						break;
+					case LinuxSwapControlExt.GLX_SGI_swap_control:
+						//glx.glXSwapIntervalSGI(0); //No soportado GLX_BAD_VALUE
+						break;
+				}
+			}
+			this.vSyncEnabled = false;
 		}
 
 		public void Close()
