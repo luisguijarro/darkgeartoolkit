@@ -56,17 +56,18 @@ namespace dgtk.GameControlSystem.Linux
                     {
                         //GameControlDevice GCD_Temp = new GameControlDevice(dev, file);
                         GameControlDevice GCD_Temp = new GameControlDevice(dev, DevidefileId);
-
-                        string id = Imports.libevdev_get_uniq(dev); //Obtenemos identificador único del dispositivo. No se obtiene nada.
+                        /*
+                        string id = "";
+                        id = Imports.libevdev_get_uniq(dev); //Obtenemos identificador único del dispositivo. No se obtiene nada.
                         #if DEBUG
                             Console.WriteLine("ID: "+id);
                         #endif
-    
+                        
                         if (id.Length <= 0) // ¿Exixte identificador único?
                         {
                             //id = eventFiles[d]; // Por si no existe identificador único, cosa que parece lo más probable.
                         }
-
+                        */
                         GCD_Temp.id = (uint)DevidefileId; // Empleamos el identificador del fichero como ID de dispositivo.
                         //GCD_Temp.id = id;
 
