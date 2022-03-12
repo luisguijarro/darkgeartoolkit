@@ -133,7 +133,7 @@ namespace dgtk.Platforms.X11
 			OpenGL.OGL_Context ret;
 			IntPtr cntxt = glx.glXCreateContext(ptr_display, ref visual, SharedContext, Direct);
 
-			ret = new OpenGL.OGL_Context(ptr_display, xglwin, cntxt);
+			ret = new OpenGL.OGL_Context(ptr_display, xglwin, cntxt, false);
 			ret.X11MakeCurrent();
 			dgtk.OpenGL.DelegastesInitGL.InitDelegates();
 			ret.X11UnMakeCurrent();
