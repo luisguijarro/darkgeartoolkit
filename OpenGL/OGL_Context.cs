@@ -12,6 +12,7 @@ namespace dgtk.OpenGL
         internal IntPtr ptr_xglwin;
         private IntPtr ptr_Display_Device; //Linux X11 Display or Win32 Device
         private dgtk.Platforms.Platform os;
+        internal bool IsEGLContext;
 
         //Win32 OpenGLContext
         public OGL_Context(IntPtr CDevice, IntPtr GLContextPointer)
@@ -27,18 +28,20 @@ namespace dgtk.OpenGL
             this.ptr_GLContext = GLContextPointer;
 
             dgtk.OpenGL.OGL_SharedContext.LinkContext(this.ptr_GLContext);
+            this.IsEGLContext = false;
         }
 
         //X11 OpenGLContext
-        public OGL_Context(IntPtr Display, IntPtr xglwin, IntPtr GLContextPointer)
+        public OGL_Context(IntPtr Display, IntPtr xglwin_eglSurface, IntPtr GLContextPointer, bool IsEGL)
         {
             os = dgtk.Platforms.Platform.Linux_X11;
 
             this.ptr_Display_Device = Display;
-            this.ptr_xglwin = xglwin;
+            this.ptr_xglwin = xglwin_eglSurface;
             this.ptr_GLContext = GLContextPointer;
 
             dgtk.OpenGL.OGL_SharedContext.LinkContext(this.ptr_GLContext); // Solo se usa para el conteo.
+            this.IsEGLContext = IsEGL;
         }
 
         public void Dispose()
@@ -47,7 +50,14 @@ namespace dgtk.OpenGL
             switch(this.os)
             {
                 case dgtk.Platforms.Platform.Linux_X11:
-                    glx.glXDestroyContext(this.ptr_Display_Device, this.ptr_GLContext);
+                    if (this.IsEGLContext)
+                    {
+                        Platforms.EGL.Imports.eglDestroyContext(this.ptr_Display_Device, this.ptr_GLContext);
+                    }
+                    else
+                    {
+                        glx.glXDestroyContext(this.ptr_Display_Device, this.ptr_GLContext);
+                    }
                     break;
                 case dgtk.Platforms.Platform.Windows:
                     wgl.wglDeleteContext(this.ptr_GLContext);
@@ -58,10 +68,21 @@ namespace dgtk.OpenGL
         //Internal Methods:
         internal bool X11MakeCurrent()
         {
-            if (glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
+            if (this.IsEGLContext)
             {
-                dgtk.Core.int_ActualOpenGLContext = this;
-                return true;
+                if (dgtk.Platforms.EGL.Imports.eglMakeCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
+                {
+                    dgtk.Core.int_ActualOpenGLContext = this;
+                    return true;
+                }
+            }
+            else
+            {
+                if (glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
+                {
+                    dgtk.Core.int_ActualOpenGLContext = this;
+                    return true;
+                }
             }
             return false;
             //return glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext);
@@ -80,7 +101,14 @@ namespace dgtk.OpenGL
 
         internal bool X11UnMakeCurrent()
         {
-            return glx.glXMakeContextCurrent(this.ptr_Display_Device, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            if (this.IsEGLContext)
+            {
+                return dgtk.Platforms.EGL.Imports.eglMakeCurrent(this.ptr_Display_Device, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            }
+            else
+            {
+                return glx.glXMakeContextCurrent(this.ptr_Display_Device, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            }
         }
 
         internal bool Win32UnMakeCurrent()
@@ -91,7 +119,19 @@ namespace dgtk.OpenGL
 
         internal void X11SwapBuffers()
 		{
-            glx.glXSwapBuffers(this.ptr_Display_Device, this.ptr_xglwin);
+            if (this.IsEGLContext)
+            {
+                if (!dgtk.Platforms.EGL.Imports.eglSwapBuffers(this.ptr_Display_Device, this.ptr_xglwin))
+                {
+                    #if DEBUG
+                        Console.WriteLine("eglSwapBuffers FAILS!");
+                    #endif
+                }
+            }
+            else
+            {
+                glx.glXSwapBuffers(this.ptr_Display_Device, this.ptr_xglwin);
+            }
         }
 
         internal bool Win32SwapBuffers()

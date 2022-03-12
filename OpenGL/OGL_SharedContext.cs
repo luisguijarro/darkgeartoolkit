@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 
 using dgtk.Platforms.X11;
+using dgtk.Platforms.EGL;
 
 namespace dgtk.OpenGL
 {
@@ -10,12 +11,15 @@ namespace dgtk.OpenGL
     {
         internal static IntPtr p_SharedContext;
         private static IntPtr DeviceC_SurfaceHandle;
-        private static IntPtr Display;
+        internal static IntPtr Display;
+        internal static IntPtr eglDisplay;
         private static dgtk.Platforms.Platform os;
 
         internal static int contx; // Contador de contextos ¿Es necesario?
 
         internal static dgtk.Platforms.Win32.W32Dummy WinDummy;
+
+        internal static bool IsEGLContext;
 
         internal static void InitSharedContext()
         {
@@ -31,6 +35,136 @@ namespace dgtk.OpenGL
                 case dgtk.Platforms.Platform.Linux_Wayland:
                     break;
             }
+        }
+
+        internal static bool InitSharedEGLContext()
+        {
+            os = dgtk.Platforms.Tools.GetPlatform();
+            switch (os)
+            {
+                case dgtk.Platforms.Platform.Windows:
+                    //Not Supported Yet.
+                    //CreateWin32Context();
+                    break;
+                case dgtk.Platforms.Platform.Linux_X11:
+                    return CreateLinuxEGLContext();
+                    break;
+                case dgtk.Platforms.Platform.Linux_Wayland:
+                    break;
+            }
+            return false;
+        }
+
+        private static bool CreateLinuxEGLContext()
+        {
+            Display = dgtk.Platforms.X11.Imports.XOpenDisplay(IntPtr.Zero);
+            int screen = dgtk.Platforms.X11.Imports.XDefaultScreen(Display);
+
+            DeviceC_SurfaceHandle = dgtk.Platforms.X11.Imports.XRootWindow(Display, screen);
+
+            eglDisplay = dgtk.Platforms.EGL.Imports.eglGetDisplay(Display); //IntPtr.Zero);
+            if (Marshal.ReadInt64(eglDisplay) == (long)EGL_ENUM.EGL_NO_DISPLAY)
+            {
+                #if DEBUG
+                    Console.WriteLine("EGL Shared Context: EGL CANT GET DISPLAY");
+                #endif
+                IsEGLContext = false;
+            }
+
+            int VersionMayor = 0;
+            int VersionMinor = 0;
+
+            if (!dgtk.Platforms.EGL.Imports.eglInitialize(eglDisplay, ref VersionMayor, ref VersionMinor)) // ¿Inicializa?
+            {
+                #if DEBUG
+                    Console.WriteLine("EGL Shared Context: FAIL INITIALIZE EGL");
+                #endif
+                IsEGLContext = false;
+            }
+
+            #if DEBUG
+                Console.WriteLine("EGL Shared Context: EGL Version {0},{1} Inicialized", VersionMayor, VersionMinor);
+            #endif
+
+            if (!dgtk.Platforms.EGL.Imports.eglBindAPI(EGL_API.EGL_OPENGL_ES_API))
+            {
+                #if DEBUG
+                    Console.WriteLine("EGL Shared Context: OPENGL|ES API IS NOT SUPPORTED");
+                #endif
+                IsEGLContext = false;
+            }
+
+            int[] configAttributes = new int[]
+            {
+                (int)EGL_ENUM.EGL_COLOR_BUFFER_TYPE, (int)EGL_ENUM.EGL_RGB_BUFFER,
+                (int)EGL_ENUM.EGL_RENDERABLE_TYPE, (int)EGL_ENUM.EGL_OPENGL_ES2_BIT,
+                (int)EGL_ENUM.EGL_SURFACE_TYPE, (int)EGL_ENUM.EGL_WINDOW_BIT,
+                (int)EGL_ENUM.EGL_DEPTH_SIZE, 24,
+                (int)EGL_ENUM.EGL_RED_SIZE, 8,
+                (int)EGL_ENUM.EGL_GREEN_SIZE, 8,
+                (int)EGL_ENUM.EGL_BLUE_SIZE, 8,
+                (int)EGL_ENUM.EGL_ALPHA_SIZE, 8,
+                (int)EGL_ENUM.EGL_STENCIL_SIZE, (int)EGL_ENUM.EGL_DONT_CARE,
+    	        (int)EGL_ENUM.EGL_LEVEL, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_SAMPLE_BUFFERS, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_SAMPLES, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_TRANSPARENT_TYPE, (int)EGL_ENUM.EGL_NONE,
+                (int)EGL_ENUM.EGL_TRANSPARENT_RED_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_TRANSPARENT_GREEN_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_TRANSPARENT_BLUE_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_CONFIG_CAVEAT, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_CONFIG_ID, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_MAX_SWAP_INTERVAL, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_MIN_SWAP_INTERVAL, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_NATIVE_RENDERABLE, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_NATIVE_VISUAL_TYPE, (int)EGL_ENUM.EGL_DONT_CARE,
+                (int)EGL_ENUM.EGL_NONE
+            };
+
+            int numConfigs;
+
+            if (!dgtk.Platforms.EGL.Imports.eglGetConfigs(eglDisplay, IntPtr.Zero, 0, out numConfigs))
+            {
+                #if DEBUG
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("No Shared EGL Context: eglGetConfigs FAIL!!!");
+                    Console.ResetColor();
+                #endif
+                return false;
+            }
+
+
+            IntPtr windowConfig = IntPtr.Zero;
+            if (!dgtk.Platforms.EGL.Imports.eglChooseConfig(eglDisplay, configAttributes, ref windowConfig, 1, ref numConfigs))
+            {
+                #if DEBUG
+                    Console.WriteLine("EGL Shared Context: eglChooseConfig FAIL!!!");
+                #endif
+                IsEGLContext = false;
+            }
+
+            //int[] eglSurfaceAttributes = new int[] {0};
+            //IntPtr eglSurface = dgtk.Platforms.EGL.Imports.eglCreateWindowSurface(eglDisplay, windowConfig, DeviceC_SurfaceHandle, ref eglSurfaceAttributes);
+
+            int[] eglContextAttributes = new int[] { (int)EGL_ENUM.EGL_CONTEXT_CLIENT_VERSION, 2, (int)EGL_ENUM.EGL_NONE};
+            p_SharedContext = dgtk.Platforms.EGL.Imports.eglCreateContext(eglDisplay, windowConfig, IntPtr.Zero, eglContextAttributes);
+            if (p_SharedContext == IntPtr.Zero)
+            {
+                IsEGLContext = false;
+                throw new Exception("CAN NOT BE POSIBLE CREATE EGL SHARED CONTEXT!");                
+            }
+            else
+            {
+                #if DEBUG
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("EGL Shared Context CREATED");
+                    Console.ResetColor();
+                #endif
+                IsEGLContext = true;
+            }
+
+            //IsEGLContext = true;
+            return IsEGLContext;
         }
 
         private static void CreateLinuxContext()
@@ -137,7 +271,7 @@ namespace dgtk.OpenGL
         #region LinkSection
         internal static void LinkContext(IntPtr GLContext) // Debería usarse Siempre
 		{
-            if (os ==dgtk.Platforms.Platform.Windows)
+            if (os ==dgtk.Platforms.Platform.Windows) // Solo se usa en Windows por que en linux el enlazado se hace durante la creación de los nuevos contextos.
             {
                 bool lc = dgtk.Platforms.Win32.wgl.wglShareLists(p_SharedContext, GLContext);
                 if (!lc)
@@ -165,8 +299,16 @@ namespace dgtk.OpenGL
                         WinDummy.Dispose();
                         break;
                     case dgtk.Platforms.Platform.Linux_X11:
-                        dgtk.Platforms.X11.glx.glXMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero);
-				        dgtk.Platforms.X11.glx.glXDestroyContext(Display, p_SharedContext);
+                        if (IsEGLContext)
+                        {
+                            dgtk.Platforms.EGL.Imports.eglMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                            dgtk.Platforms.EGL.Imports.eglDestroyContext(Display, p_SharedContext);
+                        }
+                        else
+                        {
+                            dgtk.Platforms.X11.glx.glXMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero);
+                            dgtk.Platforms.X11.glx.glXDestroyContext(Display, p_SharedContext);
+                        }
                         break;
                 }
 			}
@@ -182,7 +324,14 @@ namespace dgtk.OpenGL
             }
             else
             {
-                mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
+                if (IsEGLContext)
+                {
+                    mc = dgtk.Platforms.EGL.Imports.eglMakeCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
+                }
+                else
+                {
+                    mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
+                }                
             }
             #if DEBUG
 			if(!mc)
@@ -202,7 +351,14 @@ namespace dgtk.OpenGL
             }
             else
             {
-                mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                if (IsEGLContext)
+                {
+                    mc = dgtk.Platforms.EGL.Imports.eglMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                }
+                else
+                {
+                    mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                }
             }
             #if DEBUG
 			if(!mc)
