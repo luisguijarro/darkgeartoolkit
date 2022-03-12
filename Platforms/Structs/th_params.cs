@@ -6,11 +6,13 @@ namespace dgtk
     {
         public int Width, Height;
         public string Title;
-        public th_params(int width, int height, string title)
+        public bool IsEGL;
+        public th_params(int width, int height, string title, bool isEGL)
         {
             this.Width = width;
             this.Height = height;
             this.Title = title;
+            this.IsEGL = isEGL;
         }
     }
 }

@@ -54,14 +54,19 @@ namespace dgtk
             
         }
 
-        public dgtk_Window(int width, int height, string Title) //Constructor completo.
+        public dgtk_Window(int width, int height, string Title) : this(width, height, Title, false)
+        {
+            
+        }
+
+        public dgtk_Window(int width, int height, string Title, bool IsEGL) //Constructor completo.
         {
             if (Core.lockObject == null) {Core.lockObject = new object(); }
             //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establecer afinidad del proceso inicial
             
             this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
             
-            this.th_window.Start(new th_params(width, height, Title)); // Iniciar Hilo con los parametros de la ventana.
+            this.th_window.Start(new th_params(width, height, Title, IsEGL)); // Iniciar Hilo con los parametros de la ventana.
             while(this.NativeWindow == null) //Esperamos hasta que la ventana esté creada y no sea null.
             {
                 Thread.Sleep(100);
@@ -85,10 +90,10 @@ namespace dgtk
                     this.NativeWindow = new Platforms.Win32.W32Window(50, 50, winparam.Width, winparam.Height, winparam.Title);
                     break;
                 case Platforms.Platform.Linux_X11:
-                    this.NativeWindow = new Platforms.X11.X11Window(50, 50, winparam.Width, winparam.Height, winparam.Title);
+                    this.NativeWindow = new Platforms.X11.X11Window(50, 50, winparam.Width, winparam.Height, winparam.Title, winparam.IsEGL);
                     break;
                 case Platforms.Platform.Linux_Wayland:
-                    this.NativeWindow = new Platforms.X11.X11Window(50, 50, winparam.Width, winparam.Height, winparam.Title); //Implementar Wayland
+                    this.NativeWindow = new Platforms.X11.X11Window(50, 50, winparam.Width, winparam.Height, winparam.Title, winparam.IsEGL); //Implementar Wayland
                     break;
                 default:
                 throw new Exception("Operating System Not Supported");
