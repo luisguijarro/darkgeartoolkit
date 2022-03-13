@@ -277,6 +277,11 @@ namespace dgtk.OpenGL
             }
         }
 
+        public static unsafe void glUniform3f(int location, dgtk.Math.Vector3 value)
+        {
+            internalGL.glUniform3f(location, value.X, value.Y, value.Z);
+        }
+
         public static unsafe void glUniform3fv(int location, int count, float[] value)
         {
             fixed (float* ptr = &value[0])
@@ -299,6 +304,21 @@ namespace dgtk.OpenGL
             {
                 internalGL.glUniform4uiv(location, count, ptr);
             }
+        }
+
+        public static unsafe void glUniform4f(int location, float[] value)
+        {
+            internalGL.glUniform4f(location, value[0], value[1], value[2], value[3]);
+        }
+
+        public static unsafe void glUniform4f(int location, dgtk.Math.Vector4 value)
+        {
+            internalGL.glUniform4f(location, value.X, value.Y, value.Z, value.W);
+        }
+
+        public static unsafe void glUniform4f(int location, dgtk.Graphics.Color4 value)
+        {
+            internalGL.glUniform4f(location, value.R, value.G, value.B, value.A);
         }
 
         public static unsafe void glUniform4fv(int location, int count, float[] value)

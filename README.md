@@ -11,4 +11,13 @@ Note: Change "release" word by "debug" word for debug output.
 ## Prerequisites:
 For Compilation: **.NET 5**
 
-For use: **OpenAL Soft ( soft_oal.dll )**
+For use: **OpenAL Soft ( soft_oal.dll, libopenal.so.1 )**
+
+`Note Windows: Do not rename the library soft_oal.dll`
+
+`Note Linux: Do not rename the library libopenal.so.1`
+
+`Note: We include a version of the library in order to facilitate the process of using this software. However, we always recommend using the latest version of it available in its official repository.`
+
+OpenAL Soft is LGPL Software:
+[https://github.com/kcat/openal-soft](https://github.com/kcat/openal-soft)

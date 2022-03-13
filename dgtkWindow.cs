@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 
+using SkiaSharp;
+
 namespace dgtk
 {
     public class dgtk_Window
@@ -219,6 +221,10 @@ namespace dgtk
         }
 
         #region PROTECTED EVENTS:
+        protected virtual void OnUpdateFrame(object sender, dgtk_OnUpdateEventArgs e)
+        {
+            
+        }
         protected virtual void OnRenderFrame(object sender, dgtk_OnRenderEventArgs e)
         {
             
@@ -349,6 +355,7 @@ namespace dgtk
                 DateTime dt_ini = DateTime.Now;
                 //lock(Core.lockObject) //this.NativeWindow.LockObject)
                 //{
+                    this.OnUpdateFrame(this, new dgtk_OnUpdateEventArgs()); //Lanza Protected Virtual
                     this.UpdateFrame(this, new dgtk_OnUpdateEventArgs()); //Lanza evento de Actualización de datos.
                 //}
                 if (this.ui_ups > 0) 
@@ -407,8 +414,9 @@ namespace dgtk
             System.IO.Stream str = Core.LoadEmbeddedResource(iconpath, As);
             if (str != null)
             {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(str);
-                SetWindowIcon(bmp);
+                //System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(str);
+                //SetWindowIcon(bmp);
+                SetWindowIcon(str);
             }            
         }
 
@@ -416,27 +424,31 @@ namespace dgtk
         {
             if (System.IO.File.Exists(iconpath))
             {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iconpath);
-                SetWindowIcon(bmp);
+                //System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iconpath);
+                SetWindowIcon(System.IO.File.Open(iconpath, System.IO.FileMode.Open));
             }
         }
 
-        internal void SetWindowIcon(Bitmap bmp)
+        internal void SetWindowIcon(System.IO.Stream stream)
         {
             IntPtr icon_ptr = IntPtr.Zero;
-            //System.Drawing.Bitmap bmp = new Bitmap(iconpath);
+            SkiaSharp.SKBitmap skbmp;
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            stream.CopyTo(ms);
+            stream.Position = 0;
+            skbmp = SkiaSharp.SKBitmap.Decode(stream);
             
             switch (Platforms.Tools.GetPlatform()) // == Platforms.Platform.Linux_X11)
             {
                 case Platforms.Platform.Linux_X11:
-                    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    byte[] bytes = new byte[bmp.Width*bmp.Height*4];
-                    System.Runtime.InteropServices.Marshal.Copy(bd.Scan0, bytes, 0, bytes.Length);
+                    IntPtr icon_ptr_sk = skbmp.GetPixels();
+                    byte[] bytes = new byte[skbmp.Width*skbmp.Height*4];
+                    System.Runtime.InteropServices.Marshal.Copy(icon_ptr_sk, bytes, 0, bytes.Length);
 
                     System.Collections.Generic.List<byte> l_SuperBytes = new System.Collections.Generic.List<byte>();
-                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Width));
-                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)bmp.Height));
-                    
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)skbmp.Width));
+                    l_SuperBytes.AddRange(BitConverter.GetBytes((long)skbmp.Height));
+
                     for (int i=0;i<bytes.Length;i+=4)
                     {
                         l_SuperBytes.Add(bytes[i]);
@@ -446,13 +458,13 @@ namespace dgtk
                         l_SuperBytes.AddRange(new byte[]{0, 0, 0, 0}); // Rellenar long de 64 bits del hardware con... mierda. No necesario en compilacion de 32 Bits.
                     }
                     
-                    /*IntPtr */icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
+                    icon_ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(l_SuperBytes.Count);
                     System.Runtime.InteropServices.Marshal.Copy(l_SuperBytes.ToArray(), 0, icon_ptr, l_SuperBytes.Count);
-                    bmp.UnlockBits(bd);
+
                     break;
 
                 case Platforms.Platform.Windows:
-                    icon_ptr = bmp.GetHicon();
+                    icon_ptr = new System.Drawing.Bitmap(ms).GetHicon(); // Sin equivalencias en skia
                     break;
 
                 default:
@@ -460,9 +472,9 @@ namespace dgtk
                     break;
             }            
 
-            this.NativeWindow.SetIcon(bmp.Width, bmp.Height, icon_ptr);
-            
-            bmp.Dispose();
+            this.NativeWindow.SetIcon(skbmp.Width, skbmp.Height, icon_ptr); 
+            skbmp.Dispose();
+            ms.Dispose();
         }
 
         public virtual void Close()
@@ -503,17 +515,26 @@ namespace dgtk
 
         internal void LaunchEventAxis(object sender, dgtk_InputAxisEventArgs e)
         {
-            this.GameControlEventAxis(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventAxis(sender, e);
+            }
         }
 
         internal void LaunchEventHats(object sender, dgtk_InputHatsEventArgs e)
         {
-            this.GameControlEventHats(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventHats(sender, e);
+            }
         }
 
         internal void LaunchEventBTNs(object sender, dgtk_InputButtonsEventArgs e)
         {
-            this.GameControlEventButtons(sender, e);
+            if (this.NativeWindow.HaveFocus)
+            {
+                this.GameControlEventButtons(sender, e);
+            }
         }
         /*
         internal void LaunchGameControllerStatusChanged(object sender, dgtk_GameControllerStatusEventArgs e)

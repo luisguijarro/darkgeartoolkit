@@ -272,5 +272,25 @@ namespace dgtk.Math
 			}
 			return ret;
 		}
+
+
+		/// <summary>
+		/// Metodo que Retorna una Matriz 4x4 desde los valores de un string.
+		/// </summary>
+		/// <param name="m4s">Cadena de texto contenedora de los valores ordenador por lineas y separados por espacios.</param>
+		/// <returns>Matriz 4x4.</returns>
+		public static Mat4 Mat4FromStringOfRows(string cadena)
+		{
+			string[] s_values = cadena.Split(' ');
+			
+			Mat4 ret = new Mat4
+			(
+				new Vector4(float.Parse(s_values[0]), float.Parse(s_values[1]), float.Parse(s_values[2]), float.Parse(s_values[3])), 
+				new Vector4(float.Parse(s_values[4]), float.Parse(s_values[5]), float.Parse(s_values[6]), float.Parse(s_values[7])), 
+				new Vector4(float.Parse(s_values[8]), float.Parse(s_values[9]), float.Parse(s_values[10]), float.Parse(s_values[11])), 
+				new Vector4(float.Parse(s_values[12]), float.Parse(s_values[13]), float.Parse(s_values[14]), float.Parse(s_values[15]))
+			);
+			return ret;
+		}
 	}
 }

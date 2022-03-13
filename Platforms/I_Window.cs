@@ -36,5 +36,6 @@ namespace dgtk.Platforms
 		bool VSyncEnabled {get;}
 		//OpenAL.OAL_Context OpenAlContext { get; }
 		bool FullScreen {get; set;}
+		bool HaveFocus { get; }
     }
 }

@@ -15,6 +15,7 @@ namespace dgtk.Platforms.Win32
 		private bool isRunning;
 		private bool isDrawing;
 		private bool b_created;
+		private bool b_HaveFocus;
 		//private object lockobject;
         private bool registered;
 		private OpenGL.OGL_Context GL_Context;
@@ -28,8 +29,9 @@ namespace dgtk.Platforms.Win32
         private string s_title;
         private WindowState WinState;
 		private bool IsInFullScreen;
-		private Win32Rect rect;
-		private Win32Rect pre_rect;
+		private Win32Rect clientrect;
+		private Win32Rect winrect;
+		private bool fullscreenchange; 
 		private WindowStyle baseStyle;
 		private ExWindowStyle ExtendStyle;
 		private WindowStyle FullScreenStyle;
@@ -86,14 +88,14 @@ namespace dgtk.Platforms.Win32
             IntPtr mInstancia = Marshal.GetHINSTANCE(typeof(W32Window).Module);
             this.baseStyle = ( WindowStyle.Visible | WindowStyle.Overlapped | WindowStyle.Caption |WindowStyle.SystemMenu | WindowStyle.ThickFrame | WindowStyle.MinimizeBox | WindowStyle.MaximizeBox | WindowStyle.ClipChildren | WindowStyle.ClipSiblings | WindowStyle.Border);
             this.ExtendStyle = (ExWindowStyle.WS_EX_APPWINDOW | ExWindowStyle.WS_EX_WINDOWEDGE);
-			this.FullScreenStyle = WindowStyle.ClipSiblings | WindowStyle.Visible;
+			this.FullScreenStyle = WindowStyle.ClipSiblings | WindowStyle.Visible | WindowStyle.Overlapped;
 
-			this.rect = new Win32Rect();
-			this.rect.left = posX; 
-			this.rect.top = posY; 
-			this.rect.right = (int)(posX + width); 
-			this.rect.bottom = (int)(posY + height);
-			if (Imports.AdjustWindowRectEx(ref this.rect, baseStyle, false, ExtendStyle))
+			this.clientrect = new Win32Rect();
+			this.clientrect.left = posX; 
+			this.clientrect.top = posY; 
+			this.clientrect.right = (int)(posX + width); 
+			this.clientrect.bottom = (int)(posY + height);
+			if (Imports.AdjustWindowRectEx(ref this.clientrect, baseStyle, false, ExtendStyle))
 			{
 				//Console.WriteLine("Ajustado");
 			}
@@ -122,9 +124,9 @@ namespace dgtk.Platforms.Win32
 			try
 			{			
 		#endif
-				this.ptr_handle = Imports.CreateWindowEx(ExtendStyle, mClassName, mTitle, baseStyle, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, IntPtr.Zero, IntPtr.Zero, mInstancia, IntPtr.Zero);
+				this.ptr_handle = Imports.CreateWindowEx(ExtendStyle, mClassName, mTitle, baseStyle, clientrect.left, clientrect.top, clientrect.right-clientrect.left, clientrect.bottom-clientrect.top, IntPtr.Zero, IntPtr.Zero, mInstancia, IntPtr.Zero);
 				
-				Imports.GetClientRect(this.ptr_handle, out this.rect);
+				Imports.GetClientRect(this.ptr_handle, out this.clientrect);
 
 				Imports.SetForegroundWindow(this.ptr_handle); //Mejorar la prioridad de la ventana.
 				Imports.SetFocus(this.ptr_handle);			
@@ -403,39 +405,53 @@ namespace dgtk.Platforms.Win32
 					break;
 
                 case WindowMessage.SIZE:
-					if (wParam.ToInt64() == 0)
-					{
-						if(this.WinState != WindowState.Normal)
+					if (!this.fullscreenchange) //Si el cambio no está motivado por FullScreen cambiamos estado.
+					{						
+						if (wParam.ToInt64() == 0)
 						{
-							this.WinState = WindowState.Normal;
-							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
+							if(this.WinState != WindowState.Normal)
+							{
+								this.WinState = WindowState.Normal;
+								this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
+							}
+						}
+						if (wParam.ToInt64() == 1)
+						{
+							if(this.WinState != WindowState.Minimized)
+							{
+								this.WinState = WindowState.Minimized;
+								this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
+							}
+						}
+						if (wParam.ToInt64() == 2)
+						{
+							if (this.WinState != WindowState.Maximized)
+							{
+								this.WinState = WindowState.Maximized;
+								this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
+							}
 						}
 					}
-					if (wParam.ToInt64() == 1)
+					else
 					{
-						if(this.WinState != WindowState.Minimized)
-						{
-							this.WinState = WindowState.Minimized;
-							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
-						}
+						this.fullscreenchange = false;
 					}
-					if (wParam.ToInt64() == 2)
-					{
-						if (this.WinState != WindowState.Maximized)
-						{
-							this.WinState = WindowState.Maximized;
-							this.WindowStateChange(this, new dgtk_WinStateChangeEventArgs(this.WinState));
-						}
-					}
-					Imports.GetClientRect(this.ptr_handle, out this.rect);
-					int ancho = this.rect.right-this.rect.left;
-					int alto = this.rect.bottom-this.rect.top;	
+					
+					Imports.GetClientRect(this.ptr_handle, out this.clientrect);
+					int ancho = this.clientrect.right-this.clientrect.left;
+					int alto = this.clientrect.bottom-this.clientrect.top;	
                     this.WindowSizeChange(this, new dgtk_ResizeEventArgs(ancho, alto));
-                    return new IntPtr(0);
+                    break; //return new IntPtr(0);
 				
                 case WindowMessage.MOVE:
-					Imports.GetClientRect(this.ptr_handle, out this.rect);
+					Imports.GetClientRect(this.ptr_handle, out this.clientrect);
 					return new IntPtr(0);
+				case WindowMessage.KILLFOCUS:
+					this.b_HaveFocus = false;
+					break;
+				case WindowMessage.SETFOCUS:
+					this.b_HaveFocus = true;
+					break;
             }
 			if ((msg == WindowMessage.CLOSE) && (wParam != new IntPtr(1)))
             {
@@ -447,26 +463,38 @@ namespace dgtk.Platforms.Win32
 
 		private void SetFullScreen(bool WhantFullScreen)
 		{
-			if (WhantFullScreen)
+			if (WhantFullScreen != this.IsInFullScreen)
 			{
-				//Console.WriteLine("width: "+(this.rect.right-this.rect.left).ToString());
-				//Console.WriteLine("height: "+(this.rect.bottom-this.rect.top).ToString());
-				this.pre_rect = this.rect;
-				Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.FullScreenStyle);
-				Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
-				Imports.ShowWindow(this.ptr_handle, 3); //Maximize
+
+				if (WhantFullScreen)
+				{
+					Imports.GetWindowRect(this.Handle, out this.winrect);  // Obtenemos tamaño de la Ventana con marcos y todo
+
+					Win32Rect Fullrect; // = new Win32Rect();
+					IntPtr desktop = Imports.GetDesktopWindow();
+					Imports.GetWindowRect(desktop, out Fullrect); // Obtenemos tamaño del escritorio.
+
+					WindowState winstate_temp = this.WinState; // conservamos estado previo de ventana. SetWindowPos lo establece siempre en normal.
+
+					this.fullscreenchange = true;
+
+					Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.FullScreenStyle);
+					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, Fullrect.left, Fullrect.top, Fullrect.right-Fullrect.left, Fullrect.bottom-Fullrect.top, 0); //(0x0001 | 0x0002 | 0x0004 | 0x0200));
+				}
+				else
+				{
+					this.fullscreenchange = true;
+
+					WindowState winstate_temp = this.WinState;
+
+					Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.baseStyle); //Lo ponemos aquí para evitar reescalado.
+					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.winrect.left, this.winrect.top, this.winrect.right-this.winrect.left, this.winrect.bottom-this.winrect.top, 0); //(0x0001 | 0x0002 | 0x0004 | 0x0200));
+					Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.baseStyle); //Lo ponemos aquí para evitar reescalado.
+					
+					this.WindowState = this.WindowState; //Restore Preview State
+				}
+				this.IsInFullScreen = WhantFullScreen;
 			}
-			else
-			{
-				Imports.SetWindowLong(this.ptr_handle, -16/*GWL_STYLE*/, (uint)this.baseStyle);
-				//Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0001 | 0x0002 | 0x0004 | 0x0200));
-				this.WindowState = this.WindowState; //Restore Preview State
-				this.Size = new Math.Size(this.pre_rect.right-this.pre_rect.left, this.pre_rect.bottom-this.pre_rect.top);
-				this.Position = new Math.Point(this.pre_rect.left, this.pre_rect.top);
-				//Console.WriteLine("width: "+(this.rect.right-this.rect.left).ToString());
-				//Console.WriteLine("height: "+(this.rect.bottom-this.rect.top).ToString());
-			}
-			this.IsInFullScreen = WhantFullScreen;
 		}
 
         public string Title
@@ -474,40 +502,34 @@ namespace dgtk.Platforms.Win32
             get { return this.s_title;}
             set { this.s_title = value; Imports.SetWindowText(this.Handle, this.s_title);}
         }
-		/*
-		public OpenAL.OAL_Context OpenAlContext
-		{
-			get { return this.OpenAL_Cntx; }
-		}
-		*/
+
         public IntPtr Handle
         {
             get { return this.ptr_handle; }
-        } 
-		/*
-		public object LockObject
-        {
-            get { return this.lockobject; }
         }
-		*/
+
 		public dgtk.Math.Size Size
 		{
 			set 
 			{
-				lock(Core.lockObject) //this.lockobject)
+				lock(Core.lockObject)
 				{
-					this.rect.right = this.rect.left+value.Width;
-					this.rect.bottom = this.rect.top+value.Height;
-					if (Imports.AdjustWindowRectEx(ref this.rect, this.baseStyle, false, this.ExtendStyle))
-					{
-						//Console.WriteLine("Ajustado");
+					this.clientrect.right = this.clientrect.left+value.Width;
+					this.clientrect.bottom = this.clientrect.top+value.Height;
+
+					this.winrect = this.clientrect;
+					if (Imports.AdjustWindowRectEx(ref this.winrect, this.baseStyle, false, this.ExtendStyle))
+					{						
+						#if DEBUG
+						Console.WriteLine("Ajustado (Size)");
+						#endif
 					}
-					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0004 | 0x0002 | 0x0200));
+					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, 0, 0, this.winrect.right-this.winrect.left, this.winrect.bottom-this.winrect.top, (0x0004 | 0x0002/*NO_MOVE*/ | 0x0200));
 				}
 			}
 			get 
 			{				
-				return new dgtk.Math.Size(this.rect.right-this.rect.left, this.rect.bottom-this.rect.top); 
+				return new dgtk.Math.Size(this.clientrect.right-this.clientrect.left, this.clientrect.bottom-this.clientrect.top); 
 			}
 		}
 
@@ -539,7 +561,10 @@ namespace dgtk.Platforms.Win32
 		{
 			set 
 			{
-				this.SetFullScreen(value);
+				if (value != this.IsInFullScreen)
+				{
+					this.SetFullScreen(value);
+				}
 			}
 			get
 			{
@@ -550,28 +575,39 @@ namespace dgtk.Platforms.Win32
 		public bool Created {get{return b_created;}}
 		public bool IsRunning 
 		{
-			get { bool ret; lock(Core.lockObject/*this.lockobject*/){ret = this.isRunning; }return ret; }
+			get { bool ret; lock(Core.lockObject){ret = this.isRunning; }return ret; }
 			set { this.isRunning = value;}
 		}	
 
 		public dgtk.Math.Point Position 
 		{
-			get{ return new dgtk.Math.Point(this.rect.left, this.rect.top); } 
+			get{ return new dgtk.Math.Point(this.winrect.left, this.winrect.top); } 
 			set
 			{
-				lock(Core.lockObject) //this.lockobject)
+				lock(Core.lockObject)
 				{
-					this.rect.left = value.X;
-					this.rect.top = value.Y;
-					if (Imports.AdjustWindowRectEx(ref this.rect, this.baseStyle, true, this.ExtendStyle))
+					this.clientrect.right += value.X - this.clientrect.left;
+					this.clientrect.bottom += value.Y - this.clientrect.top;
+					this.clientrect.left = value.X;
+					this.clientrect.top = value.Y;
+					this.winrect = this.clientrect;
+					if (Imports.AdjustWindowRectEx(ref this.winrect, this.baseStyle, true, this.ExtendStyle))
 					{
-						Console.WriteLine("Ajustado");
+						#if DEBUG
+						Console.WriteLine("Ajustado (Position)");
+						#endif
 					}
-					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.rect.left, this.rect.top, this.rect.right-this.rect.left, this.rect.bottom-this.rect.top, (0x0004 | 0x0002 | 0x0200));
+					Imports.SetWindowPos(this.ptr_handle, IntPtr.Zero, this.winrect.left, this.winrect.top, 0, 0, (0x0004 | 0x0001/*NO_RESIZE*/ | 0x0200));
 				}
 			}
 		}
 
 		public bool VSyncEnabled { get { return this.vSyncEnabled; } }
+
+		public bool HaveFocus
+		{
+			get { return this.b_HaveFocus; }
+		}
+
     }
 }

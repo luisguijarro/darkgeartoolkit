@@ -191,40 +191,5 @@ namespace dgtk.GameControlSystem.Windows
 		short Reserved4;
     }
 	
-    #region XInput
-
-    internal struct XINPUT_CAPABILITIES 
-    {
-        internal byte             Type;
-        internal byte             SubType;
-        internal ushort             Flags;
-        internal XINPUT_GAMEPAD   Gamepad;
-        internal XINPUT_VIBRATION Vibration;
-    }
-
-    internal struct XINPUT_GAMEPAD 
-    {
-        internal wButtons  wButtons;
-        internal byte  bLeftTrigger;
-        internal byte  bRightTrigger;
-        internal short sThumbLX;
-        internal short sThumbLY;
-        internal short sThumbRX;
-        internal short sThumbRY;
-    }
-
-    internal struct XINPUT_VIBRATION 
-    {
-        internal ushort wLeftMotorSpeed;
-        internal ushort wRightMotorSpeed;
-    }
-
-    internal struct XINPUT_STATE 
-    {
-        internal uint dwPacketNumber;
-        internal XINPUT_GAMEPAD Gamepad;
-    }
-
-    #endregion
 }
 	
