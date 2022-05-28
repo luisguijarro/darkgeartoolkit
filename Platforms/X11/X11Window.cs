@@ -219,8 +219,8 @@ namespace dgtk.Platforms.X11
 		public void Redraw()
 		{
 			isDrawing = true;
-			lock(Core.lockObject)
-			{
+			//lock(Core.lockObject)
+			//{
 				if (this.GL_Context.X11MakeCurrent())
 				{
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
@@ -228,7 +228,7 @@ namespace dgtk.Platforms.X11
 					this.SwapBuffers();
 					this.GL_Context.X11UnMakeCurrent();
 				}
-			}
+			//}
 			isDrawing = false;
 		}
 
