@@ -12,13 +12,13 @@ namespace dgtk.Math
 		{
 			this.f_X = x; this.f_Y = y; this.f_Z = z;
 		}
-		public float Longitud
+		public float Length
 		{
 			get { return (float)System.Math.Sqrt(this.f_X * this.f_X + this.f_Y * this.f_Y + this.f_Z * this.f_Z); }
 		}
-		public Vector3 Normaliar()
+		public Vector3 Normalize()
 		{
-			float s = 1f / this.Longitud;
+			float s = 1f / this.Length;
 			this.f_X *= s;
 			this.f_Y *= s;
 			this.f_Z *= s;

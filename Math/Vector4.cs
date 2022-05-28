@@ -19,13 +19,17 @@ namespace dgtk.Math
 			this.f_Z = z;
 			this.f_W = w;
 		}
-		public float Longitud
+		public Vector4(Vector3 v, float w) : this(v.X, v.Y, v.Z, w)
+		{
+
+		}
+		public float Length
 		{
 			get { return (float)System.Math.Sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z + this.W * this.W); }
 		}
-		public Vector4 Normaliar()
+		public Vector4 Normalize()
 		{
-			float s = 1f / this.Longitud;
+			float s = 1f / this.Length;
 			X *= s;
 			Y *= s;
 			Z *= s;
