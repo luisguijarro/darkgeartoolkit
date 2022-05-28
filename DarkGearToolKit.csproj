@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -7,10 +7,6 @@
     <AssemblyName>dgtk</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='debug'">
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>false</Optimize>
     <DefineDebug>true</DefineDebug>
@@ -19,10 +15,6 @@
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='release'">
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>true</Optimize>
     <DefineDebug>false</DefineDebug>
