@@ -60,5 +60,20 @@ namespace dgtk.Math
 		{
 			return (float)(System.Math.Sqrt( System.Math.Pow((X1-X0), 2) + System.Math.Pow((Y1-Y0), 2) + System.Math.Pow((Z1-Z0), 2)));
 		}
+
+		public static float DotProduct( Vector3 v0, Vector3 v1)
+		{
+			float ret = (v0.X * v1.X) + (v0.Y * v1.Y) + (v0.Z * v1.Z);
+			return ret;
+		}
+
+		public static Vector3 CrossProduct(Vector3 v0, Vector3 v1)
+		{
+			Vector3 ret = new Vector3(0,0,0);
+			ret.X = (v0.Y * v1.Z) - (v0.Z * v1.Y);
+            ret.Y = (v0.Z * v1.X) - (v0.X * v1.Z);
+            ret.Z = (v0.X * v1.Y) - (v0.Y * v1.X);
+			return ret;
+		}
 	}
 }
