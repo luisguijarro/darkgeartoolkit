@@ -826,7 +826,7 @@ namespace dgtk.OpenGL
 				internalGL.glLoadTransposeMatrixfARB(m);
 			}
 
-			public static unsafe IntPtr* glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
+			public static unsafe IntPtr glMapBufferARB(BufferTargetARB target, BufferAccessARB access)
 			{
 				return internalGL.glMapBufferARB(target, access);
 			}
