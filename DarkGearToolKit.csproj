@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -7,10 +7,6 @@
     <AssemblyName>dgtk</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='debug'">
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>false</Optimize>
     <DefineDebug>true</DefineDebug>
@@ -19,10 +15,6 @@
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='release'">
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>dgtk</AssemblyName>
     <NoLogo>true</NoLogo>
     <Optimize>true</Optimize>
     <DefineDebug>false</DefineDebug>
@@ -77,8 +69,6 @@
     <Content Include="Math\Rect.cs" />
     <Content Include="Math\Retf.cs" />
     <Content Include="Math\Size.cs" />
-    <Content Include="Math\Size3.cs" />
-    <Content Include="Math\Size3f.cs" />
     <Content Include="Math\Tools.cs" />
     <Content Include="Math\Vector2.cs" />
     <Content Include="Math\Vector3.cs" />
@@ -127,15 +117,8 @@
     <Content Include="dgtkWFControlGL.cs" />
     <Content Include="GameControlSystem\GameControl_State.cs" />
     <Content Include="GameControlSystem\Windows\XGameControlDevice.cs" />
-    <Content Include="OpenGL\gles\GLesMethods.cs" />
-    <Content Include="OpenGL\gles\GLesDelegates.cs" />
-    <Content Include="OpenGL\gles\GlesExtMethods.cs" />
-    <Content Include="OpenGL\gles\GLesInternals.cs" />
-    <Content Include="OpenGL\gles\GLInternalGLesTool.cs" />
-    <Content Include="OpenGL\gles\OpenGLesInitDels.cs" />
-    <Content Include="OpenGL\gles\OpenGLesInitDelsExts.cs" />
-    <Content Include="Platforms\Egl\EGLPreparation.cs" />
-    <Content Include="Platforms\Egl\Imports.cs" />
-    <Content Include="Platforms\Egl\Enums.cs" />
+    <Content Include="Math\Size3.cs" />
+    <Content Include="Math\Size3f.cs" />
   </ItemGroup>
 </Project>
+>>>>>>> master

@@ -8,6 +8,40 @@ namespace dgtk.Math
 	public static class MatrixTools
 	{
 		/// <summary>
+		/// Metodo que devuelve el Vector 3D de Posición de una Matriz de 4x4 de trasformación.
+		/// </summary>
+		/// <param name="Matrix">Matriz de origen de los datos a devolver</param>
+		/// <returns>Retorna un Vector 3D de Posicion de la matriz de trasformación.</returns>
+		public static Vector3 ExtractPosition(Mat4 Matrix)
+		{
+			return new Vector3(Matrix.v_Row0.f_W, Matrix.v_Row1.f_W, Matrix.v_Row2.f_W);
+		}
+		
+		/*
+		/// <summary>
+		/// Metodo que devuelve el Vector 3D de Rotación de una Matriz de 4x4 de trasformación.
+		/// </summary>
+		/// <param name="Matrix">Matriz de origen de los datos a devolver</param>
+		/// <returns>Retorna un Vector 3D de Rotación de la matriz de trasformación.</returns>
+		public static Vector3 ExtractRotation(Mat4 Matrix)
+		{
+			float XRot = System.MathF.Acos(Matrix.v_Row1.f_Y);
+			float YRot = 
+			return new Vector3(Matrix.v_Row0.f_W, Matrix.v_Row1.f_W, Matrix.v_Row2.f_W);
+		}
+		*/
+
+		/// <summary>
+		/// Metodo que devuelve el Vector 3D de Escalado de una Matriz de 4x4 de trasformación.
+		/// </summary>
+		/// <param name="Matrix">Matriz de origen de los datos a devolver</param>
+		/// <returns>Retorna un Vector 3D de Escalado de la matriz de trasformación.</returns>
+		public static Vector3 ExtractEscalade(Mat4 Matrix)
+		{
+			return new Vector3(Matrix.v_Row0.f_X, Matrix.v_Row1.f_Y, Matrix.v_Row2.f_Z);
+		}
+
+		/// <summary>
 		/// Metodo que devuelve una matriz de Perspectivoa de proyección Ortogonal.
 		/// </summary>
 		/// <param name="width">Ancho de la proyección</param>
@@ -54,7 +88,7 @@ namespace dgtk.Math
 			Mat4 ret = Mat4.Identity;
 			if (fovy <= 0 || fovy > System.Math.PI) { throw new ArgumentOutOfRangeException("fovy is not valid: "+fovy); }
 			if (aspect <= 0) { throw new ArgumentOutOfRangeException("aspect must by greater than 0: "+aspect); }
-			if (zNear <= 0) { throw new ArgumentOutOfRangeException("zNear must by greater than 0: "+zNear); }
+			//if (zNear <= 0) { throw new ArgumentOutOfRangeException("zNear must by greater than 0: "+zNear); }
 			if (zFar <= 0) { throw new ArgumentOutOfRangeException("zFar must by greater than 0: "+zFar); }
             
             float yMax = zNear * (float)System.Math.Tan(0.5f * fovy);
@@ -208,11 +242,11 @@ namespace dgtk.Math
 		}
 		
 		/// <summary>
-		/// Metodo que devuelve una matriz de transformación de un giro en torno a un punto en el espacio Bidimensional.
+		/// Metodo que devuelve un vector 2D de posicion tras realizar un giro en torno a un punto en el espacio Bidimensional.
 		/// </summary>
 		/// <param name="degrees">Grados de giro en torno al centro.</param>
 		/// <param name="center">Vector3 con las coordenadas sobre las que se va a realizar el giro.</param>
-		/// <returns>Matriz de transformación de un giro en torno a un punto en el espacio bidimensional.</returns>
+		/// <returns>Nuevo Vector de posicion bidimensional tras rotarlo en torno al centro dado.</returns>
 		public static Vector2 TwistVector2AroundPoint2D(Vector2 point2d, float degrees, Vector2 center)
 		{			
 			//Mat4 ret;
@@ -224,6 +258,25 @@ namespace dgtk.Math
 			
 			Vector4 v3f = vtemp * (poscam * m4 * precam);
 			return new Vector2(v3f.X, v3f.Y);
+		}
+
+		/// <summary>
+		/// Metodo que devuelve un vector 3D de posicion tras realizar un giro en torno a un punto en el espacio Tridimensional.
+		/// </summary>
+		/// <param name="point3d">Vector3 con las coordenadas del punto que rotar en torno al centro..</param>
+		/// <param name="degrees">Vector 3D contenedor de los grados por eje de giro en torno al centro.</param>
+		/// <param name="center">Vector3 con las coordenadas sobre las que se va a realizar el giro.</param>
+		/// <returns>Nuevo Vector de posicion bidimensional tras rotarlo en torno al centro dado.</returns>
+		public static Vector3 TwistVector3AroundPoint3D(Vector3 point3d, Vector3 degrees, Vector3 center)
+		{
+			Mat4 m4 = MakeRotationMatrixZ(Tools.DegreesToRadians(degrees.Z));
+			m4 *= MakeRotationMatrixY(Tools.DegreesToRadians(degrees.Y));
+			m4 *= MakeRotationMatrixX(Tools.DegreesToRadians(degrees.X));
+			Mat4 precam = MakeTraslationMatrix(-center);
+			Mat4 poscam = MakeTraslationMatrix(center);
+			
+			Vector4 v3f = (new Vector4(point3d, 1f) * (poscam * m4 * precam));
+			return v3f.xyz;
 		}
 
 		/// <summary>
@@ -290,6 +343,27 @@ namespace dgtk.Math
 				new Vector4(float.Parse(s_values[8]), float.Parse(s_values[9]), float.Parse(s_values[10]), float.Parse(s_values[11])), 
 				new Vector4(float.Parse(s_values[12]), float.Parse(s_values[13]), float.Parse(s_values[14]), float.Parse(s_values[15]))
 			);
+			return ret;
+		}
+
+		public static Mat4 LookAt(Vector3 position, Vector3 target, Vector3 VectorUP)
+		{
+			Mat4 ret = Mat4.Identity;
+
+			Vector3 direction = (position - target).Normalize();
+
+			Vector3 RightDirection = Tools.CrossProduct(VectorUP, direction).Normalize();
+			Vector3 NewUP = Tools.CrossProduct(direction, RightDirection).Normalize();
+
+			Vector3 traslation = new Vector3();
+			traslation.X = dgtk.Math.Tools.DotProduct(position, RightDirection);
+			traslation.Y = dgtk.Math.Tools.DotProduct(position, direction);
+			traslation.Z = dgtk.Math.Tools.DotProduct(position, NewUP);
+			
+			ret.Column0 = new Vector4(RightDirection, -traslation.X);
+			ret.Column1 = new Vector4(NewUP, -traslation.Y);
+			ret.Column2 = new Vector4(direction, -traslation.Z);
+			ret.Column3 = new Vector4(0, 0, 0, 1);
 			return ret;
 		}
 	}
