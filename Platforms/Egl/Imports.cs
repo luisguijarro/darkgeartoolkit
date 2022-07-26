@@ -19,7 +19,7 @@ namespace dgtk.Platforms.EGL
         internal static extern bool eglBindTexImage (IntPtr dpy, IntPtr surface, int buffer);
 
         [DllImport(LibEgl, EntryPoint = "eglChooseConfig")]
-        internal static unsafe extern bool eglChooseConfig (IntPtr dpy, int[] attrib_list, ref IntPtr configs, int config_size, ref int num_config);
+        internal static unsafe extern bool eglChooseConfig (IntPtr dpy, int[] attrib_list, out IntPtr configs, int config_size, out int num_config);
 
         [DllImport(LibEgl, EntryPoint = "eglClientWaitSync")]
         internal static extern int eglClientWaitSync (IntPtr dpy, IntPtr sync, int flags, long timeout);
@@ -85,7 +85,7 @@ namespace dgtk.Platforms.EGL
         internal static extern IntPtr eglGetDisplay (IntPtr display_id);
 
         [DllImport(LibEgl, EntryPoint = "eglGetError")]
-        internal static extern int eglGetError ();
+        internal static extern EGL_ERRORS eglGetError();
 
         [DllImport(LibEgl, EntryPoint = "eglGetPlatformDisplay")]
         internal static unsafe extern IntPtr eglGetPlatformDisplay (EGL_ENUM platform, IntPtr native_display, /*const*/ref IntPtr attrib_list);
