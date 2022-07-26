@@ -9,23 +9,14 @@ namespace dgtk.Platforms.EGL
         public static bool PreparationEGLContext(/*IntPtr ptr_Display, */IntPtr eglDisplay,/*IntPtr SurfaceHandle, int ColorBits, int DepthBits, */out IntPtr windowConfig)
         {
             windowConfig = IntPtr.Zero;
-            //eglDisplay = EGL.Imports.eglGetDisplay(ptr_Display);
-            if (Marshal.ReadInt64(eglDisplay) == (long)EGL.EGL_ENUM.EGL_NO_DISPLAY)
-            {
-                #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("No Shared EGL Context: EGL CANT GET DISPLAY");
-                    Console.ResetColor();
-                #endif
-                return false;
-            }
+            
             if (!EGL.Imports.eglBindAPI(EGL.EGL_API.EGL_OPENGL_ES_API))
             {
-                #if DEBUG
+                //#if DEBUG
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("No Shared EGL Context: OPENGL|ES API IS NOT SUPPORTED");
                     Console.ResetColor();
-                #endif
+                //#endif
                 return false;
             }
 
@@ -40,51 +31,27 @@ namespace dgtk.Platforms.EGL
                 (int)EGL_ENUM.EGL_BLUE_SIZE, 8,
                 (int)EGL_ENUM.EGL_ALPHA_SIZE, 8,
                 (int)EGL_ENUM.EGL_STENCIL_SIZE, 8,
-    	        //(int)EGL_ENUM.EGL_LEVEL, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_SAMPLE_BUFFERS, 1,
-                /*(int)EGL_ENUM.EGL_SAMPLES, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_TRANSPARENT_TYPE, (int)EGL_ENUM.EGL_NONE,
-                (int)EGL_ENUM.EGL_TRANSPARENT_RED_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_TRANSPARENT_GREEN_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_TRANSPARENT_BLUE_VALUE, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_CONFIG_CAVEAT, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_CONFIG_ID, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_MAX_SWAP_INTERVAL, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_MIN_SWAP_INTERVAL, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_NATIVE_RENDERABLE, (int)EGL_ENUM.EGL_DONT_CARE,
-                (int)EGL_ENUM.EGL_NATIVE_VISUAL_TYPE, (int)EGL_ENUM.EGL_DONT_CARE,*/
                 (int)EGL_ENUM.EGL_NONE
             };
 
             int numConfigs;
-
-            if (!Imports.eglGetConfigs(eglDisplay, IntPtr.Zero, 0, out numConfigs))
+            
+            if (!Imports.eglChooseConfig(eglDisplay, configAttributes, out windowConfig, 1, out numConfigs))
             {
-                #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("No Shared EGL Context: eglGetConfigs FAIL!!!");
-                    Console.ResetColor();
-                #endif
-                return false;
-            }
-
-            //IntPtr windowConfig;
-            if (!Imports.eglChooseConfig(eglDisplay, configAttributes, ref windowConfig, 1, ref numConfigs))
-            {
-                #if DEBUG
+                //#if DEBUG
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("No Shared EGL Context: eglChooseConfig FAIL!!!");
                     Console.ResetColor();
-                #endif
+                //#endif
                 return false;
             }
             else
             {
-                #if DEBUG
+                //#if DEBUG
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("No Shared EGL Context WindowConfig: "+windowConfig.ToInt64());
                     Console.ResetColor();
-                #endif
+                //#endif
             }
 
             return true;
@@ -105,11 +72,36 @@ namespace dgtk.Platforms.EGL
             return ret;
         }
 
-        public static unsafe OpenGL.OGL_Context GenerateEGLContext(IntPtr eglDisplay, IntPtr eglSurface, IntPtr windowConfig, IntPtr SharedContext)
+        public static unsafe OpenGL.OGL_Context GenerateEGLContext(IntPtr eglDisplay, IntPtr eglSurface, IntPtr windowConfig, IntPtr SharedContext, bool IsGLES)
         {
+            
             OpenGL.OGL_Context ret;
-            int[] eglContextAttributes = new int[] { (int)EGL_ENUM.EGL_CONTEXT_CLIENT_VERSION, 2, (int)EGL_ENUM.EGL_NONE, (int)EGL_ENUM.EGL_NONE};
-            IntPtr eglContext = Imports.eglCreateContext(eglDisplay, windowConfig, SharedContext, eglContextAttributes);
+            IntPtr eglContext;
+            if (dgtk.Platforms.EGL.Imports.eglBindAPI(EGL_API.EGL_OPENGL_API) && !IsGLES) // si no soporta OpenGL será OpenGL|ES o nada.
+            {
+                eglContext = Imports.eglCreateContext(eglDisplay, windowConfig, SharedContext, null);
+                IsGLES = false;
+                //Console Output:
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Is OpenGL Conext");
+                Console.ResetColor();
+            }
+            else
+            {
+                int[] eglContextAttributes = new int[] { (int)EGL_ENUM.EGL_CONTEXT_CLIENT_VERSION, 2, (int)EGL_ENUM.EGL_NONE, (int)EGL_ENUM.EGL_NONE};
+                eglContext = Imports.eglCreateContext(eglDisplay, windowConfig, SharedContext, eglContextAttributes);
+
+                //Console Output:
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("Is OpenGL");
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.Write("|ES");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(" Conext");
+                Console.ResetColor();
+            }
+            
+            
             #if DEBUG
                 if (eglContext == IntPtr.Zero)
                 {
@@ -127,9 +119,18 @@ namespace dgtk.Platforms.EGL
                 }
             #endif
 
-            ret = new OpenGL.OGL_Context(eglDisplay, eglSurface, eglContext, true);
+            ret = new OpenGL.OGL_Context(eglDisplay, eglSurface, eglContext, true, IsGLES);
 			bool isCurrent = ret.X11MakeCurrent();
-			dgtk.OpenGL.DelegastesInitGLes.InitDelegatesGLes();
+            if (IsGLES)
+            {
+			    dgtk.OpenGL.DelegastesInitGLes.InitDelegatesGLes();
+            }
+            else
+            {
+                dgtk.OpenGL.DelegastesInitGL.InitDelegates();
+                dgtk.OpenGL.DelegastesInitGL.isLinux = true;
+                dgtk.OpenGL.DelegastesInitGL.InitDelegatesExts();
+            }
 			ret.X11UnMakeCurrent();
 			return ret;
         }
