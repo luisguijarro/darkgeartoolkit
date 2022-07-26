@@ -61,14 +61,14 @@ namespace dgtk
             
         }
 
-        public dgtk_Window(int width, int height, string Title, bool IsEGL) //Constructor completo.
+        public dgtk_Window(int width, int height, string Title, bool UseGLES) //Constructor completo.
         {
             if (Core.lockObject == null) {Core.lockObject = new object(); }
             //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Establecer afinidad del proceso inicial
             
             this.th_window = new Thread(new ParameterizedThreadStart(this.initWindow)); // Crear nuevo hilo para la gestión de la ventana
             
-            this.th_window.Start(new th_params(width, height, Title, IsEGL)); // Iniciar Hilo con los parametros de la ventana.
+            this.th_window.Start(new th_params(width, height, Title, UseGLES)); // Iniciar Hilo con los parametros de la ventana.
             while(this.NativeWindow == null) //Esperamos hasta que la ventana esté creada y no sea null.
             {
                 Thread.Sleep(100);
@@ -618,6 +618,11 @@ namespace dgtk
         {
             set { this.NativeWindow.FullScreen = value; }
             get { return this.NativeWindow.FullScreen; }
+        }
+
+        public bool IsGLES
+        {
+            get { return this.NativeWindow.IsGLES; }
         }
 
         #endregion
