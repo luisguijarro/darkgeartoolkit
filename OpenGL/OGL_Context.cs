@@ -13,6 +13,7 @@ namespace dgtk.OpenGL
         private IntPtr ptr_Display_Device; //Linux X11 Display or Win32 Device
         private dgtk.Platforms.Platform os;
         internal bool IsEGLContext;
+        private bool isGLES;
 
         //Win32 OpenGLContext
         public OGL_Context(IntPtr CDevice, IntPtr GLContextPointer)
@@ -32,7 +33,7 @@ namespace dgtk.OpenGL
         }
 
         //X11 OpenGLContext
-        public OGL_Context(IntPtr Display, IntPtr xglwin_eglSurface, IntPtr GLContextPointer, bool IsEGL)
+        public OGL_Context(IntPtr Display, IntPtr xglwin_eglSurface, IntPtr GLContextPointer, bool IsEGL, bool isOGLES)
         {
             os = dgtk.Platforms.Platform.Linux_X11;
 
@@ -42,6 +43,7 @@ namespace dgtk.OpenGL
 
             dgtk.OpenGL.OGL_SharedContext.LinkContext(this.ptr_GLContext); // Solo se usa para el conteo.
             this.IsEGLContext = IsEGL;
+            this.isGLES = isOGLES;
         }
 
         public void Dispose()
@@ -163,6 +165,11 @@ namespace dgtk.OpenGL
                     return this.Win32UnMakeCurrent();
             }
             return false;
+        }
+    
+        public bool IsGLES
+        {
+            get { return this.isGLES; }
         }
     }
 }
