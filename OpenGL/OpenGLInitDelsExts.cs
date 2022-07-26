@@ -9073,12 +9073,22 @@ namespace dgtk.OpenGL
 			#endregion
 
 		}
+
 		[DllImport("opengl32.dll")]
 		private static extern IntPtr glGetString(StringName name);
 
+		internal static bool isLinux = false;
+
 		private static string oglGetString(dgtk.OpenGL.StringName name)
 		{
-			return Marshal.PtrToStringAnsi(glGetString(name));
+			if (isLinux)
+			{
+				return dgtk.OpenGL.GL.glGetStringh(name); //Marshal.PtrToStringAnsi();//glGetString(name));
+			}
+			else
+			{
+				return Marshal.PtrToStringAnsi(glGetString(name));
+			}
 		}
 
 		private unsafe delegate void dglGetIntegerv(dgtk.OpenGL.GetPName pname, out int* @params);
