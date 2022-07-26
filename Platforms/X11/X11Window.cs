@@ -80,7 +80,7 @@ namespace dgtk.Platforms.X11
         {
 			
 		}
-        internal X11Window(int posX, int posY, int width, int height, string title, bool IsEGL)
+        internal X11Window(int posX, int posY, int width, int height, string title, bool isGLES)
         {
             this.s_title = title;
             this.WinState = WindowState.Normal;
@@ -114,22 +114,50 @@ namespace dgtk.Platforms.X11
 			this.SwapControlSupported = VSync.SupportedVSync(this.ptr_display, this.ScreenId);
 
 			IntPtr FBConfig = IntPtr.Zero;
+			bool isEglOK = false;
 			bool TrynoEGL = true;
 
-			if (IsEGL)
+			if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
 			{
-				if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
+				if (dgtk.OpenGL.OGL_SharedContext.InitSharedEGLContext(isGLES))
 				{
-					if (dgtk.OpenGL.OGL_SharedContext.InitSharedEGLContext())
-					{
-						this.ptr_egldisplay = dgtk.OpenGL.OGL_SharedContext.eglDisplay;
-					}
+					this.ptr_egldisplay = dgtk.OpenGL.OGL_SharedContext.eglDisplay;
+					//#if DEBUG
+						if (this.ptr_egldisplay == IntPtr.Zero)
+						{
+							Console.WriteLine("ERROR -> X11Window.cs: this.ptr_egldisplay is null!!");
+						}
+						else
+						{
+							isEglOK = true;
+						}
+					//#endif
 				}
+				else
+				{
+					//#if DEBUG
+						Console.WriteLine("ERROR -> X11Window.cs: InitSharedEGLContext FAILS!!");
+					//#endif
+				}
+			}
+			if (isEglOK)
+			{
 				if (dgtk.Platforms.EGL.EGLPreparation.PreparationEGLContext(/*this.ptr_display, */this.ptr_egldisplay, out FBConfig))
 				{
 					TrynoEGL = false;
-					this.IsEGL = true;
 					this.ptr_rootwin = Imports.XDefaultRootWindow(this.ptr_display);
+					#if DEBUG
+						if (this.ptr_rootwin == IntPtr.Zero)
+						{
+							Console.WriteLine("ERROR -> X11Window.cs: XDefaultRootWindow FAILS!!");
+						}
+					#endif
+				}
+				else
+				{
+					#if DEBUG
+						Console.WriteLine("ERROR -> X11Window.cs: PreparationEGLContext FAILS!!");
+					#endif
 				}
 			}
 
@@ -157,11 +185,6 @@ namespace dgtk.Platforms.X11
             
 			WinValueMask wvm = (WinValueMask.BackPixmap | WinValueMask.BorderPixmap | WinValueMask.BorderPixel | WinValueMask.ColorMap | WinValueMask.EventMask | WinValueMask.BackPixel);
 			
-			//Console.WriteLine("Depth: "+this.Visual.depth);
-			//Console.WriteLine("BitsPerRGB: "+this.Visual.BitsPerRGB);
-			//Console.WriteLine("screen: "+this.Visual.screen);
-			//Console.WriteLine("ColorMapSize: "+this.Visual.ColorMapSize);
-			
 			Imports.XLockDisplay(this.ptr_display);
 			if (TrynoEGL)
 			{
@@ -173,7 +196,6 @@ namespace dgtk.Platforms.X11
 			}
 			
 			Imports.XStoreName(this.ptr_display, this.ptr_handle, this.s_title);
-			//Imports.XUnlockDisplay(this.ptr_display);
 
 			this.RegisterEventsAtoms();
 			Imports.XSelectInput(this.ptr_display, this.ptr_handle, this.eventMask);
@@ -193,7 +215,7 @@ namespace dgtk.Platforms.X11
 				}
 				else
 				{
-					//dgtk.OpenGL.OGL_SharedContext.InitSharedEGLContext();
+					// No hacer nada por que ya estará previamente hecho.
 				}
 			}
 
@@ -203,11 +225,9 @@ namespace dgtk.Platforms.X11
 			}
 			else
 			{
-				this.GL_Context = dgtk.Platforms.EGL.EGLPreparation.GenerateEGLContext(this.ptr_egldisplay, xglwin, FBConfig, dgtk.OpenGL.OGL_SharedContext.p_SharedContext);
+				this.GL_Context = dgtk.Platforms.EGL.EGLPreparation.GenerateEGLContext(this.ptr_egldisplay, xglwin, FBConfig, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, isGLES);
 			}
 			this.GL_Context.X11UnMakeCurrent();
-
-			//this.OpenAL_Cntx = new OpenAL.OAL_Context();
 
 			#region XMB Events
 			this.ptr_XIM = Imports.XOpenIM(this.ptr_display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero); //Obtenemos entorno de eventos.
@@ -767,6 +787,11 @@ namespace dgtk.Platforms.X11
 		public bool HaveFocus
 		{
 			get { return this.b_HaveFocus; }
+		}
+
+		public bool IsGLES 
+		{
+			get { return this.GL_Context.IsGLES; }
 		}
 
 		#endregion
