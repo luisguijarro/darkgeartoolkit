@@ -37,5 +37,6 @@ namespace dgtk.Platforms
 		//OpenAL.OAL_Context OpenAlContext { get; }
 		bool FullScreen {get; set;}
 		bool HaveFocus { get; }
+		bool IsGLES { get; }
     }
 }
