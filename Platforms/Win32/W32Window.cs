@@ -609,5 +609,11 @@ namespace dgtk.Platforms.Win32
 			get { return this.b_HaveFocus; }
 		}
 
+		public bool IsGLES 
+		{
+			get { return this.GL_Context.IsGLES; }
+		}
+
+
     }
 }
