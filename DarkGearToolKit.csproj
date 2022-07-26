@@ -11,8 +11,9 @@
     <Optimize>false</Optimize>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <DebugType>Portable</DebugType>
+    <DebugType>full</DebugType>
     <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='release'">
     <NoLogo>true</NoLogo>
