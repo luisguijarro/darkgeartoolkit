@@ -107,6 +107,17 @@ namespace dgtk.OpenGL
             return ret;
         }
 
+        public static unsafe string glGetStringh(StringName name)
+		{
+			return Marshal.PtrToStringAnsi((IntPtr)internalGL.glGetString(name));
+		}
+
+		///<sumary> Available from OpenGL version 3.0</sumary>
+		public static unsafe string glGetStringih(StringName name, uint index)
+		{
+			return Marshal.PtrToStringAnsi((IntPtr)internalGL.glGetStringi(name, index));
+		}
+
         public static unsafe string glGetShaderInfoLog(uint shader)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(512);
