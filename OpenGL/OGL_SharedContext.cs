@@ -11,6 +11,7 @@ namespace dgtk.OpenGL
     {
         internal static IntPtr p_SharedContext;
         private static IntPtr DeviceC_SurfaceHandle;
+        private static IntPtr eglSurface;
         internal static IntPtr Display;
         internal static IntPtr eglDisplay;
         private static dgtk.Platforms.Platform os;
@@ -138,6 +139,9 @@ namespace dgtk.OpenGL
             }
             Console.WriteLine("Num Configs: "+numConfigs);
             Console.WriteLine("windowConfig: "+windowConfig);
+
+            int[] eglSurfaceAttributes = new int[] {(int)EGL_ENUM.EGL_NONE};
+            eglSurface = dgtk.Platforms.EGL.Imports.eglCreateWindowSurface(eglDisplay, windowConfig, DeviceC_SurfaceHandle, eglSurfaceAttributes);
             
             Console.WriteLine("WriteLine de control.");
 
@@ -330,7 +334,7 @@ namespace dgtk.OpenGL
             {
                 if (IsEGLContext)
                 {
-                    mc = dgtk.Platforms.EGL.Imports.eglMakeCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
+                    mc = dgtk.Platforms.EGL.Imports.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, p_SharedContext);
                 }
                 else
                 {
