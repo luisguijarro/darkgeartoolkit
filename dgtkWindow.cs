@@ -214,7 +214,7 @@ namespace dgtk
             {
                 Thread.Sleep(1000); //Dar ytimepo al inicio de la ventana nativa.
             }
-            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
+            //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; // Definir Afinidad con procesador.  Cores: 1,2,3 y 4.
             Core.AddWin(this);
 
             this.ProcessEvents(); //Iniciar el procesamiento de Eventos de Ventana.
@@ -300,7 +300,7 @@ namespace dgtk
 
         private void Render_frame()
         {
-            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
+            //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
             /*if (Platforms.Tools.GetPlatform() == Platforms.Platform.Windows) // Mierda de Windows.
             {
                 ((Platforms.Win32.W32Window)this.NativeWindow).OGLContextGen(); // Creamos el Contexto de OpenGL para windows en el mismo hilo que el Renderizado.
@@ -344,7 +344,7 @@ namespace dgtk
 
         private void Update_frame()
         {
-            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
+            //Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)15; //Definir afinidad de procesador para el hilo. Cores: 1,2,3 y 4.
             while(!this.NativeWindow.IsRunning) // Esperar a que la ventana nativa exista.
             {
                 //Esperar al inicio de ProcessEvent();
