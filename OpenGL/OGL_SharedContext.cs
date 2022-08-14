@@ -50,7 +50,7 @@ namespace dgtk.OpenGL
                     break;
                 case dgtk.Platforms.Platform.Linux_X11:
                     return CreateLinuxEGLContext(isGLES);
-                    break;
+                    //break;
                 case dgtk.Platforms.Platform.Linux_Wayland:
                     break;
             }
