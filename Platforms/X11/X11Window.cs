@@ -424,8 +424,8 @@ namespace dgtk.Platforms.X11
 					Imports.XCheckTypedWindowEvent(this.ptr_display, this.ptr_handle, XEventType.ClientMessage, ref xevento);
 					Imports.XUnlockDisplay(this.ptr_display);
 					KeyCode kc;
-					lock(Core.lockObject)
-					{
+					//lock(Core.lockObject)
+					//{
 						switch(xevento.type)
 						{
 							case XEventType.ButtonPress:
@@ -573,7 +573,7 @@ namespace dgtk.Platforms.X11
 							default:
 								break;
 						}
-					}	
+					//}	
 				}
 				TimeSpan retraso = DateTime.Now - dt_ini;
                 if (retraso.TotalMilliseconds < (1f/(float)ups)*1000f)
