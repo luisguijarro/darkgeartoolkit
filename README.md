@@ -1,5 +1,5 @@
 # Dark Gear Tool Kit
-Tool Kit Library developed for **DarkGear Game Engine** with support for OpenGL, OpenAL and Input Devices.
+Tool Kit Library developed for **DarkGear Game Engine** with support for OpenGL, OpenGL|ES, OpenAL and Input Devices.
 
 ## Compilation
 To compile the project use the command **dotnet publish:**
