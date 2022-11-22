@@ -124,6 +124,10 @@ namespace dgtk.Graphics
 		{
 			get {return new Color4(1f, 0f, 1f, 1f);}
 		}
+		public static Color4 Yellow
+		{
+			get {return new Color4(1f, 1f, 0f, 1f);}
+		}
 		public static Color4 Empty
 		{
 			get {return new Color4(-1f, -1f, -1f, -1f);}
