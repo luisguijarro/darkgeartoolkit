@@ -58,11 +58,11 @@ namespace dgtk.OpenGL
                     }
                     else
                     {
-                        glx.glXDestroyContext(this.ptr_Display_Device, this.ptr_GLContext);
+                        Glx.glXDestroyContext(this.ptr_Display_Device, this.ptr_GLContext);
                     }
                     break;
                 case dgtk.Platforms.Platform.Windows:
-                    wgl.wglDeleteContext(this.ptr_GLContext);
+                    Wgl.wglDeleteContext(this.ptr_GLContext);
                     break;
             }
         }
@@ -80,25 +80,25 @@ namespace dgtk.OpenGL
             }
             else
             {
-                if (glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
+                if (Glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext))
                 {
                     dgtk.Core.int_ActualOpenGLContext = this;
                     return true;
                 }
             }
             return false;
-            //return glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext);
+            //return Glx.glXMakeContextCurrent(this.ptr_Display_Device, this.ptr_xglwin, this.ptr_xglwin, this.ptr_GLContext);
         }
 
         internal bool Win32MakeCurrent()
         {
-            if (wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext))
+            if (Wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext))
             {
                 dgtk.Core.int_ActualOpenGLContext = this;
                 return true;
             }
             return false;
-            //return wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext);
+            //return Wgl.wglMakeCurrent(this.ptr_Display_Device, this.ptr_GLContext);
         }
 
         internal bool X11UnMakeCurrent()
@@ -109,14 +109,14 @@ namespace dgtk.OpenGL
             }
             else
             {
-                return glx.glXMakeContextCurrent(this.ptr_Display_Device, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                return Glx.glXMakeContextCurrent(this.ptr_Display_Device, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
             }
         }
 
         internal bool Win32UnMakeCurrent()
         {
-            //return wgl.wglMakeCurrent(this.ptr_Display_Device, IntPtr.Zero);
-            return wgl.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
+            //return Wgl.wglMakeCurrent(this.ptr_Display_Device, IntPtr.Zero);
+            return Wgl.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
         }
 
         internal void X11SwapBuffers()
@@ -132,7 +132,7 @@ namespace dgtk.OpenGL
             }
             else
             {
-                glx.glXSwapBuffers(this.ptr_Display_Device, this.ptr_xglwin);
+                Glx.glXSwapBuffers(this.ptr_Display_Device, this.ptr_xglwin);
             }
         }
 

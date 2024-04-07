@@ -34,7 +34,7 @@ namespace dgtk.Platforms.X11
 		#region Atoms
 		IntPtr WM_DELETE_WINDOW;
 		IntPtr WM_STATE;
-		IntPtr WM_STATE_ADD;
+		//IntPtr WM_STATE_ADD;
 		IntPtr WM_STATE_REMOVE;
 		IntPtr WM_STATE_TOGGLE;
 		IntPtr WM_STATE_HIDDEN;
@@ -205,7 +205,7 @@ namespace dgtk.Platforms.X11
 			
 			this.GetSize();
 
-			IntPtr xglwin = TrynoEGL ? OGLPreparation.Getglxwin(this.ptr_display, FBConfig, this.ptr_handle) : dgtk.Platforms.EGL.EGLPreparation.GetEGLSurface(this.ptr_egldisplay, FBConfig, this.ptr_handle);
+			IntPtr xglwin = TrynoEGL ? OGLPreparation.GetGlxWin(this.ptr_display, FBConfig, this.ptr_handle) : dgtk.Platforms.EGL.EGLPreparation.GetEGLSurface(this.ptr_egldisplay, FBConfig, this.ptr_handle);
 
 			if (dgtk.OpenGL.OGL_SharedContext.p_SharedContext == IntPtr.Zero)
 			{
@@ -289,16 +289,17 @@ namespace dgtk.Platforms.X11
 		public void Redraw()
 		{
 			isDrawing = true;
-			//lock(Core.lockObject)
-			//{
+			lock(Core.lockObject)
+			{
 				if (this.GL_Context.X11MakeCurrent())
 				{
+					//OpenGL.GL.glClear(OpenGL.ClearBufferMask.GL_ALL);
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 					
 					this.SwapBuffers();
 					this.GL_Context.X11UnMakeCurrent();
 				}
-			//}
+			}
 			isDrawing = false;
 		}
 
@@ -328,15 +329,15 @@ namespace dgtk.Platforms.X11
 				switch(this.SwapControlSupported)
 				{
 					case LinuxSwapControlExt.GLX_EXT_swap_control:
-						glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 1);
+						Glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 1);
 						this.vSyncEnabled = true;
 						break;
 					case LinuxSwapControlExt.GLX_MESA_swap_control:
-						glx.glXSwapIntervalMESA(1);
+						Glx.glXSwapIntervalMESA(1);
 						this.vSyncEnabled = true;
 						break;
 					case LinuxSwapControlExt.GLX_SGI_swap_control:
-						glx.glXSwapIntervalSGI(1);
+						Glx.glXSwapIntervalSGI(1);
 						this.vSyncEnabled = true;
 						break;
 				}
@@ -354,15 +355,15 @@ namespace dgtk.Platforms.X11
 				switch(this.SwapControlSupported)
 				{
 					case LinuxSwapControlExt.GLX_EXT_swap_control:
-						glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 0);
+						Glx.glXSwapIntervalEXT(this.ptr_display, this.GL_Context.ptr_xglwin, 0);
 						this.vSyncEnabled = false;
 						break;
 					case LinuxSwapControlExt.GLX_MESA_swap_control:
-						glx.glXSwapIntervalMESA(0);
+						Glx.glXSwapIntervalMESA(0);
 						this.vSyncEnabled = false;
 						break;
 					case LinuxSwapControlExt.GLX_SGI_swap_control:
-						//glx.glXSwapIntervalSGI(0); //No soportado GLX_BAD_VALUE
+						//Glx.glXSwapIntervalSGI(0); //No soportado GLX_BAD_VALUE
 						break;
 				}
 			}
@@ -399,7 +400,7 @@ namespace dgtk.Platforms.X11
 			this.WM_ICON = Imports.XInternAtom(this.ptr_display, "_NET_WM_ICON", false);
 			this.CARDINAL = Imports.XInternAtom(this.ptr_display, "CARDINAL", false); // (IntPtr)(long)6
 			this.WM_STATE_TOGGLE = (IntPtr)2;
-			this.WM_STATE_ADD = (IntPtr)1;
+			//this.WM_STATE_ADD = (IntPtr)1;
 			this.WM_STATE_REMOVE = (IntPtr)0;
 			this.WM_ALLOWED_ACTION = Imports.XInternAtom(this.ptr_display, "_NET_WM_ALLOWED_ACTIONS", false);
 			Imports.XSetWMProtocols(this.ptr_display, this.ptr_handle, new IntPtr[]{ this.WM_DELETE_WINDOW/*, this.WM_ACTION_RESIZE*/}, 1);

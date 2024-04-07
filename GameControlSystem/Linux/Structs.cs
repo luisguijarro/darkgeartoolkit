@@ -5,14 +5,14 @@ namespace dgtk.GameControlSystem.Linux
 {
 	[StructLayout(LayoutKind.Sequential)]internal struct input_event 
     {
-            internal timeval time;
+            internal Timeval time;
             internal GameControlEventType type;
             internal ushort code;
             internal uint value;
     }
 
 	[StructLayout(LayoutKind.Sequential)]
-    internal struct timeval
+    internal struct Timeval
     {
         internal long seconds;
         internal long microseconds;
@@ -20,7 +20,7 @@ namespace dgtk.GameControlSystem.Linux
 
 
 	[StructLayout(LayoutKind.Sequential)]
-    internal struct input_absinfo 
+    internal struct Input_absinfo 
     {
     	internal  int value;
     	internal  int minimum;
@@ -31,21 +31,21 @@ namespace dgtk.GameControlSystem.Linux
 	}
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_replay 
+    internal struct Ff_replay 
     {
 	    ushort length;
 	    ushort delay;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_trigger 
+    internal struct Ff_trigger 
     {
 	    ushort button;
 	    ushort interval;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_envelope 
+    internal struct Ff_envelope 
     {
 	    ushort attack_length;
 	    ushort attack_level;
@@ -54,22 +54,22 @@ namespace dgtk.GameControlSystem.Linux
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_constant_effect 
+    internal struct Ff_constant_effect 
     {
 	    ushort level;
-	    ff_envelope envelope;
+	    Ff_envelope envelope;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_ramp_effect 
+    internal struct Ff_ramp_effect 
     {
         short start_level;
         short end_level;
-        ff_envelope envelope;
+        Ff_envelope envelope;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_condition_effect 
+    internal struct Ff_condition_effect 
     {
         ushort right_saturation;
         ushort left_saturation;
@@ -82,7 +82,7 @@ namespace dgtk.GameControlSystem.Linux
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_periodic_effect 
+    internal struct Ff_periodic_effect 
     {
         ushort waveform;
         ushort period;
@@ -90,32 +90,32 @@ namespace dgtk.GameControlSystem.Linux
         short offset;
         ushort phase;
 
-        ff_envelope envelope;
+        Ff_envelope envelope;
 
         uint custom_len;
         IntPtr custom_data; //short*
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ff_rumble_effect 
+    internal struct Ff_rumble_effect 
     {
         ushort strong_magnitude;
         ushort weak_magnitude;
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    internal struct ff_effect 
+    internal struct Ff_effect 
     {
         [FieldOffset(0)] ushort type;
         [FieldOffset(2)] short id;
         [FieldOffset(4)] ushort direction;
-        [FieldOffset(6)] ff_trigger trigger;
-        [FieldOffset(10)] ff_replay replay;
+        [FieldOffset(6)] Ff_trigger trigger;
+        [FieldOffset(10)] Ff_replay replay;
 
-        [FieldOffset(14)] ff_constant_effect constant;
-        [FieldOffset(14)] ff_ramp_effect ramp;
-        [FieldOffset(14)] ff_periodic_effect periodic;
-        [FieldOffset(14)] ff_condition_effect[] condition; /* One for each axis */ //[2]
-        [FieldOffset(14)] ff_rumble_effect rumble;
+        [FieldOffset(14)] Ff_constant_effect constant;
+        [FieldOffset(14)] Ff_ramp_effect ramp;
+        [FieldOffset(14)] Ff_periodic_effect periodic;
+        [FieldOffset(14)] Ff_condition_effect[] condition; /* One for each axis */ //[2]
+        [FieldOffset(14)] Ff_rumble_effect rumble;
     }
 }

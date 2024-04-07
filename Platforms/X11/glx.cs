@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace dgtk.Platforms.X11
 {
-    internal static class glx
+    internal static class Glx
     {
         [DllImport("libGL.so.1", EntryPoint = "glXCreateContext")]
 		internal extern static IntPtr glXCreateContext(IntPtr display, ref XVisualInfo XVisualInf, IntPtr GLXContextShareList, bool direct);

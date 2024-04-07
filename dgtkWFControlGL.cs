@@ -23,7 +23,7 @@ namespace dgtk
             IntPtr FBConfig = IntPtr.Zero;
 			dgtk.Platforms.X11.OGLPreparation.PreparationOGLContext(this.ptr_Display_Device, ScreenId, ref FBConfig, out Visual, out ptr_Visual);
 
-            IntPtr xglwin = dgtk.Platforms.X11.OGLPreparation.Getglxwin(this.ptr_Display_Device, FBConfig, this.Handle);
+            IntPtr xglwin = dgtk.Platforms.X11.OGLPreparation.GetGlxWin(this.ptr_Display_Device, FBConfig, this.Handle);
 
             this.context = dgtk.Platforms.X11.OGLPreparation.GenerateOGL_Context(this.ptr_Display_Device, xglwin, ref Visual, dgtk.OpenGL.OGL_SharedContext.p_SharedContext, true);
 

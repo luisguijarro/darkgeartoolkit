@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace dgtk.Platforms.Win32
 {
-    internal static class wgl
+    internal static class Wgl
     {
         [DllImport("opengl32.dll", EntryPoint = "wglCreateContext", SetLastError=true)]
 		internal static extern IntPtr wglCreateContext(IntPtr ptr);

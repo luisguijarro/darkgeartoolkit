@@ -2,6 +2,8 @@
 // File Created with OpenGL Parser 3.
 // Developed by Luis Guijarro Pérez.
 
+#pragma warning disable CS0649
+
 using System;
 
 namespace dgtk.OpenGL
@@ -2419,3 +2421,5 @@ namespace dgtk.OpenGL
 	}
 }
 
+
+#pragma warning restore CS0649

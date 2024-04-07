@@ -193,13 +193,13 @@ namespace dgtk.OpenGL
 							0
 						};
 
-            dgtk.Platforms.X11.XVisualInfo visual = dgtk.Platforms.X11.glx.glXChooseVisual(Display, screen, att);
+            dgtk.Platforms.X11.XVisualInfo visual = dgtk.Platforms.X11.Glx.glXChooseVisual(Display, screen, att);
 
             IntPtr shareListConext = new IntPtr(0);
-            p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(Display, ref visual, shareListConext, true);
+            p_SharedContext = dgtk.Platforms.X11.Glx.glXCreateContext(Display, ref visual, shareListConext, true);
             if (p_SharedContext == IntPtr.Zero)
             {
-                p_SharedContext = dgtk.Platforms.X11.glx.glXCreateContext(Display, ref visual, shareListConext, false);
+                p_SharedContext = dgtk.Platforms.X11.Glx.glXCreateContext(Display, ref visual, shareListConext, false);
                 if (p_SharedContext == IntPtr.Zero)
                 {
                     throw new Exception("ERROR: Shared Context Creation FAIL!!!");
@@ -256,7 +256,7 @@ namespace dgtk.OpenGL
 				throw new Exception("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 			
-			/*IntPtr GLDummyContext*/p_SharedContext = dgtk.Platforms.Win32.wgl.wglCreateContext(DeviceC_SurfaceHandle); //¿ESTÁ CASCANDO O NO? En el Statico creo que sí.
+			/*IntPtr GLDummyContext*/p_SharedContext = dgtk.Platforms.Win32.Wgl.wglCreateContext(DeviceC_SurfaceHandle); //¿ESTÁ CASCANDO O NO? En el Statico creo que sí.
 
 			if (/*GLDummyContext*/p_SharedContext == IntPtr.Zero) //NO ES NULL
 			{
@@ -264,7 +264,7 @@ namespace dgtk.OpenGL
 				throw new Exception("Error wglCreateContext "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 
-			if(!dgtk.Platforms.Win32.wgl.wglMakeCurrent(DeviceC_SurfaceHandle, /*GLDummyContext*/p_SharedContext))
+			if(!dgtk.Platforms.Win32.Wgl.wglMakeCurrent(DeviceC_SurfaceHandle, /*GLDummyContext*/p_SharedContext))
 			{
 				error = Marshal.GetLastWin32Error();
 				throw new Exception("MakeCurrentFail"+error.ToString()+": " + new Win32Exception(error).Message);				
@@ -281,7 +281,7 @@ namespace dgtk.OpenGL
 		{
             if (os ==dgtk.Platforms.Platform.Windows) // Solo se usa en Windows por que en linux el enlazado se hace durante la creación de los nuevos contextos.
             {
-                bool lc = dgtk.Platforms.Win32.wgl.wglShareLists(p_SharedContext, GLContext);
+                bool lc = dgtk.Platforms.Win32.Wgl.wglShareLists(p_SharedContext, GLContext);
                 if (!lc)
                 {
                     int error = Marshal.GetLastWin32Error();
@@ -299,7 +299,7 @@ namespace dgtk.OpenGL
                 switch(os)
                 {
                     case dgtk.Platforms.Platform.Windows:
-                        dgtk.Platforms.Win32.wgl.wglDeleteContext(p_SharedContext);
+                        dgtk.Platforms.Win32.Wgl.wglDeleteContext(p_SharedContext);
                         if (dgtk.Platforms.Win32.Imports.ReleaseDC(WinDummy.Handle, DeviceC_SurfaceHandle) == 0)
                         {
                             throw new Exception("kk");
@@ -314,8 +314,8 @@ namespace dgtk.OpenGL
                         }
                         else
                         {
-                            dgtk.Platforms.X11.glx.glXMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero);
-                            dgtk.Platforms.X11.glx.glXDestroyContext(Display, p_SharedContext);
+                            dgtk.Platforms.X11.Glx.glXMakeCurrent(Display, IntPtr.Zero, IntPtr.Zero);
+                            dgtk.Platforms.X11.Glx.glXDestroyContext(Display, p_SharedContext);
                         }
                         break;
                 }
@@ -328,7 +328,7 @@ namespace dgtk.OpenGL
             bool mc = false;
             if (os == dgtk.Platforms.Platform.Windows)
             {
-                mc = dgtk.Platforms.Win32.wgl.wglMakeCurrent(DeviceC_SurfaceHandle, p_SharedContext);
+                mc = dgtk.Platforms.Win32.Wgl.wglMakeCurrent(DeviceC_SurfaceHandle, p_SharedContext);
             }
             else
             {
@@ -338,7 +338,7 @@ namespace dgtk.OpenGL
                 }
                 else
                 {
-                    mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
+                    mc = dgtk.Platforms.X11.Glx.glXMakeContextCurrent(Display, DeviceC_SurfaceHandle, DeviceC_SurfaceHandle, p_SharedContext);
                 }                
             }
             #if DEBUG
@@ -355,7 +355,7 @@ namespace dgtk.OpenGL
             bool mc = false;
             if (os == dgtk.Platforms.Platform.Windows)
             {
-                mc = dgtk.Platforms.Win32.wgl.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
+                mc = dgtk.Platforms.Win32.Wgl.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
             }
             else
             {
@@ -365,7 +365,7 @@ namespace dgtk.OpenGL
                 }
                 else
                 {
-                    mc = dgtk.Platforms.X11.glx.glXMakeContextCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                    mc = dgtk.Platforms.X11.Glx.glXMakeContextCurrent(Display, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
                 }
             }
             #if DEBUG

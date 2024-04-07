@@ -213,8 +213,8 @@ namespace dgtk.Platforms.Win32
 			lock(Core.lockObject) //this.lockobject)
 			{
 				if (this.GL_Context.Win32MakeCurrent())
-				{
-				
+				{					
+					OpenGL.GL.glClear(OpenGL.ClearBufferMask.GL_ALL);
 					this.RenderFrame(this, new dgtk_OnRenderEventArgs());
 
 					this.SwapBuffers();
@@ -238,12 +238,12 @@ namespace dgtk.Platforms.Win32
 
 		public void EnableVSync()
 		{
-			if (this.SwapControlSupported) { wgl.wglSwapIntervalEXT(1); this.vSyncEnabled = true; }
+			if (this.SwapControlSupported) { Wgl.wglSwapIntervalEXT(1); this.vSyncEnabled = true; }
 		}
 
 		public void DisableVSync()
 		{
-			if (this.SwapControlSupported) { wgl.wglSwapIntervalEXT(0); this.vSyncEnabled = false; }
+			if (this.SwapControlSupported) { Wgl.wglSwapIntervalEXT(0); this.vSyncEnabled = false; }
 		}
 
 		public void Close()

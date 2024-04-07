@@ -12,7 +12,7 @@ namespace dgtk.Platforms.Win32
             ret = s_ext.Contains("WGL_EXT_swap_control");
             if (ret)
             {
-                wgl.wglSwapIntervalEXT = (wgl.d_wglSwapIntervalEXT) dgtk.OpenGL.InternalTool.GetGLMethodAdress("wglSwapIntervalEXT",typeof(wgl.d_wglSwapIntervalEXT));                
+                Wgl.wglSwapIntervalEXT = (Wgl.d_wglSwapIntervalEXT) dgtk.OpenGL.InternalTool.GetGLMethodAdress("wglSwapIntervalEXT",typeof(Wgl.d_wglSwapIntervalEXT));                
             }
             return ret;
         }

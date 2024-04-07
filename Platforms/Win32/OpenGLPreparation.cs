@@ -40,7 +40,7 @@ namespace dgtk.Platforms.Win32
 				throw new Exception("Error SetPixelFormat "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 			
-			IntPtr GLDummyContext = wgl.wglCreateContext(DeviceC);
+			IntPtr GLDummyContext = Wgl.wglCreateContext(DeviceC);
 
 			if (GLDummyContext == IntPtr.Zero)
 			{
@@ -48,7 +48,7 @@ namespace dgtk.Platforms.Win32
 				throw new Exception("Error wglCreateContext "+error.ToString()+": " + new Win32Exception(error).Message);
 			}
 
-			if(!wgl.wglMakeCurrent(DeviceC, GLDummyContext))
+			if(!Wgl.wglMakeCurrent(DeviceC, GLDummyContext))
 			{
 				error = Marshal.GetLastWin32Error();
 				throw new Exception("MakeCurrentFail"+error.ToString()+": " + new Win32Exception(error).Message);	
@@ -56,7 +56,7 @@ namespace dgtk.Platforms.Win32
 
             //DEFINITIVE CONTEXT:
             //=====================
-            if (!wgl.wglMakeCurrent(DeviceC, GLDummyContext))
+            if (!Wgl.wglMakeCurrent(DeviceC, GLDummyContext))
 			{
                 error = Marshal.GetLastWin32Error();
 				throw new Exception("MakeCurrentFail"+error.ToString()+": " + new Win32Exception(error).Message);
@@ -75,7 +75,7 @@ namespace dgtk.Platforms.Win32
 			    0,        //End
 			};
 
-            wglChoosePixelFormatARB = (wglChoosePixelFormatARBdelegate)Marshal.GetDelegateForFunctionPointer(wgl.wglGetProcAddress("wglChoosePixelFormatARB"), typeof(wglChoosePixelFormatARBdelegate));
+            wglChoosePixelFormatARB = (wglChoosePixelFormatARBdelegate)Marshal.GetDelegateForFunctionPointer(Wgl.wglGetProcAddress("wglChoosePixelFormatARB"), typeof(wglChoosePixelFormatARBdelegate));
 				
             //int pixelFormat;
 			uint numFormats;
@@ -100,7 +100,7 @@ namespace dgtk.Platforms.Win32
         {
 
             OpenGL.OGL_Context ret;
-             wglCreateContextAttribsARB = (wglCreateContextAttribsARBdelegate)Marshal.GetDelegateForFunctionPointer(wgl.wglGetProcAddress("wglCreateContextAttribsARB"), typeof(wglCreateContextAttribsARBdelegate));
+             wglCreateContextAttribsARB = (wglCreateContextAttribsARBdelegate)Marshal.GetDelegateForFunctionPointer(Wgl.wglGetProcAddress("wglCreateContextAttribsARB"), typeof(wglCreateContextAttribsARBdelegate));
 			
             int[] attribList = new int[]
 				{

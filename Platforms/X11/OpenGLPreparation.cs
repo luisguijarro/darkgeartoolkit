@@ -9,7 +9,7 @@ namespace dgtk.Platforms.X11
         {
 			dgtk.OpenGL.InternalTool.GetOS();
             int glx_mayor=0; int glx_minor=0;
-            if(!glx.glXQueryVersion(ptr_display, ref glx_mayor, ref glx_minor))
+            if(!Glx.glXQueryVersion(ptr_display, ref glx_mayor, ref glx_minor))
 			{
 				Console.WriteLine("GLX : glXQueryVersion FAIL!");
 			}
@@ -33,28 +33,28 @@ namespace dgtk.Platforms.X11
 							0
 						};
 					int n_items;
-					IntPtr* glFBConfigptr = glx.glXChooseFBConfig (ptr_display, ScreenId, VisualFBAttributes, out n_items);
+					IntPtr* glFBConfigptr = Glx.glXChooseFBConfig (ptr_display, ScreenId, VisualFBAttributes, out n_items);
 
 					int best_fbc = 0, best_num_samp = -1, buf_num_samp = -1;
 					//int depth = 0, bits_R = 0, bits_G = 0, bits_B = 0, bits_A = 0, renderable = 0, ID=0;
 					for (int i=0;i<n_items;i++)
 					{
-						IntPtr vi = glx.glXGetVisualFromFBConfig( ptr_display, glFBConfigptr[i] );
+						IntPtr vi = Glx.glXGetVisualFromFBConfig( ptr_display, glFBConfigptr[i] );
 						
 						if (vi != IntPtr.Zero)
 						{
 							XVisualInfo tempvisual = (XVisualInfo)Marshal.PtrToStructure (vi, typeof(XVisualInfo));	
 							int samp_buf, samples; //, bits_R, bits_G, bits_B, bits_A, depth, rederable;
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLE_BUFFERS, out samp_buf );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLES, out samples  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLE_BUFFERS, out samp_buf );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_SAMPLES, out samples  );
 							/*
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_FBCONFIG_ID, out ID);
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_DEPTH_BUFFER_BIT, out depth  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_RED_SIZE, out bits_R  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_GREEN_SIZE, out bits_G  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_BLUE_SIZE, out bits_B  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_ALPHA_SIZE, out bits_A  );
-							glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_X_RENDERABLE, out renderable  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_FBCONFIG_ID, out ID);
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_DEPTH_BUFFER_BIT, out depth  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_RED_SIZE, out bits_R  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_GREEN_SIZE, out bits_G  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_BLUE_SIZE, out bits_B  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualAttributes.GLX_ALPHA_SIZE, out bits_A  );
+							Glx.glXGetFBConfigAttrib( ptr_display, glFBConfigptr[i], (int)glxVisualFBAttributes.GLX_X_RENDERABLE, out renderable  );
 							*/
 							//Console.WriteLine("Index: "+i+" | ID: "+ID+" | SampleBuffers: "+samp_buf+" | Samples: "+samples+" | Depth: "+ depth +" | R: "+bits_R+" | G: "+bits_G+" | B: "+bits_B+" | A: "+bits_A+ " | RENDERABLE: " + (renderable==1 ? "true" : "false"));
 							
@@ -81,7 +81,7 @@ namespace dgtk.Platforms.X11
 					Imports.XFree( glFBConfigptr );
 				}
 				//Imports.XLockDisplay(ptr_display);
-				P_Visual = glx.glXGetVisualFromFBConfig (ptr_display, FBConfig);
+				P_Visual = Glx.glXGetVisualFromFBConfig (ptr_display, FBConfig);
 				//Imports.XUnlockDisplay(ptr_display);				
 
 				visual = (XVisualInfo)Marshal.PtrToStructure (P_Visual, typeof(XVisualInfo));	
@@ -103,7 +103,7 @@ namespace dgtk.Platforms.X11
 					fixed (int* attr = glxVisualAttribs)
 					{
 						Imports.XLockDisplay(ptr_display);
-						P_Visual = glx.glXChooseVisual (ptr_display, ScreenId, (IntPtr)attr);
+						P_Visual = Glx.glXChooseVisual (ptr_display, ScreenId, (IntPtr)attr);
 						Imports.XUnlockDisplay(ptr_display);
 					}
 				}	
@@ -113,17 +113,17 @@ namespace dgtk.Platforms.X11
 			//Console.WriteLine("PreparationOGLContext");
         }
 
-		public static IntPtr Getglxwin(IntPtr ptr_display, IntPtr FBConfig, IntPtr WinHandle)
+		public static IntPtr GetGlxWin(IntPtr ptr_display, IntPtr FBConfig, IntPtr WinHandle)
 		{
 			IntPtr xglwin = WinHandle;
 			int glx_mayor=0; int glx_minor=0;
-            if(!glx.glXQueryVersion(ptr_display, ref glx_mayor, ref glx_minor))
+            if(!Glx.glXQueryVersion(ptr_display, ref glx_mayor, ref glx_minor))
 			{
 				Console.WriteLine("GLX : glXQueryVersion FAIL!");
 			}
 			if ((glx_mayor >= 1) && (glx_minor >= 3))  //OpenGL >= 1.2
 			{
-				xglwin = glx.glXCreateWindow(ptr_display, FBConfig, WinHandle, new IntPtr(0)); //Fail with WinForms
+				xglwin = Glx.glXCreateWindow(ptr_display, FBConfig, WinHandle, new IntPtr(0)); //Fail with WinForms
 			}
 			return xglwin;
 		}
@@ -131,7 +131,7 @@ namespace dgtk.Platforms.X11
 		public static OpenGL.OGL_Context GenerateOGL_Context(IntPtr ptr_display, IntPtr xglwin, ref XVisualInfo visual, IntPtr SharedContext, bool Direct)
 		{
 			OpenGL.OGL_Context ret;
-			IntPtr cntxt = glx.glXCreateContext(ptr_display, ref visual, SharedContext, Direct);
+			IntPtr cntxt = Glx.glXCreateContext(ptr_display, ref visual, SharedContext, Direct);
 
 			ret = new OpenGL.OGL_Context(ptr_display, xglwin, cntxt, false, false);
 			ret.X11MakeCurrent();
