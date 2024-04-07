@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>dgtk</AssemblyName>
   </PropertyGroup>
@@ -24,8 +24,10 @@
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.80.3" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.80.3" />
+    <PackageReference Include="SkiaSharp">
+      <Version>2.88.7</Version>
+    </PackageReference>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.7" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <Content Include="Enums\InputEventsEnums.cs" />
     <Content Include="Enums\WindowEnums.cs" />
@@ -101,10 +103,10 @@
     <Content Include="Platforms\Win32\structs.cs" />
     <Content Include="Platforms\Win32\V-Sync.cs" />
     <Content Include="Platforms\Win32\W32Window.cs" />
-    <Content Include="Platforms\Win32\wgl.cs" />
+    <Content Include="Platforms\Win32\Wgl.cs" />
     <Content Include="Platforms\Win32\Win32Dummy.cs" />
     <Content Include="Platforms\X11\enums.cs" />
-    <Content Include="Platforms\X11\glx.cs" />
+    <Content Include="Platforms\X11\Glx.cs" />
     <Content Include="Platforms\X11\imports.cs" />
     <Content Include="Platforms\X11\OpenGLPreparation.cs" />
     <Content Include="Platforms\X11\structs.cs" />
