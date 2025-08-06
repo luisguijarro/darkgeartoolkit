@@ -1,10 +1,13 @@
-<?xml version="1.1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>dgtk</AssemblyName>
+    <Version>1.1.1</Version>           <!-- Versión del ensamblado/package -->
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>     <!-- Versión del ensamblado -->
+    <FileVersion>1.1.1.0</FileVersion>             <!-- Versión del archivo -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='debug'">
     <NoLogo>true</NoLogo>
