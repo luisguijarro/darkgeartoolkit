@@ -9,7 +9,7 @@ To compile the project use the command **dotnet publish:**
 Note: Change "release" word by "debug" word for debug output.
 
 ## Prerequisites:
-For Compilation: **.NET 5**
+For Compilation: **.NET 8**
 
 For use: **OpenAL Soft ( soft_oal.dll, libopenal.so.1 )**
 
