@@ -24,3 +24,19 @@ Redistribution and use in source and binary forms, with or without modification,
 
 **Disclaimer:**  
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## OpenAL Soft
+
+**License:** GNU Lesser General Public License v2.1 or later (LGPL-2.1-or-later)  
+**Copyright:** (c) 2005-2024 Chris Robinson and contributors  
+**Links:**
+
+- https://github.com/kcat/openal-soft
+- https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+This project uses OpenAL Soft, a software implementation of the OpenAL 3D audio API. OpenAL Soft is licensed under the GNU LGPL v2.1 or later.
+
+Under this license, we are allowed to use and distribute OpenAL Soft in binary form. The library is dynamically linked, and users are free to replace or modify the version of the library used.
+
+A copy of the full LGPL license is available at:  
+https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
