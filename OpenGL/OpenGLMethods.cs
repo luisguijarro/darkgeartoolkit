@@ -327,9 +327,9 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
-		public static uint glCheckFramebufferStatus(FramebufferTarget target)
+		public static FramebufferStatus glCheckFramebufferStatus(FramebufferTarget target)
 		{
-			return internalGL.glCheckFramebufferStatus(target);
+			return (FramebufferStatus)internalGL.glCheckFramebufferStatus(target);
 		}
 
 		///<sumary> Available from OpenGL version 4.5</sumary>
@@ -1159,9 +1159,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL version 2.0</sumary>
-		public static unsafe void glDrawBuffers(int n, DrawBufferMode* bufs)
+		public static unsafe void glDrawBuffers(int n, DrawBufferMode[] bufs)
 		{
-			internalGL.glDrawBuffers(n, bufs);
+			int[] temp = Array.ConvertAll(bufs, x => unchecked((int)x));
+			IntPtr ptr = Marshal.AllocHGlobal(sizeof(uint) * bufs.Length);
+			Marshal.Copy(temp, 0, ptr, bufs.Length);
+			DrawBufferMode* ptr2 = (DrawBufferMode*)ptr;
+			internalGL.glDrawBuffers(n, ptr2);
 		}
 
 		///<sumary> Available from OpenGL version 1.1</sumary>
