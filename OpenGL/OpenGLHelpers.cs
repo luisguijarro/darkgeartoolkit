@@ -25,6 +25,50 @@ namespace dgtk.OpenGL
 
         #endregion
 
+        #region D:
+
+        public static void glDeleteFramebuffer(uint fb)
+        {
+            uint[] fbs = new uint[] { fb };
+            glDeleteFramebuffers(fbs);
+        }
+        
+        public static unsafe void glDeleteFramebuffers(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteFramebuffers(ids.Length, idsp);
+            }
+        }
+
+        public static void glDeleteRenderbuffer(uint id)
+        {
+            uint[] ids = new uint[] { id };
+            glDeleteRenderbuffers(ids);
+        }
+        public static unsafe void glDeleteRenderbuffers(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteRenderbuffers(ids.Length, idsp);
+            }
+        }
+        
+        public static void glDeleteTexture(uint id)
+        {
+            uint[] ids = new uint[] { id };
+            glDeleteTextures(ids);
+        }
+        public static unsafe void glDeleteTextures(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteTextures(ids.Length, idsp);
+            }
+        }
+        
+        #endregion
+
         #region G:
 
         public static unsafe uint glGenBuffer()
@@ -33,7 +77,7 @@ namespace dgtk.OpenGL
             fixed (uint* retp = ret)
             {
                 internalGL.glGenBuffers(1, retp);
-            }		
+            }
             return ret[0];
         }
 
