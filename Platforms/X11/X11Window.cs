@@ -509,6 +509,10 @@ namespace dgtk.Platforms.X11
 									{
 										//Console.WriteLine("KS: "+ks);
 										char character = System.Text.Encoding.Unicode.GetString(BitConverter.GetBytes(ks))[0];
+										if (ks >= 0xFFB0 && ks <= 0xFFB9) // Teclado numérico
+										{
+											character = (char)('0' + (ks - 0xFFB0));
+										}
 										this.KeyCharReturned(this, new dgtk_KeyBoardTextEventArgs(character));//LANZAR EVENTO CHARACTER
 									}
 								}
