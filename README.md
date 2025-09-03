@@ -3,8 +3,8 @@ Tool Kit Library developed for **DarkGear Game Engine** with support for OpenGL,
 
 ## Compilation
 To compile the project use the command **dotnet publish:**
-  - Windows: dotnet publish ollvaror_cliente.sln --runtime win-x64 -c release -p:PublishTrimmed=true --self-contained true
-  - Linux: dotnet publish ollvaror_cliente.sln --runtime linux-x64 -c release -p:PublishTrimmed=true --self-contained true
+  - Windows: dotnet publish DarkGearToolKit.sln --runtime win-x64 -c release -p:PublishTrimmed=true --self-contained true
+  - Linux: dotnet publish DarkGearToolKit.sln --runtime linux-x64 -c release -p:PublishTrimmed=true --self-contained true
 
 Note: Change "release" word by "debug" word for debug output.
 
