@@ -328,6 +328,10 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glBlitFramebufferEXT glBlitFramebufferEXT;
 
+		internal static delegatesGL.glBlitFramebufferLayerEXT glBlitFramebufferLayerEXT;
+
+		internal static delegatesGL.glBlitFramebufferLayersEXT glBlitFramebufferLayersEXT;
+
 		internal static delegatesGL.glBlitFramebufferNV glBlitFramebufferNV;
 
 		internal static delegatesGL.glBlitNamedFramebuffer glBlitNamedFramebuffer;
@@ -1570,6 +1574,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glFramebufferSamplePositionsfvAMD glFramebufferSamplePositionsfvAMD;
 
+		internal static delegatesGL.glFramebufferShadingRateEXT glFramebufferShadingRateEXT;
+
 		internal static delegatesGL.glFramebufferTexture glFramebufferTexture;
 
 		internal static delegatesGL.glFramebufferTexture1D glFramebufferTexture1D;
@@ -1917,6 +1923,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glGetFragmentMaterialfvSGIX glGetFragmentMaterialfvSGIX;
 
 		internal static delegatesGL.glGetFragmentMaterialivSGIX glGetFragmentMaterialivSGIX;
+
+		internal static delegatesGL.glGetFragmentShadingRatesEXT glGetFragmentShadingRatesEXT;
 
 		internal static delegatesGL.glGetFramebufferAttachmentParameteriv glGetFramebufferAttachmentParameteriv;
 
@@ -3238,6 +3246,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGL.glMatrixTranslatefEXT glMatrixTranslatefEXT;
 
+		internal static delegatesGL.glMaxActiveShaderCoresARM glMaxActiveShaderCoresARM;
+
 		internal static delegatesGL.glMaxShaderCompilerThreadsARB glMaxShaderCompilerThreadsARB;
 
 		internal static delegatesGL.glMaxShaderCompilerThreadsKHR glMaxShaderCompilerThreadsKHR;
@@ -3667,6 +3677,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glNamedFramebufferTextureLayer glNamedFramebufferTextureLayer;
 
 		internal static delegatesGL.glNamedFramebufferTextureLayerEXT glNamedFramebufferTextureLayerEXT;
+
+		internal static delegatesGL.glNamedFramebufferTextureMultiviewOVR glNamedFramebufferTextureMultiviewOVR;
 
 		internal static delegatesGL.glNamedProgramLocalParameter4dEXT glNamedProgramLocalParameter4dEXT;
 
@@ -4831,6 +4843,10 @@ namespace dgtk.OpenGL
 		internal static delegatesGL.glShaderSourceARB glShaderSourceARB;
 
 		internal static delegatesGL.glShaderStorageBlockBinding glShaderStorageBlockBinding;
+
+		internal static delegatesGL.glShadingRateCombinerOpsEXT glShadingRateCombinerOpsEXT;
+
+		internal static delegatesGL.glShadingRateEXT glShadingRateEXT;
 
 		internal static delegatesGL.glShadingRateImageBarrierNV glShadingRateImageBarrierNV;
 

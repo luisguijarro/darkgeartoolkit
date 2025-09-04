@@ -14,7 +14,7 @@ namespace dgtk.OpenGL
 		{
 			IntPtr p_ret = IntPtr.Zero;
 			if (OS == OperatingSystem.None) {GetOS();}
-            switch (OS)
+			switch(OS)
 			{
 				case OperatingSystem.Windows:
 					p_ret = wglGetProcAddress(MethodName);
@@ -71,7 +71,6 @@ namespace dgtk.OpenGL
 		internal static extern IntPtr LoadLibrary(string dllName);
 
 		internal static OperatingSystem OS;
-
 		internal static void GetOS()
 		{
 			if (!isX11())

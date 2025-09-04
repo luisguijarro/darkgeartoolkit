@@ -2,8 +2,6 @@
 // File Created with OpenGL Parser 3.
 // Developed by Luis Guijarro Pérez.
 
-#pragma warning disable CS0649
-
 using System;
 
 namespace dgtk.OpenGL
@@ -149,6 +147,10 @@ namespace dgtk.OpenGL
 		internal static delegatesGLES.glBlitFramebuffer glBlitFramebuffer;
 
 		internal static delegatesGLES.glBlitFramebufferANGLE glBlitFramebufferANGLE;
+
+		internal static delegatesGLES.glBlitFramebufferLayerEXT glBlitFramebufferLayerEXT;
+
+		internal static delegatesGLES.glBlitFramebufferLayersEXT glBlitFramebufferLayersEXT;
 
 		internal static delegatesGLES.glBlitFramebufferNV glBlitFramebufferNV;
 
@@ -652,6 +654,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGLES.glFramebufferSampleLocationsfvNV glFramebufferSampleLocationsfvNV;
 
+		internal static delegatesGLES.glFramebufferShadingRateEXT glFramebufferShadingRateEXT;
+
 		internal static delegatesGLES.glFramebufferTexture glFramebufferTexture;
 
 		internal static delegatesGLES.glFramebufferTexture2D glFramebufferTexture2D;
@@ -797,6 +801,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGLES.glGetFragDataIndexEXT glGetFragDataIndexEXT;
 
 		internal static delegatesGLES.glGetFragDataLocation glGetFragDataLocation;
+
+		internal static delegatesGLES.glGetFragmentShadingRatesEXT glGetFragmentShadingRatesEXT;
 
 		internal static delegatesGLES.glGetFramebufferAttachmentParameteriv glGetFramebufferAttachmentParameteriv;
 
@@ -1350,6 +1356,8 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGLES.glMatrixTranslatefEXT glMatrixTranslatefEXT;
 
+		internal static delegatesGLES.glMaxActiveShaderCoresARM glMaxActiveShaderCoresARM;
+
 		internal static delegatesGLES.glMaxShaderCompilerThreadsKHR glMaxShaderCompilerThreadsKHR;
 
 		internal static delegatesGLES.glMemoryBarrier glMemoryBarrier;
@@ -1433,6 +1441,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGLES.glNamedBufferStorageMemEXT glNamedBufferStorageMemEXT;
 
 		internal static delegatesGLES.glNamedFramebufferSampleLocationsfvNV glNamedFramebufferSampleLocationsfvNV;
+
+		internal static delegatesGLES.glNamedFramebufferTextureMultiviewOVR glNamedFramebufferTextureMultiviewOVR;
 
 		internal static delegatesGLES.glNamedRenderbufferStorageMultisampleAdvancedAMD glNamedRenderbufferStorageMultisampleAdvancedAMD;
 
@@ -1920,6 +1930,10 @@ namespace dgtk.OpenGL
 
 		internal static delegatesGLES.glShaderSource glShaderSource;
 
+		internal static delegatesGLES.glShadingRateCombinerOpsEXT glShadingRateCombinerOpsEXT;
+
+		internal static delegatesGLES.glShadingRateEXT glShadingRateEXT;
+
 		internal static delegatesGLES.glShadingRateImageBarrierNV glShadingRateImageBarrierNV;
 
 		internal static delegatesGLES.glShadingRateImagePaletteNV glShadingRateImagePaletteNV;
@@ -2129,6 +2143,8 @@ namespace dgtk.OpenGL
 		internal static delegatesGLES.glTexSubImage3DOES glTexSubImage3DOES;
 
 		internal static delegatesGLES.glTextureAttachMemoryNV glTextureAttachMemoryNV;
+
+		internal static delegatesGLES.glTextureBarrierNV glTextureBarrierNV;
 
 		internal static delegatesGLES.glTextureFoveationParametersQCOM glTextureFoveationParametersQCOM;
 
@@ -2421,5 +2437,3 @@ namespace dgtk.OpenGL
 	}
 }
 
-
-#pragma warning restore CS0649

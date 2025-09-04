@@ -486,6 +486,14 @@ namespace dgtk.OpenGL
 			{
 				dgtk.OpenGL.internalGL.glBlitFramebufferEXT = (dgtk.OpenGL.delegatesGL.glBlitFramebufferEXT) InternalTool.GetGLMethodAdress("glBlitFramebufferEXT", typeof(dgtk.OpenGL.delegatesGL.glBlitFramebufferEXT));
 			}
+			if (SuportedExt.Contains("glBlitFramebufferLayerEXT"))
+			{
+				dgtk.OpenGL.internalGL.glBlitFramebufferLayerEXT = (dgtk.OpenGL.delegatesGL.glBlitFramebufferLayerEXT) InternalTool.GetGLMethodAdress("glBlitFramebufferLayerEXT", typeof(dgtk.OpenGL.delegatesGL.glBlitFramebufferLayerEXT));
+			}
+			if (SuportedExt.Contains("glBlitFramebufferLayersEXT"))
+			{
+				dgtk.OpenGL.internalGL.glBlitFramebufferLayersEXT = (dgtk.OpenGL.delegatesGL.glBlitFramebufferLayersEXT) InternalTool.GetGLMethodAdress("glBlitFramebufferLayersEXT", typeof(dgtk.OpenGL.delegatesGL.glBlitFramebufferLayersEXT));
+			}
 			if (SuportedExt.Contains("glBlitFramebufferNV"))
 			{
 				dgtk.OpenGL.internalGL.glBlitFramebufferNV = (dgtk.OpenGL.delegatesGL.glBlitFramebufferNV) InternalTool.GetGLMethodAdress("glBlitFramebufferNV", typeof(dgtk.OpenGL.delegatesGL.glBlitFramebufferNV));
@@ -2146,6 +2154,10 @@ namespace dgtk.OpenGL
 			{
 				dgtk.OpenGL.internalGL.glFramebufferSamplePositionsfvAMD = (dgtk.OpenGL.delegatesGL.glFramebufferSamplePositionsfvAMD) InternalTool.GetGLMethodAdress("glFramebufferSamplePositionsfvAMD", typeof(dgtk.OpenGL.delegatesGL.glFramebufferSamplePositionsfvAMD));
 			}
+			if (SuportedExt.Contains("glFramebufferShadingRateEXT"))
+			{
+				dgtk.OpenGL.internalGL.glFramebufferShadingRateEXT = (dgtk.OpenGL.delegatesGL.glFramebufferShadingRateEXT) InternalTool.GetGLMethodAdress("glFramebufferShadingRateEXT", typeof(dgtk.OpenGL.delegatesGL.glFramebufferShadingRateEXT));
+			}
 			if (SuportedExt.Contains("glFramebufferTexture1DEXT"))
 			{
 				dgtk.OpenGL.internalGL.glFramebufferTexture1DEXT = (dgtk.OpenGL.delegatesGL.glFramebufferTexture1DEXT) InternalTool.GetGLMethodAdress("glFramebufferTexture1DEXT", typeof(dgtk.OpenGL.delegatesGL.glFramebufferTexture1DEXT));
@@ -2641,6 +2653,10 @@ namespace dgtk.OpenGL
 			if (SuportedExt.Contains("glGetFragmentMaterialivSGIX"))
 			{
 				dgtk.OpenGL.internalGL.glGetFragmentMaterialivSGIX = (dgtk.OpenGL.delegatesGL.glGetFragmentMaterialivSGIX) InternalTool.GetGLMethodAdress("glGetFragmentMaterialivSGIX", typeof(dgtk.OpenGL.delegatesGL.glGetFragmentMaterialivSGIX));
+			}
+			if (SuportedExt.Contains("glGetFragmentShadingRatesEXT"))
+			{
+				dgtk.OpenGL.internalGL.glGetFragmentShadingRatesEXT = (dgtk.OpenGL.delegatesGL.glGetFragmentShadingRatesEXT) InternalTool.GetGLMethodAdress("glGetFragmentShadingRatesEXT", typeof(dgtk.OpenGL.delegatesGL.glGetFragmentShadingRatesEXT));
 			}
 			if (SuportedExt.Contains("glGetFramebufferAttachmentParameterivEXT"))
 			{
@@ -4462,6 +4478,10 @@ namespace dgtk.OpenGL
 			{
 				dgtk.OpenGL.internalGL.glMatrixTranslatefEXT = (dgtk.OpenGL.delegatesGL.glMatrixTranslatefEXT) InternalTool.GetGLMethodAdress("glMatrixTranslatefEXT", typeof(dgtk.OpenGL.delegatesGL.glMatrixTranslatefEXT));
 			}
+			if (SuportedExt.Contains("glMaxActiveShaderCoresARM"))
+			{
+				dgtk.OpenGL.internalGL.glMaxActiveShaderCoresARM = (dgtk.OpenGL.delegatesGL.glMaxActiveShaderCoresARM) InternalTool.GetGLMethodAdress("glMaxActiveShaderCoresARM", typeof(dgtk.OpenGL.delegatesGL.glMaxActiveShaderCoresARM));
+			}
 			if (SuportedExt.Contains("glMaxShaderCompilerThreadsARB"))
 			{
 				dgtk.OpenGL.internalGL.glMaxShaderCompilerThreadsARB = (dgtk.OpenGL.delegatesGL.glMaxShaderCompilerThreadsARB) InternalTool.GetGLMethodAdress("glMaxShaderCompilerThreadsARB", typeof(dgtk.OpenGL.delegatesGL.glMaxShaderCompilerThreadsARB));
@@ -5061,6 +5081,10 @@ namespace dgtk.OpenGL
 			if (SuportedExt.Contains("glNamedFramebufferTextureLayerEXT"))
 			{
 				dgtk.OpenGL.internalGL.glNamedFramebufferTextureLayerEXT = (dgtk.OpenGL.delegatesGL.glNamedFramebufferTextureLayerEXT) InternalTool.GetGLMethodAdress("glNamedFramebufferTextureLayerEXT", typeof(dgtk.OpenGL.delegatesGL.glNamedFramebufferTextureLayerEXT));
+			}
+			if (SuportedExt.Contains("glNamedFramebufferTextureMultiviewOVR"))
+			{
+				dgtk.OpenGL.internalGL.glNamedFramebufferTextureMultiviewOVR = (dgtk.OpenGL.delegatesGL.glNamedFramebufferTextureMultiviewOVR) InternalTool.GetGLMethodAdress("glNamedFramebufferTextureMultiviewOVR", typeof(dgtk.OpenGL.delegatesGL.glNamedFramebufferTextureMultiviewOVR));
 			}
 			if (SuportedExt.Contains("glNamedProgramLocalParameter4dEXT"))
 			{
@@ -6625,6 +6649,14 @@ namespace dgtk.OpenGL
 			if (SuportedExt.Contains("glShaderSourceARB"))
 			{
 				dgtk.OpenGL.internalGL.glShaderSourceARB = (dgtk.OpenGL.delegatesGL.glShaderSourceARB) InternalTool.GetGLMethodAdress("glShaderSourceARB", typeof(dgtk.OpenGL.delegatesGL.glShaderSourceARB));
+			}
+			if (SuportedExt.Contains("glShadingRateCombinerOpsEXT"))
+			{
+				dgtk.OpenGL.internalGL.glShadingRateCombinerOpsEXT = (dgtk.OpenGL.delegatesGL.glShadingRateCombinerOpsEXT) InternalTool.GetGLMethodAdress("glShadingRateCombinerOpsEXT", typeof(dgtk.OpenGL.delegatesGL.glShadingRateCombinerOpsEXT));
+			}
+			if (SuportedExt.Contains("glShadingRateEXT"))
+			{
+				dgtk.OpenGL.internalGL.glShadingRateEXT = (dgtk.OpenGL.delegatesGL.glShadingRateEXT) InternalTool.GetGLMethodAdress("glShadingRateEXT", typeof(dgtk.OpenGL.delegatesGL.glShadingRateEXT));
 			}
 			if (SuportedExt.Contains("glShadingRateImageBarrierNV"))
 			{
@@ -9073,7 +9105,6 @@ namespace dgtk.OpenGL
 			#endregion
 
 		}
-
 		[DllImport("opengl32.dll")]
 		private static extern IntPtr glGetString(StringName name);
 
@@ -9083,7 +9114,7 @@ namespace dgtk.OpenGL
 		{
 			if (isLinux)
 			{
-				return dgtk.OpenGL.GL.glGetStringh(name); //Marshal.PtrToStringAnsi();//glGetString(name));
+				return dgtk.OpenGL.GL.glGetStringh(name);
 			}
 			else
 			{
