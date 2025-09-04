@@ -3,14 +3,14 @@ using System.Runtime.InteropServices;
 
 namespace dgtk.OpenGL
 {
-	public static partial class GLES
+	public static partial class GL
     {
         #region B:
 
         public static void glBufferData<T>(BufferTargetARB target, int size, T[] data, BufferUsageARB usage) where T : struct
 		{
 			GCHandle ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
-			internalGLES.glBufferData(target, size, (IntPtr)ptr.AddrOfPinnedObject(), usage);
+			internalGL.glBufferData(target, size, (IntPtr)ptr.AddrOfPinnedObject(), usage);
 			ptr.Free();
 		}
 
@@ -20,20 +20,53 @@ namespace dgtk.OpenGL
         
         public static void glClearColor(dgtk.Graphics.Color4 color)
         {
-            internalGLES.glClearColor(color.R, color.G, color.B, color.A);
+            internalGL.glClearColor(color.R, color.G, color.B, color.A);
         }
 
         #endregion
 
         #region D:
 
-		public static unsafe void glDeleteFramebuffer(uint FB)
-		{
-            uint* ptrFB = &FB;
-            internalGLES.glDeleteFramebuffers(1, ptrFB);
-		}
+        public static void glDeleteFramebuffer(uint fb)
+        {
+            uint[] fbs = new uint[] { fb };
+            glDeleteFramebuffers(fbs);
+        }
+        
+        public static unsafe void glDeleteFramebuffers(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteFramebuffers(ids.Length, idsp);
+            }
+        }
 
-
+        public static void glDeleteRenderbuffer(uint id)
+        {
+            uint[] ids = new uint[] { id };
+            glDeleteRenderbuffers(ids);
+        }
+        public static unsafe void glDeleteRenderbuffers(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteRenderbuffers(ids.Length, idsp);
+            }
+        }
+        
+        public static void glDeleteTexture(uint id)
+        {
+            uint[] ids = new uint[] { id };
+            glDeleteTextures(ids);
+        }
+        public static unsafe void glDeleteTextures(uint[] ids)
+        {
+            fixed (uint* idsp = ids)
+            {
+                internalGL.glDeleteTextures(ids.Length, idsp);
+            }
+        }
+        
         #endregion
 
         #region G:
@@ -43,8 +76,8 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[1];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenBuffers(1, retp);
-            }		
+                internalGL.glGenBuffers(1, retp);
+            }
             return ret[0];
         }
 
@@ -53,7 +86,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[n];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenBuffers(n, retp);
+                internalGL.glGenBuffers(n, retp);
             }		
             return ret;
         }
@@ -63,7 +96,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[1];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenFramebuffers(1, retp);
+                internalGL.glGenFramebuffers(1, retp);
             }
             return ret[0];
 		}
@@ -73,7 +106,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[n];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenFramebuffers(n, retp);
+                internalGL.glGenFramebuffers(n, retp);
             }
             return ret;
 		}
@@ -83,7 +116,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[1];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenRenderbuffers(1, retp);
+                internalGL.glGenRenderbuffers(1, retp);
             }
             return ret[0];
 		}
@@ -93,7 +126,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[n];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenRenderbuffers(n, retp);
+                internalGL.glGenRenderbuffers(n, retp);
             }
             return ret;
 		}
@@ -103,7 +136,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[1];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenTextures(1, retp);
+                internalGL.glGenTextures(1, retp);
             }		
             return ret[0];
         }
@@ -113,26 +146,26 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[n];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenTextures(1, retp);
+                internalGL.glGenTextures(1, retp);
             }		
             return ret;
         }
 
         public static unsafe string glGetStringh(StringName name)
 		{
-			return Marshal.PtrToStringAnsi((IntPtr)internalGLES.glGetString(name));
+			return Marshal.PtrToStringAnsi((IntPtr)internalGL.glGetString(name));
 		}
 
 		///<sumary> Available from OpenGL version 3.0</sumary>
 		public static unsafe string glGetStringih(StringName name, uint index)
 		{
-			return Marshal.PtrToStringAnsi((IntPtr)internalGLES.glGetStringi(name, index));
+			return Marshal.PtrToStringAnsi((IntPtr)internalGL.glGetStringi(name, index));
 		}
 
         public static unsafe string glGetShaderInfoLog(uint shader)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(512);
-            internalGLES.glGetShaderInfoLog(shader, 512, null, sb);
+            internalGL.glGetShaderInfoLog(shader, 512, null, sb);
             return sb.ToString();
         }
 
@@ -141,7 +174,7 @@ namespace dgtk.OpenGL
             int[] ret = new int[1];
             fixed (int* retp = ret)
             {
-                internalGLES.glGetShaderiv(shader, pname, retp);
+                internalGL.glGetShaderiv(shader, pname, retp);
             }			
             return ret[0];
 		}
@@ -151,7 +184,7 @@ namespace dgtk.OpenGL
             uint[] ret = new uint[1];
             fixed (uint* retp = ret)
             {
-                internalGLES.glGenVertexArrays(1, retp);
+                internalGL.glGenVertexArrays(1, retp);
             }
             return ret[0];
         }
@@ -161,7 +194,7 @@ namespace dgtk.OpenGL
             int[] fret = new int[lenght];
             fixed(int* ptr = &fret[0])
             {
-                internalGLES.glGetUniformiv(program, location, ptr);
+                internalGL.glGetUniformiv(program, location, ptr);
             }
             return fret;
         }
@@ -171,7 +204,7 @@ namespace dgtk.OpenGL
             uint[] fret = new uint[lenght];
             fixed(uint* ptr = &fret[0])
             {
-                internalGLES.glGetUniformuiv(program, location, ptr);
+                internalGL.glGetUniformuiv(program, location, ptr);
             }
             return fret;
         }
@@ -181,27 +214,27 @@ namespace dgtk.OpenGL
             float[] fret = new float[lenght];
             fixed(float* ptr = &fret[0])
             {
-                internalGLES.glGetUniformfv(program, location, ptr);
+                internalGL.glGetUniformfv(program, location, ptr);
             }
             return fret;
         }
-        /*
+
         public static unsafe double[] glGetUniformdv(uint program, int location, int lenght)
         {
             double[] fret = new double[lenght];
             fixed(double* ptr = &fret[0])
             {
-                internalGLES.glGetUniformdv(program, location, ptr);
+                internalGL.glGetUniformdv(program, location, ptr);
             }
             return fret;
         }
-        */
+
         public static unsafe int[] glGetViewport()
         {
             int[] iret = new int[4];
             fixed(int* ptr = &iret[0])
             {
-                internalGLES.glGetIntegerv(GetPName.GL_VIEWPORT, ptr);
+                internalGL.glGetIntegerv(GetPName.GL_VIEWPORT, ptr);
             }
             return iret;
         }
@@ -214,7 +247,7 @@ namespace dgtk.OpenGL
 		{
             fixed(int* ptr = new int[]{source.Length})
             {
-			    internalGLES.glShaderSource(shader, 1, new string[]{source}, ptr);
+			    internalGL.glShaderSource(shader, 1, new string[]{source}, ptr);
             }
 		}
 
@@ -227,7 +260,7 @@ namespace dgtk.OpenGL
             }
             fixed(int* ptr = ptr_lenght)
             {
-			    internalGLES.glShaderSource(shader, sources.Length, sources, ptr);
+			    internalGL.glShaderSource(shader, sources.Length, sources, ptr);
             }
 		}
 
@@ -239,7 +272,7 @@ namespace dgtk.OpenGL
         {
             fixed (int* ptr = &value[0])
             {
-                internalGLES.glUniform1iv(location, count, ptr);
+                internalGL.glUniform1iv(location, count, ptr);
             }
         }
 
@@ -247,7 +280,7 @@ namespace dgtk.OpenGL
         {
             fixed (uint* ptr = &value[0])
             {
-                internalGLES.glUniform1uiv(location, count, ptr);
+                internalGL.glUniform1uiv(location, count, ptr);
             }
         }
 
@@ -255,7 +288,7 @@ namespace dgtk.OpenGL
         {
             fixed (float* ptr = &value[0])
             {
-                internalGLES.glUniform1fv(location, count, ptr);
+                internalGL.glUniform1fv(location, count, ptr);
             }
         }
 
@@ -263,7 +296,7 @@ namespace dgtk.OpenGL
         {
             fixed (int* ptr = &value[0])
             {
-                internalGLES.glUniform2iv(location, count, ptr);
+                internalGL.glUniform2iv(location, count, ptr);
             }
         }
 
@@ -271,7 +304,7 @@ namespace dgtk.OpenGL
         {
             fixed (uint* ptr = &value[0])
             {
-                internalGLES.glUniform2uiv(location, count, ptr);
+                internalGL.glUniform2uiv(location, count, ptr);
             }
         }
 
@@ -279,7 +312,7 @@ namespace dgtk.OpenGL
         {
             fixed (float* ptr = &value[0])
             {
-                internalGLES.glUniform2fv(location, count, ptr);
+                internalGL.glUniform2fv(location, count, ptr);
             }
         }
 
@@ -287,7 +320,7 @@ namespace dgtk.OpenGL
         {
             fixed (int* ptr = &value[0])
             {
-                internalGLES.glUniform3iv(location, count, ptr);
+                internalGL.glUniform3iv(location, count, ptr);
             }
         }
 
@@ -295,20 +328,20 @@ namespace dgtk.OpenGL
         {
             fixed (uint* ptr = &value[0])
             {
-                internalGLES.glUniform3uiv(location, count, ptr);
+                internalGL.glUniform3uiv(location, count, ptr);
             }
         }
 
         public static unsafe void glUniform3f(int location, dgtk.Math.Vector3 value)
         {
-            internalGLES.glUniform3f(location, value.X, value.Y, value.Z);
+            internalGL.glUniform3f(location, value.X, value.Y, value.Z);
         }
 
         public static unsafe void glUniform3fv(int location, int count, float[] value)
         {
             fixed (float* ptr = &value[0])
             {
-                internalGLES.glUniform3fv(location, count, ptr);
+                internalGL.glUniform3fv(location, count, ptr);
             }
         }
 
@@ -316,7 +349,7 @@ namespace dgtk.OpenGL
         {
             fixed (int* ptr = &value[0])
             {
-                internalGLES.glUniform4iv(location, count, ptr);
+                internalGL.glUniform4iv(location, count, ptr);
             }
         }
 
@@ -324,54 +357,54 @@ namespace dgtk.OpenGL
         {
             fixed (uint* ptr = &value[0])
             {
-                internalGLES.glUniform4uiv(location, count, ptr);
+                internalGL.glUniform4uiv(location, count, ptr);
             }
         }
 
         public static unsafe void glUniform4f(int location, float[] value)
         {
-            internalGLES.glUniform4f(location, value[0], value[1], value[2], value[3]);
+            internalGL.glUniform4f(location, value[0], value[1], value[2], value[3]);
         }
 
         public static unsafe void glUniform4f(int location, dgtk.Math.Vector4 value)
         {
-            internalGLES.glUniform4f(location, value.X, value.Y, value.Z, value.W);
+            internalGL.glUniform4f(location, value.X, value.Y, value.Z, value.W);
         }
 
         public static unsafe void glUniform4f(int location, dgtk.Graphics.Color4 value)
         {
-            internalGLES.glUniform4f(location, value.R, value.G, value.B, value.A);
+            internalGL.glUniform4f(location, value.R, value.G, value.B, value.A);
         }
 
         public static unsafe void glUniform4fv(int location, int count, float[] value)
         {
             fixed (float* ptr = &value[0])
             {
-                internalGLES.glUniform4fv(location, count, ptr);
+                internalGL.glUniform4fv(location, count, ptr);
             }
         }
 
-        public static unsafe void glUniformMatrix(int location, Boolean transpose, dgtk.Math.Mat2 mat)
+        public static unsafe void glUniformMatrix(int location, bool transpose, dgtk.Math.Mat2 mat)
         {
             fixed(float* ptr = &mat.ToFloat()[0])
             {
-                internalGLES.glUniformMatrix2fv(location, 1, transpose, ptr);
+                internalGL.glUniformMatrix2fv(location, 1, transpose, ptr);
             }            
         }
 
-        public static unsafe void glUniformMatrix(int location, Boolean transpose, dgtk.Math.Mat3 mat)
+        public static unsafe void glUniformMatrix(int location, bool transpose, dgtk.Math.Mat3 mat)
         {
             fixed(float* ptr = &mat.ToFloat()[0])
             {
-                internalGLES.glUniformMatrix3fv(location, 1, transpose, ptr);
+                internalGL.glUniformMatrix3fv(location, 1, transpose, ptr);
             }            
         }
 
-        public static unsafe void glUniformMatrix(int location, Boolean transpose, dgtk.Math.Mat4 mat)
+        public static unsafe void glUniformMatrix(int location, bool transpose, dgtk.Math.Mat4 mat)
         {
             fixed(float* ptr = &mat.ToFloat()[0])
             {
-                internalGLES.glUniformMatrix4fv(location, 1, transpose, ptr);
+                internalGL.glUniformMatrix4fv(location, 1, transpose, ptr);
             }            
         }
 

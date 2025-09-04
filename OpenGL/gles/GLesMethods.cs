@@ -89,7 +89,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static void glBindImageTexture(uint unit, uint texture, int level, Boolean layered, int layer, BufferAccessARB access, InternalFormat format)
+		public static void glBindImageTexture(uint unit, uint texture, int level, bool layered, int layer, BufferAccessARB access, InternalFormat format)
 		{
 			internalGLES.glBindImageTexture(unit, texture, level, layered, layer, access, format);
 		}
@@ -327,13 +327,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glColorMask(Boolean red, Boolean green, Boolean blue, Boolean alpha)
+		public static void glColorMask(bool red, bool green, bool blue, bool alpha)
 		{
 			internalGLES.glColorMask(red, green, blue, alpha);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.2</sumary>
-		public static void glColorMaski(uint index, Boolean r, Boolean g, Boolean b, Boolean a)
+		public static void glColorMaski(uint index, bool r, bool g, bool b, bool a)
 		{
 			internalGLES.glColorMaski(index, r, g, b, a);
 		}
@@ -423,7 +423,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glCullFace(CullFaceMode mode)
+		public static void glCullFace(TriangleFace mode)
 		{
 			internalGLES.glCullFace(mode);
 		}
@@ -439,7 +439,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.2</sumary>
-		public static unsafe void glDebugMessageControl(DebugSource source, DebugType type, DebugSeverity severity, int count, uint* ids, Boolean enabled)
+		public static unsafe void glDebugMessageControl(DebugSource source, DebugType type, DebugSeverity severity, int count, uint* ids, bool enabled)
 		{
 			internalGLES.glDebugMessageControl(source, type, severity, count, ids, enabled);
 		}
@@ -529,7 +529,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glDepthMask(Boolean flag)
+		public static void glDepthMask(bool flag)
 		{
 			internalGLES.glDepthMask(flag);
 		}
@@ -901,13 +901,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glGetBooleani_v(BufferTargetARB target, uint index, Boolean* data)
+		public static unsafe void glGetBooleani_v(BufferTargetARB target, uint index, bool* data)
 		{
 			internalGLES.glGetBooleani_v(target, index, data);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static unsafe void glGetBooleanv(GetPName pname, Boolean* data)
+		public static unsafe void glGetBooleanv(GetPName pname, bool* data)
 		{
 			internalGLES.glGetBooleanv(pname, data);
 		}
@@ -1033,13 +1033,13 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static unsafe void glGetMaterialfv(MaterialFace face, MaterialParameter pname, float* @params)
+		public static unsafe void glGetMaterialfv(TriangleFace face, MaterialParameter pname, float* @params)
 		{
 			internalGLES.glGetMaterialfv(face, pname, @params);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static unsafe void glGetMaterialxv(MaterialFace face, MaterialParameter pname, int* @params)
+		public static unsafe void glGetMaterialxv(TriangleFace face, MaterialParameter pname, int* @params)
 		{
 			internalGLES.glGetMaterialxv(face, pname, @params);
 		}
@@ -1577,25 +1577,25 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glMaterialf(MaterialFace face, MaterialParameter pname, float param)
+		public static void glMaterialf(TriangleFace face, MaterialParameter pname, float param)
 		{
 			internalGLES.glMaterialf(face, pname, param);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static unsafe void glMaterialfv(MaterialFace face, MaterialParameter pname, float* @params)
+		public static unsafe void glMaterialfv(TriangleFace face, MaterialParameter pname, float* @params)
 		{
 			internalGLES.glMaterialfv(face, pname, @params);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glMaterialx(MaterialFace face, MaterialParameter pname, int param)
+		public static void glMaterialx(TriangleFace face, MaterialParameter pname, int param)
 		{
 			internalGLES.glMaterialx(face, pname, param);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static unsafe void glMaterialxv(MaterialFace face, MaterialParameter pname, int* param)
+		public static unsafe void glMaterialxv(TriangleFace face, MaterialParameter pname, int* param)
 		{
 			internalGLES.glMaterialxv(face, pname, param);
 		}
@@ -1943,55 +1943,55 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix2fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix2fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix2fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix2x3fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix2x3fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix2x3fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix2x4fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix2x4fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix2x4fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix3fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix3fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix3fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix3x2fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix3x2fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix3x2fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix3x4fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix3x4fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix3x4fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix4fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix4fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix4fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix4x2fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix4x2fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix4x2fv(program, location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static unsafe void glProgramUniformMatrix4x3fv(uint program, int location, int count, Boolean transpose, float* value)
+		public static unsafe void glProgramUniformMatrix4x3fv(uint program, int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glProgramUniformMatrix4x3fv(program, location, count, transpose, value);
 		}
@@ -2071,13 +2071,13 @@ namespace dgtk.OpenGL
 		#region S:
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glSampleCoverage(float value, Boolean invert)
+		public static void glSampleCoverage(float value, bool invert)
 		{
 			internalGLES.glSampleCoverage(value, invert);
 		}
 
 		///<sumary> Available from OpenGL|ES version 1.0</sumary>
-		public static void glSampleCoveragex(int value, Boolean invert)
+		public static void glSampleCoveragex(int value, bool invert)
 		{
 			internalGLES.glSampleCoveragex(value, invert);
 		}
@@ -2167,7 +2167,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static void glStencilFuncSeparate(StencilFaceDirection face, StencilFunction func, int @ref, uint mask)
+		public static void glStencilFuncSeparate(TriangleFace face, StencilFunction func, int @ref, uint mask)
 		{
 			internalGLES.glStencilFuncSeparate(face, func, @ref, mask);
 		}
@@ -2179,7 +2179,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static void glStencilMaskSeparate(StencilFaceDirection face, uint mask)
+		public static void glStencilMaskSeparate(TriangleFace face, uint mask)
 		{
 			internalGLES.glStencilMaskSeparate(face, mask);
 		}
@@ -2191,7 +2191,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static void glStencilOpSeparate(StencilFaceDirection face, StencilOp sfail, StencilOp dpfail, StencilOp dppass)
+		public static void glStencilOpSeparate(TriangleFace face, StencilOp sfail, StencilOp dpfail, StencilOp dppass)
 		{
 			internalGLES.glStencilOpSeparate(face, sfail, dpfail, dppass);
 		}
@@ -2321,7 +2321,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static void glTexStorage2DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, Boolean fixedsamplelocations)
+		public static void glTexStorage2DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, bool fixedsamplelocations)
 		{
 			internalGLES.glTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 		}
@@ -2333,7 +2333,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.2</sumary>
-		public static void glTexStorage3DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, int depth, Boolean fixedsamplelocations)
+		public static void glTexStorage3DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, int depth, bool fixedsamplelocations)
 		{
 			internalGLES.glTexStorage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
 		}
@@ -2523,55 +2523,55 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static unsafe void glUniformMatrix2fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix2fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix2fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix2x3fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix2x3fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix2x3fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix2x4fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix2x4fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix2x4fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static unsafe void glUniformMatrix3fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix3fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix3fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix3x2fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix3x2fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix3x2fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix3x4fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix3x4fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix3x4fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static unsafe void glUniformMatrix4fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix4fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix4fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix4x2fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix4x2fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix4x2fv(location, count, transpose, value);
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.0</sumary>
-		public static unsafe void glUniformMatrix4x3fv(int location, int count, Boolean transpose, float* value)
+		public static unsafe void glUniformMatrix4x3fv(int location, int count, bool transpose, float* value)
 		{
 			internalGLES.glUniformMatrix4x3fv(location, count, transpose, value);
 		}
@@ -2671,7 +2671,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 3.1</sumary>
-		public static void glVertexAttribFormat(uint attribindex, int size, VertexAttribType type, Boolean normalized, uint relativeoffset)
+		public static void glVertexAttribFormat(uint attribindex, int size, VertexAttribType type, bool normalized, uint relativeoffset)
 		{
 			internalGLES.glVertexAttribFormat(attribindex, size, type, normalized, relativeoffset);
 		}
@@ -2713,7 +2713,7 @@ namespace dgtk.OpenGL
 		}
 
 		///<sumary> Available from OpenGL|ES version 2.0</sumary>
-		public static void glVertexAttribPointer(uint index, int size, VertexAttribPointerType type, Boolean normalized, int stride, IntPtr pointer)
+		public static void glVertexAttribPointer(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, IntPtr pointer)
 		{
 			internalGLES.glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 		}
