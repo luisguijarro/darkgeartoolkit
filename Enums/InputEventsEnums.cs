@@ -7,6 +7,7 @@ namespace dgtk
 		Enter, Leave
 	}
 
+	[Flags]
 	public enum MouseButtons
 	{
 		Left = 1, Center = 2, Right = 4
