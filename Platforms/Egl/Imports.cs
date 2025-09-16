@@ -1,147 +1,174 @@
 using System;
-using System.Security;
 using System.Runtime.InteropServices;
 
-namespace dgtk.Platforms.EGL
+namespace dgtk.Platforms.EGL;
+
+internal static class Imports
 {
-    internal static class Imports
+    private static readonly IntPtr _libHandle;
+
+    #region Delegates
+
+    internal delegate bool eglBindAPIDelegate(EGL_API api);
+    internal delegate bool eglBindTexImageDelegate(IntPtr dpy, IntPtr surface, int buffer);
+    internal delegate bool eglChooseConfigDelegate(IntPtr dpy, int[] attrib_list, out IntPtr configs, int config_size, out int num_config);
+    internal delegate int eglClientWaitSyncDelegate(IntPtr dpy, IntPtr sync, int flags, long timeout);
+    internal delegate bool eglCopyBuffersDelegate(IntPtr dpy, IntPtr surface, IntPtr target);
+    internal delegate IntPtr eglCreateContextDelegate(IntPtr dpy, IntPtr config, IntPtr share_context, int[] attrib_list);
+    internal delegate IntPtr eglCreateImageDelegate(IntPtr dpy, IntPtr ctx, EGL_ENUM target, IntPtr buffer, ref IntPtr attrib_list);
+    internal delegate IntPtr eglCreatePbufferFromClientBufferDelegate(IntPtr dpy, EGL_ENUM buftype, IntPtr buffer, IntPtr config, ref int[] attrib_list);
+    internal delegate IntPtr eglCreatePbufferSurfaceDelegate(IntPtr dpy, IntPtr config, ref int[] attrib_list);
+    internal delegate IntPtr eglCreatePixmapSurfaceDelegate(IntPtr dpy, IntPtr config, IntPtr pixmap, ref int[] attrib_list);
+    internal delegate IntPtr eglCreatePlatformPixmapSurfaceDelegate(IntPtr dpy, IntPtr config, IntPtr native_pixmap, ref IntPtr attrib_list);
+    internal delegate IntPtr eglCreatePlatformWindowSurfaceDelegate(IntPtr dpy, IntPtr config, IntPtr native_window, ref IntPtr attrib_list);
+    internal delegate IntPtr eglCreateSyncDelegate(IntPtr dpy, EGL_ENUM type, ref IntPtr attrib_list);
+    internal delegate IntPtr eglCreateWindowSurfaceDelegate(IntPtr dpy, IntPtr config, IntPtr win, int[] attrib_list);
+    internal delegate bool eglDestroyContextDelegate(IntPtr dpy, IntPtr ctx);
+    internal delegate bool eglDestroyImageDelegate(IntPtr dpy, IntPtr image);
+    internal delegate bool eglDestroySurfaceDelegate(IntPtr dpy, IntPtr surface);
+    internal delegate bool eglDestroySyncDelegate(IntPtr dpy, IntPtr sync);
+    internal delegate bool eglGetConfigAttribDelegate(IntPtr dpy, IntPtr config, int attribute, ref int value);
+    internal delegate bool eglGetConfigsDelegate(IntPtr dpy, IntPtr configs, int config_size, out int num_config);
+    internal delegate IntPtr eglGetCurrentContextDelegate();
+    internal delegate IntPtr eglGetCurrentDisplayDelegate();
+    internal delegate IntPtr eglGetCurrentSurfaceDelegate(int readdraw);
+    internal delegate IntPtr eglGetDisplayDelegate(IntPtr display_id);
+    internal delegate EGL_ERRORS eglGetErrorDelegate();
+    internal delegate IntPtr eglGetPlatformDisplayDelegate(EGL_ENUM platform, IntPtr native_display, ref IntPtr attrib_list);
+    internal delegate IntPtr eglGetProcAddressDelegate(string procname);
+    internal delegate bool eglGetSyncAttribDelegate(IntPtr dpy, IntPtr sync, int attribute, ref IntPtr value);
+    internal delegate bool eglInitializeDelegate(IntPtr dpy, ref int major, ref int minor);
+    internal delegate bool eglMakeCurrentDelegate(IntPtr dpy, IntPtr draw, IntPtr read, IntPtr ctx);
+    internal delegate EGL_ENUM eglQueryAPIDelegate();
+    internal delegate bool eglQueryContextDelegate(IntPtr dpy, IntPtr ctx, int attribute, ref int value);
+    internal delegate string eglQueryStringDelegate(IntPtr dpy, int name);
+    internal delegate bool eglQuerySurfaceDelegate(IntPtr dpy, IntPtr surface, int attribute, ref int value);
+    internal delegate bool eglReleaseTexImageDelegate(IntPtr dpy, IntPtr surface, int buffer);
+    internal delegate bool eglReleaseThreadDelegate();
+    internal delegate bool IntPtrAttribDelegate(IntPtr dpy, IntPtr surface, int attribute, int value);
+    internal delegate bool eglSwapBuffersDelegate(IntPtr dpy, IntPtr surface);
+    internal delegate bool eglSwapIntervalDelegate(IntPtr dpy, int interval);
+    internal delegate bool eglTerminateDelegate(IntPtr dpy);
+    internal delegate bool eglWaitClientDelegate();
+    internal delegate bool eglWaitGLDelegate();
+    internal delegate bool eglWaitNativeDelegate(int engine);
+    internal delegate bool eglWaitSyncDelegate(IntPtr dpy, IntPtr sync, int flags);
+
+    #endregion
+
+    #region Internal Functions
+
+    internal static readonly eglBindAPIDelegate eglBindAPI;
+    internal static readonly eglBindTexImageDelegate eglBindTexImage;
+    internal static readonly eglChooseConfigDelegate eglChooseConfig;
+    internal static readonly eglClientWaitSyncDelegate eglClientWaitSync;
+    internal static readonly eglCopyBuffersDelegate eglCopyBuffers;
+    internal static readonly eglCreateContextDelegate eglCreateContext;
+    internal static readonly eglCreateImageDelegate eglCreateImage;
+    internal static readonly eglCreatePbufferFromClientBufferDelegate eglCreatePbufferFromClientBuffer;
+    internal static readonly eglCreatePbufferSurfaceDelegate eglCreatePbufferSurface;
+    internal static readonly eglCreatePixmapSurfaceDelegate eglCreatePixmapSurface;
+    internal static readonly eglCreatePlatformPixmapSurfaceDelegate eglCreatePlatformPixmapSurface;
+    internal static readonly eglCreatePlatformWindowSurfaceDelegate eglCreatePlatformWindowSurface;
+    internal static readonly eglCreateSyncDelegate eglCreateSync;
+    internal static readonly eglCreateWindowSurfaceDelegate eglCreateWindowSurface;
+    internal static readonly eglDestroyContextDelegate eglDestroyContext;
+    internal static readonly eglDestroyImageDelegate eglDestroyImage;
+    internal static readonly eglDestroySurfaceDelegate eglDestroySurface;
+    internal static readonly eglDestroySyncDelegate eglDestroySync;
+    internal static readonly eglGetConfigAttribDelegate eglGetConfigAttrib;
+    internal static readonly eglGetConfigsDelegate eglGetConfigs;
+    internal static readonly eglGetCurrentContextDelegate eglGetCurrentContext;
+    internal static readonly eglGetCurrentDisplayDelegate eglGetCurrentDisplay;
+    internal static readonly eglGetCurrentSurfaceDelegate eglGetCurrentSurface;
+    internal static readonly eglGetDisplayDelegate eglGetDisplay;
+    internal static readonly eglGetErrorDelegate eglGetError;
+    internal static readonly eglGetPlatformDisplayDelegate eglGetPlatformDisplay;
+    internal static readonly eglGetProcAddressDelegate eglGetProcAddress;
+    internal static readonly eglGetSyncAttribDelegate eglGetSyncAttrib;
+    internal static readonly eglInitializeDelegate eglInitialize;
+    internal static readonly eglMakeCurrentDelegate eglMakeCurrent;
+    internal static readonly eglQueryAPIDelegate eglQueryAPI;
+    internal static readonly eglQueryContextDelegate eglQueryContext;
+    internal static readonly eglQueryStringDelegate eglQueryString;
+    internal static readonly eglQuerySurfaceDelegate eglQuerySurface;
+    internal static readonly eglReleaseTexImageDelegate eglReleaseTexImage;
+    internal static readonly eglReleaseThreadDelegate eglReleaseThread;
+    internal static readonly IntPtrAttribDelegate IntPtrAttrib;
+    internal static readonly eglSwapBuffersDelegate eglSwapBuffers;
+    internal static readonly eglSwapIntervalDelegate eglSwapInterval;
+    internal static readonly eglTerminateDelegate eglTerminate;
+    internal static readonly eglWaitClientDelegate eglWaitClient;
+    internal static readonly eglWaitGLDelegate eglWaitGL;
+    internal static readonly eglWaitNativeDelegate eglWaitNative;
+    internal static readonly eglWaitSyncDelegate eglWaitSync;
+
+    #endregion
+
+    // Inicialización estática
+    static Imports()
     {
-    #if IsWin        
-        internal const string LibEgl = "libEGL.dll";
-    #else
-        internal const string LibEgl = "libEGL.so.1";
-    #endif
+        string libName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            ? "libEGL.dll"
+            : "libEGL.so.1";
 
-        [DllImport(LibEgl, EntryPoint = "eglBindAPI")]
-        internal static extern bool eglBindAPI (EGL_API api);
+        _libHandle = NativeLibrary.Load(libName);
 
-        [DllImport(LibEgl, EntryPoint = "eglBindTexImage")]
-        internal static extern bool eglBindTexImage (IntPtr dpy, IntPtr surface, int buffer);
+        eglBindAPI = GetFunction<eglBindAPIDelegate>("eglBindAPI");
+        eglBindTexImage = GetFunction<eglBindTexImageDelegate>("eglBindTexImage");
+        eglChooseConfig = GetFunction<eglChooseConfigDelegate>("eglChooseConfig");
+        eglClientWaitSync = GetFunction<eglClientWaitSyncDelegate>("eglClientWaitSync");
+        eglCopyBuffers = GetFunction<eglCopyBuffersDelegate>("eglCopyBuffers");
+        eglCreateContext = GetFunction<eglCreateContextDelegate>("eglCreateContext");
+        eglCreateImage = GetFunction<eglCreateImageDelegate>("eglCreateImage");
+        eglCreatePbufferFromClientBuffer = GetFunction<eglCreatePbufferFromClientBufferDelegate>("eglCreatePbufferFromClientBuffer");
+        eglCreatePbufferSurface = GetFunction<eglCreatePbufferSurfaceDelegate>("eglCreatePbufferSurface");
+        eglCreatePixmapSurface = GetFunction<eglCreatePixmapSurfaceDelegate>("eglCreatePixmapSurface");
+        eglCreatePlatformPixmapSurface = GetFunction<eglCreatePlatformPixmapSurfaceDelegate>("eglCreatePlatformPixmapSurface");
+        eglCreatePlatformWindowSurface = GetFunction<eglCreatePlatformWindowSurfaceDelegate>("eglCreatePlatformWindowSurface");
+        eglCreateSync = GetFunction<eglCreateSyncDelegate>("eglCreateSync");
+        eglCreateWindowSurface = GetFunction<eglCreateWindowSurfaceDelegate>("eglCreateWindowSurface");
+        eglDestroyContext = GetFunction<eglDestroyContextDelegate>("eglDestroyContext");
+        eglDestroyImage = GetFunction<eglDestroyImageDelegate>("eglDestroyImage");
+        eglDestroySurface = GetFunction<eglDestroySurfaceDelegate>("eglDestroySurface");
+        eglDestroySync = GetFunction<eglDestroySyncDelegate>("eglDestroySync");
+        eglGetConfigAttrib = GetFunction<eglGetConfigAttribDelegate>("eglGetConfigAttrib");
+        eglGetConfigs = GetFunction<eglGetConfigsDelegate>("eglGetConfigs");
+        eglGetCurrentContext = GetFunction<eglGetCurrentContextDelegate>("eglGetCurrentContext");
+        eglGetCurrentDisplay = GetFunction<eglGetCurrentDisplayDelegate>("eglGetCurrentDisplay");
+        eglGetCurrentSurface = GetFunction<eglGetCurrentSurfaceDelegate>("eglGetCurrentSurface");
+        eglGetDisplay = GetFunction<eglGetDisplayDelegate>("eglGetDisplay");
+        eglGetError = GetFunction<eglGetErrorDelegate>("eglGetError");
+        eglGetPlatformDisplay = GetFunction<eglGetPlatformDisplayDelegate>("eglGetPlatformDisplay");
+        eglGetProcAddress = GetFunction<eglGetProcAddressDelegate>("eglGetProcAddress");
+        eglGetSyncAttrib = GetFunction<eglGetSyncAttribDelegate>("eglGetSyncAttrib");
+        eglInitialize = GetFunction<eglInitializeDelegate>("eglInitialize");
+        eglMakeCurrent = GetFunction<eglMakeCurrentDelegate>("eglMakeCurrent");
+        eglQueryAPI = GetFunction<eglQueryAPIDelegate>("eglQueryAPI");
+        eglQueryContext = GetFunction<eglQueryContextDelegate>("eglQueryContext");
+        eglQueryString = GetFunction<eglQueryStringDelegate>("eglQueryString");
+        eglQuerySurface = GetFunction<eglQuerySurfaceDelegate>("eglQuerySurface");
+        eglReleaseTexImage = GetFunction<eglReleaseTexImageDelegate>("eglReleaseTexImage");
+        eglReleaseThread = GetFunction<eglReleaseThreadDelegate>("eglReleaseThread");
+        eglSwapBuffers = GetFunction<eglSwapBuffersDelegate>("eglSwapBuffers");
+        eglSwapInterval = GetFunction<eglSwapIntervalDelegate>("eglSwapInterval");
+        eglTerminate = GetFunction<eglTerminateDelegate>("eglTerminate");
+        eglWaitClient = GetFunction<eglWaitClientDelegate>("eglWaitClient");
+        eglWaitGL = GetFunction<eglWaitGLDelegate>("eglWaitGL");
+        eglWaitNative = GetFunction<eglWaitNativeDelegate>("eglWaitNative");
+        eglWaitSync = GetFunction<eglWaitSyncDelegate>("eglWaitSync");
+    }
 
-        [DllImport(LibEgl, EntryPoint = "eglChooseConfig")]
-        internal static unsafe extern bool eglChooseConfig (IntPtr dpy, int[] attrib_list, out IntPtr configs, int config_size, out int num_config);
-
-        [DllImport(LibEgl, EntryPoint = "eglClientWaitSync")]
-        internal static extern int eglClientWaitSync (IntPtr dpy, IntPtr sync, int flags, long timeout);
-
-        [DllImport(LibEgl, EntryPoint = "eglCopyBuffers")]
-        internal static extern bool eglCopyBuffers (IntPtr dpy, IntPtr surface, IntPtr target);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreateContext")]
-        internal static unsafe extern IntPtr eglCreateContext (IntPtr dpy, IntPtr config, IntPtr share_context, /*const*/int[] attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreateImage")]
-        internal static unsafe extern IntPtr eglCreateImage (IntPtr dpy, IntPtr ctx, EGL_ENUM target, IntPtr buffer, /*const*/ref IntPtr attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreatePbufferFromClientBuffer")]
-        internal static unsafe extern IntPtr eglCreatePbufferFromClientBuffer (IntPtr dpy, EGL_ENUM buftype, IntPtr buffer, IntPtr config, /*const*/ref int[] attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreatePbufferSurface")]
-        internal static unsafe extern IntPtr eglCreatePbufferSurface (IntPtr dpy, IntPtr config, /*const*/ref int[] attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreatePixmapSurface")]
-        internal static unsafe extern IntPtr eglCreatePixmapSurface (IntPtr dpy, IntPtr config, IntPtr pixmap, /*const*/ref int[] attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreatePlatformPixmapSurface")]
-        internal static unsafe extern IntPtr eglCreatePlatformPixmapSurface (IntPtr dpy, IntPtr config, IntPtr native_pixmap, /*const*/ref IntPtr attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreatePlatformWindowSurface")]
-        internal static unsafe extern IntPtr eglCreatePlatformWindowSurface (IntPtr dpy, IntPtr config, IntPtr native_window, /*const*/ref IntPtr attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreateSync")]
-        internal static unsafe extern IntPtr eglCreateSync (IntPtr dpy, EGL_ENUM type, /*const*/ref IntPtr attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglCreateWindowSurface")]
-        internal static unsafe extern IntPtr eglCreateWindowSurface (IntPtr dpy, IntPtr config, IntPtr win, /*const*/int[] attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglDestroyContext")]
-        internal static extern bool eglDestroyContext (IntPtr dpy, IntPtr ctx);
-
-        [DllImport(LibEgl, EntryPoint = "eglDestroyImage")]
-        internal static extern bool eglDestroyImage (IntPtr dpy, IntPtr image);
-
-        [DllImport(LibEgl, EntryPoint = "eglDestroySurface")]
-        internal static extern bool eglDestroySurface (IntPtr dpy, IntPtr surface);
-
-        [DllImport(LibEgl, EntryPoint = "eglDestroySync")]
-        internal static extern bool eglDestroySync (IntPtr dpy, IntPtr sync);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetConfigAttrib")]
-        internal static extern bool eglGetConfigAttrib (IntPtr dpy, IntPtr config, int attribute, ref int value);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetConfigs")]
-        internal static unsafe extern bool eglGetConfigs (IntPtr dpy, IntPtr configs, int config_size, out int num_config);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetCurrentContext")]
-        internal static extern IntPtr eglGetCurrentContext ();
-
-        [DllImport(LibEgl, EntryPoint = "eglGetCurrentDisplay")]
-        internal static extern IntPtr eglGetCurrentDisplay ();
-
-        [DllImport(LibEgl, EntryPoint = "eglGetCurrentSurface")]
-        internal static extern IntPtr eglGetCurrentSurface (int readdraw);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetDisplay")]
-        internal static extern IntPtr eglGetDisplay (IntPtr display_id);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetError")]
-        internal static extern EGL_ERRORS eglGetError();
-
-        [DllImport(LibEgl, EntryPoint = "eglGetPlatformDisplay")]
-        internal static unsafe extern IntPtr eglGetPlatformDisplay (EGL_ENUM platform, IntPtr native_display, /*const*/ref IntPtr attrib_list);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetProcAddress")]
-        internal static extern IntPtr eglGetProcAddress (string procname);
-
-        [DllImport(LibEgl, EntryPoint = "eglGetSyncAttrib")]
-        internal static unsafe extern bool eglGetSyncAttrib (IntPtr dpy, IntPtr sync, int attribute, IntPtr *value);
-
-        [DllImport(LibEgl, EntryPoint = "eglInitialize")]
-        internal static extern bool eglInitialize (IntPtr dpy, ref int major, ref int minor);
-
-        [DllImport(LibEgl, EntryPoint = "eglMakeCurrent")]
-        internal static extern bool eglMakeCurrent (IntPtr dpy, IntPtr draw, IntPtr read, IntPtr ctx);
-
-        [DllImport(LibEgl, EntryPoint = "eglQueryAPI")]
-        internal static extern EGL_ENUM eglQueryAPI ();
-
-        [DllImport(LibEgl, EntryPoint = "eglQueryContext")]
-        internal static extern bool eglQueryContext (IntPtr dpy, IntPtr ctx, int attribute, ref int value);
-
-        [DllImport(LibEgl, EntryPoint = "eglQueryString")]
-        internal static extern string eglQueryString (IntPtr dpy, int name);
-
-        [DllImport(LibEgl, EntryPoint = "eglQuerySurface")]
-        internal static extern bool eglQuerySurface (IntPtr dpy, IntPtr surface, int attribute, ref int value);
-
-        [DllImport(LibEgl, EntryPoint = "eglReleaseTexImage")]
-        internal static extern bool eglReleaseTexImage (IntPtr dpy, IntPtr surface, int buffer);
-
-        [DllImport(LibEgl, EntryPoint = "eglReleaseThread")]
-        internal static extern bool eglReleaseThread ();
-
-        [DllImport(LibEgl, EntryPoint = "IntPtrAttrib")]
-        internal static extern bool IntPtrAttrib (IntPtr dpy, IntPtr surface, int attribute, int value);
-
-        [DllImport(LibEgl, EntryPoint = "eglSwapBuffers")]
-        internal static extern bool eglSwapBuffers (IntPtr dpy, IntPtr surface);
-
-        [DllImport(LibEgl, EntryPoint = "eglSwapInterval")]
-        internal static extern bool eglSwapInterval (IntPtr dpy, int interval);
-
-        [DllImport(LibEgl, EntryPoint = "eglTerminate")]
-        internal static extern bool eglTerminate (IntPtr dpy);
-
-        [DllImport(LibEgl, EntryPoint = "eglWaitClient")]
-        internal static extern bool eglWaitClient ();
-
-        [DllImport(LibEgl, EntryPoint = "eglWaitGL")]
-        internal static extern bool eglWaitGL ();
-
-        [DllImport(LibEgl, EntryPoint = "eglWaitNative")]
-        internal static extern bool eglWaitNative (int engine);
-
-        [DllImport(LibEgl, EntryPoint = "eglWaitSync")]
-        internal static extern bool eglWaitSync (IntPtr dpy, IntPtr sync, int flags);
+    private static T GetFunction<T>(string name) where T : Delegate
+    {
+        if (NativeLibrary.TryGetExport(_libHandle, name, out IntPtr ptr))
+        {
+            return Marshal.GetDelegateForFunctionPointer<T>(ptr);
+        }
+        else
+        {
+            throw new EntryPointNotFoundException($"No se encontró la función {name} en la librería EGL.");
+        }
     }
 }
+

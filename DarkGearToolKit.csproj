@@ -5,17 +5,23 @@
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>dgtk</AssemblyName>
-    <Version Condition="'$(Version)'==''">1.9.5</Version>            <!-- NuGet package version -->
-    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.9.5.0</AssemblyVersion> <!-- DLL internal version -->
-    <FileVersion Condition="'$(FileVersion)'==''">1.9.5.0</FileVersion>  
+
+    <!-- Versiones -->
+    <Version Condition="'$(Version)'==''">1.9.6</Version>            <!-- NuGet package version -->
+    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.9.6.0</AssemblyVersion> <!-- DLL internal version -->
+    <FileVersion Condition="'$(FileVersion)'==''">1.9.6.0</FileVersion>  
+
+    <!-- Metadata -->
     <Company>Dark Dolmen Games</Company>
     <Authors>Luis Guijarro Pérez</Authors>
     <Description>C# toolkit for OpenGL and OpenAL Runable on Windows and Linux</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/luisguijarro/darkgeartoolkit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luisguijarro/darkgeartoolkit.git</RepositoryUrl>
     <PackageReleaseNotes>Release from GitHub</PackageReleaseNotes>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)'=='debug'">
     <NoLogo>true</NoLogo>
     <Optimize>false</Optimize>
@@ -25,6 +31,7 @@
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)'=='release'">
     <NoLogo>true</NoLogo>
     <Optimize>true</Optimize>
@@ -33,15 +40,19 @@
     <DebugType>none</DebugType>
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
   </ItemGroup>
+
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
     <None Include="LICENSE" Pack="true" PackagePath="" />
     <None Include="THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="soft_oal.dll" Pack="true" PackagePath="" />
     <None Include="libopenal.so.1" Pack="true" PackagePath="" />
