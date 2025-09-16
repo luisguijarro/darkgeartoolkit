@@ -5,9 +5,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>dgtk</AssemblyName>
-    <Version Condition="'$(Version)'==''">1.9.0</Version>            <!-- NuGet package version -->
-    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.9.0.0</AssemblyVersion> <!-- DLL internal version -->
-    <FileVersion Condition="'$(FileVersion)'==''">1.9.0.0</FileVersion>  
+    <Version Condition="'$(Version)'==''">1.9.2</Version>            <!-- NuGet package version -->
+    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.9.2.0</AssemblyVersion> <!-- DLL internal version -->
+    <FileVersion Condition="'$(FileVersion)'==''">1.9.2.0</FileVersion>  
     <Company>Dark Dolmen Games</Company>
     <Authors>Luis Guijarro Pérez</Authors>
     <Description>C# toolkit for OpenGL and OpenAL Runable on Windows and Linux</Description>
