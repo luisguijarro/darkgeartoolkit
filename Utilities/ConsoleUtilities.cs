@@ -40,12 +40,12 @@ public static class ConsoleUtils
     [Conditional("DEBUG")]
     public static void LogWarning(string message)
     {
-        WriteLineColored(message, ConsoleColor.Yellow, ConsoleColor.Yellow);
+        WriteLineColored($"⚠️ {message}", ConsoleColor.Yellow, ConsoleColor.Yellow);
     }
 
     [Conditional("DEBUG")]
     public static void LogError(string message)
     {
-        WriteLineColored(message, ConsoleColor.Red, ConsoleColor.Red);
+        WriteLineColored($"❌ {message}", ConsoleColor.Red, ConsoleColor.Red);
     }
 }
