@@ -22,7 +22,7 @@ jobs:
 
       # 3️⃣ Restaurar dependencias
       - name: Restore dependencies
-        run: dotnet restore DarkGearToolKit/DarkGearToolKit.csproj
+        run: dotnet restore DarkGearToolKit.csproj
 
       # 4️⃣ Extraer la versión del tag
       - name: Extract version from tag
@@ -38,7 +38,7 @@ jobs:
       # 5️⃣ Compilar y empaquetar el proyecto con versiones dinámicas
       - name: Pack NuGet Package
         run: |
-          dotnet pack DarkGearToolKit/DarkGearToolKit.csproj -c Release \
+          dotnet pack DarkGearToolKit.csproj -c Release \
             /p:Version=$VERSION \
             /p:AssemblyVersion=$ASSEMBLY_VERSION \
             /p:FileVersion=$FILE_VERSION \
