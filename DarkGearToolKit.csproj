@@ -35,19 +35,19 @@
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="SkiaSharp" Version="3.119.0" />
-      <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
-      <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="LICENSE.md" Pack="true" PackagePath="" />
-      <None Include="THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="soft_oal.dll" Pack="true" PackagePath="" />
-      <None Include="libopenal.so.1" Pack="true" PackagePath="" />
-    </ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE.md" Pack="true" PackagePath="" />
+    <None Include="THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="soft_oal.dll" Pack="true" PackagePath="" />
+    <None Include="libopenal.so.1" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Enums\InputEventsEnums.cs" />
     <Content Include="Enums\WindowEnums.cs" />
     <Content Include="events\dgtk_events_tools.cs" />
