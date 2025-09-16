@@ -46,7 +46,4 @@ jobs:
 
       # 6️⃣ Publicar el paquete en NuGet
       - name: Publish to NuGet
-        uses: nuget/setup-nuget@v1
-      - run: dotnet nuget push ./nupkg/*.nupkg \
-            --api-key ${{ secrets.NUGET_API_KEY }} \
-            --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
