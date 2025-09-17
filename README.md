@@ -1,23 +1,77 @@
-# Dark Gear Tool Kit
-Tool Kit Library developed for **DarkGear Game Engine** with support for OpenGL, OpenGL|ES, OpenAL and Input Devices.
+# Dark Gear Tool Kit (dgtk)
 
-## Compilation
-To compile the project use the command **dotnet publish:**
-  - Windows: dotnet publish DarkGearToolKit.sln --runtime win-x64 -c release -p:PublishTrimmed=true --self-contained true
-  - Linux: dotnet publish DarkGearToolKit.sln --runtime linux-x64 -c release -p:PublishTrimmed=true --self-contained true
+[![NuGet](https://img.shields.io/nuget/v/dgtk.svg)](https://www.nuget.org/packages/dgtk/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/dgtk.svg)](https://www.nuget.org/packages/dgtk/)
 
-Note: Change "release" word by "debug" word for debug output.
+**Dark Gear Tool Kit (dgtk)** is a C# library developed for the **DarkGear Game Engine**, with support for:
 
-## Prerequisites:
-For Compilation: **.NET 8**
+- OpenGL and OpenGL|ES  
+- OpenAL (audio)  
+- Input devices  
 
-For use: **OpenAL Soft ( soft_oal.dll, libopenal.so.1 )**
+It is designed to be **cross-platform** (Windows & Linux) and run on both **x64** and **ARM64** architectures.
 
-`Note Windows: Do not rename the library soft_oal.dll`
+---
 
-`Note Linux: Do not rename the library libopenal.so.1`
+## 📦 Installation via NuGet
 
-`Note: We include a version of the library in order to facilitate the process of using this software. However, we always recommend using the latest version of it available in its official repository.`
+You can add the library directly from [NuGet](https://www.nuget.org/packages/dgtk/):
 
-OpenAL Soft is LGPL Software:
-[https://github.com/kcat/openal-soft](https://github.com/kcat/openal-soft)
+```bash
+dotnet add package dgtk
+```
+
+This will automatically pull the latest version.
+
+## ⚙️ Manual Build
+
+If you prefer to build from source:
+
+
+### Windows
+```cmd
+dotnet publish DarkGearToolKit.sln --runtime win-x64 -c Release -p:PublishTrimmed=true --self-contained true
+```
+
+### Linux
+```bash
+dotnet publish DarkGearToolKit.sln --runtime linux-x64 -c Release -p:PublishTrimmed=true --self-contained true
+```
+
+Use Debug instead of Release for debugging builds.
+
+## 📋 Requirements
+
+- To build: .NET 8 SDK
+- To run:
+  - OpenAL Soft (soft_oal.dll on Windows, libopenal.so.1 on Linux)
+
+ℹ️ Note: We include a copy of OpenAL Soft for convenience, but we recommend using the latest version from its official repository
+
+⚠️ Important:
+
+- Do not rename soft_oal.dll on Windows.
+
+- Do not rename libopenal.so.1 on Linux.
+
+## 🚀 Basic Usage Example
+```csharp
+using dgtk;
+
+class Program
+{
+    static void Main()
+    {
+        var window = new dgtk_Window(800, 600, "Hello dgtk!");
+        window.Run();
+    }
+}
+```
+
+## 📄 License
+
+This project is licensed under LGPL.
+
+It includes OpenAL Soft, which is licensed under LGPL:
+
+👉 https://github.com/kcat/openal-soft
