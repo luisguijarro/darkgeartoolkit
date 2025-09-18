@@ -7,10 +7,9 @@ namespace dgtk
 		Enter, Leave
 	}
 
-	[Flags]
-	public enum MouseButtons
+	public enum MouseButtons : uint
 	{
-		Left = 1, Center = 2, Right = 4
+		Left = 1, Center = 2, Right = 3
 	}
 
 	public enum PushRelease : byte
