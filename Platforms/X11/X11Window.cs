@@ -637,12 +637,12 @@ namespace dgtk.Platforms.X11
 		{
 			IntPtr ventroottemp;
 			int bxp_temp, grosorborde;//, x, y;
-			//dgtk.Math.Vector2 v2_s = new dgtk.Math.Vector2 (this.ancho, this.alto);
+			dgtk.Math.Vector2 v2_s = new dgtk.Math.Vector2 (this.ancho, this.alto);			
 			Imports.XGetGeometry(this.ptr_display, this.ptr_handle, out ventroottemp, out this.X, out this.Y, out this.ancho, out this.alto, out grosorborde, out bxp_temp);
-			//if ((v2_s.X.Equals(this.ancho)) || (v2_s.Y.Equals(this.alto)))
-			//{
+			if ((!v2_s.X.Equals(this.ancho)) || (!v2_s.Y.Equals(this.alto)))
+			{
 				this.WindowSizeChange(this, new dgtk_ResizeEventArgs(this.ancho, this.alto));
-			//}
+			}
 		}
 
 		private void Maximizar()
