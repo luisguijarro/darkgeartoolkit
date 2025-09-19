@@ -7,9 +7,9 @@
     <AssemblyName>dgtk</AssemblyName>
 
     <!-- Versiones -->
-    <Version Condition="'$(Version)'==''">1.10.0</Version>            <!-- NuGet package version -->
-    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.10.0.0</AssemblyVersion> <!-- DLL internal version -->
-    <FileVersion Condition="'$(FileVersion)'==''">1.10.0.0</FileVersion>  
+    <Version Condition="'$(Version)'==''">1.11.0</Version>            <!-- NuGet package version -->
+    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">1.11.0.0</AssemblyVersion> <!-- DLL internal version -->
+    <FileVersion Condition="'$(FileVersion)'==''">1.11.0.0</FileVersion>  
 
     <!-- Metadata -->
     <Company>Dark Dolmen Games</Company>
